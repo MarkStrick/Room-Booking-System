@@ -28,7 +28,7 @@ credential แยกจาก user profile และผล API ไม่มี h
 
 ทดสอบ hash/salt ภาษาไทย, password login, CSRF, รหัสผิด, lockout/หมดเวลา, เปลี่ยนรหัสและเพิกถอน session, สมัครยืนยันอีเมล, token ใช้ซ้ำ/หมดอายุ, reset, SMTP ล้มเหลวไม่สร้างบัญชี, Google verified email ทุกโดเมน และ Postgres adapter บันทึก/อ่าน credential ได้
 
-Backend ผ่าน 18 tests พร้อมกฎธุรกิจเดิม 8 tests รวม 26 tests Build และ production dependency audit ผ่าน ตรวจหน้า login desktop/mobile และเข้าใช้ด้วยบัญชีทดสอบที่แยกไว้ในฐานข้อมูล local แล้ว การทดสอบอีเมลใช้ตัวส่งจำลอง ยังต้องตรวจรับอีเมลจริง, Google token exchange และ Supabase connection/TLS ก่อนเปิดสาธารณะ
+Backend ผ่าน 18 tests พร้อมกฎธุรกิจเดิม 8 tests รวม 26 tests Build และ production dependency audit ผ่าน ตรวจหน้า login desktop/mobile และเข้าใช้ด้วยบัญชีทดสอบที่แยกไว้ในฐานข้อมูล local แล้ว Supabase connection/TLS และการเก็บ Argon2id บนฐานข้อมูล cloud ตรวจผ่านตาม [ผลตรวจ](SUPABASE_CONNECTION.md) การทดสอบอีเมลใช้ตัวส่งจำลอง ยังต้องตรวจรับอีเมลจริงและ Google token exchange ก่อนเปิดสาธารณะ
 
 ## ลองหน้าจอในเครื่อง
 

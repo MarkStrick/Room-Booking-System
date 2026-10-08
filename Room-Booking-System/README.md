@@ -2,7 +2,7 @@
 
 เว็บ React + TypeScript + Vite เชื่อม NestJS API และ worker เตรียมใช้ Supabase PostgreSQL ผู้ใช้สมัครและตั้งรหัสผ่านเองได้ หรือใช้ Google ทุกอีเมล ธีมดินแดง `#A73B24` พร้อมตราภาษาไทยและฟอนต์ มข.๑ จาก [ชุดอัตลักษณ์ทางการ](https://building.kku.ac.th/downloads/kku-logo/) ดู [ที่มาของไฟล์](docs/BRAND_ASSETS.md)
 
-ค่าปกติเป็น **โหมดเซิร์ฟเวอร์** การจองและสิทธิ์ตรวจบน backend ไม่บันทึกธุรกิจลง browser localStorage มี migration, ตัวอย่าง environment, Docker และ CI แล้ว แต่ยังไม่เชื่อมบริการ cloud หรือเปิดเว็บสาธารณะ ขั้นตอนตั้งค่าจริงอยู่ใน [PRODUCTION_SETUP.md](docs/PRODUCTION_SETUP.md)
+ค่าปกติเป็น **โหมดเซิร์ฟเวอร์** การจองและสิทธิ์ตรวจบน backend ไม่บันทึกธุรกิจลง browser localStorage มี migration, ตัวอย่าง environment, Docker และ CI แล้ว เชื่อม Supabase กับ API/worker ในเครื่องแล้วตาม [ผลตรวจ](docs/SUPABASE_CONNECTION.md) ส่วน Google Login, SMTP และเว็บสาธารณะยังอยู่ระหว่างตั้งค่า ขั้นตอนเปิดจริงอยู่ใน [PRODUCTION_SETUP.md](docs/PRODUCTION_SETUP.md)
 
 รหัสผ่านเก็บเฉพาะ Argon2id hash ในตาราง private พร้อมยืนยันอีเมล ลืมรหัสผ่าน และเปลี่ยนรหัสผ่าน ดู migration ใหม่และขั้นตอนใน [PASSWORD_AUTH.md](docs/PASSWORD_AUTH.md)
 

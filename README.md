@@ -9,4 +9,4 @@
 
 เปิดทดสอบและตั้งค่าบริการจริงตาม [คู่มือโครงการ](Room-Booking-System/README.md) ตรวจการเชื่อมต่อ Supabase, Google และอีเมลด้วย `npm.cmd run check:connections` ในโฟลเดอร์ `Room-Booking-System`
 
-การเชื่อม Supabase, Google และอีเมลจริงยังอยู่ระหว่างตั้งค่า ไม่ได้นำข้อเสนอแก้ฐานข้อมูล Oracle เดิมไปใช้ ค่าลับและฐานข้อมูลทดสอบไม่อยู่ใน Git
+เชื่อม Supabase กับ API และ worker ในเครื่องแล้ว ส่วน Google และอีเมลยังอยู่ระหว่างตั้งค่า ดู [ผลตรวจการเชื่อมต่อ](Room-Booking-System/docs/SUPABASE_CONNECTION.md) ไม่ได้นำข้อเสนอแก้ฐานข้อมูล Oracle เดิมไปใช้ ค่าลับและฐานข้อมูลทดสอบไม่อยู่ใน Git
