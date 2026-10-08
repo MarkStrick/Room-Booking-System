@@ -1,0 +1,60 @@
+.session-page {
+ min-height:100dvh;display:grid;place-items:center;padding:40px 20px;background:#f8f7f4;color:#302c29;
+ font-family:"IBM Plex Sans Thai",sans-serif;
+}
+.session-content {width:100%;max-width:480px;}
+.session-content .brand {margin-bottom:48px;}
+.session-content h1 {font-size:30px;line-height:1.5;margin-bottom:12px;}
+.session-content>p {font-size:16px;line-height:1.8;color:#655d55;}
+.session-google {width:100%;min-height:48px;font-size:16px;margin-top:30px;}
+.session-google.disabled {background:#e6e0d9;color:#655d55;cursor:not-allowed;box-shadow:none;}
+.session-content .session-help {font-size:14px;margin-top:14px;}
+.session-content .session-error {background:#fbeee8;color:#962d1b;padding:16px;border-radius:12px;margin-top:24px;}
+.session-development {margin-top:32px;border-top:1px solid #ddd6ce;padding-top:20px;font-size:14px;}
+.session-development summary {cursor:pointer;min-height:44px;display:list-item;}
+.session-development p {color:#655d55;line-height:1.8;margin:14px 0;}
+.session-development .btn {margin:0 8px 8px 0;min-height:44px;}
+.connection-banner {position:sticky;top:0;z-index:10;background:#fff0df;color:#66411e;display:flex;justify-content:center;gap:16px;align-items:center;padding:12px 20px;font-size:14px;}
+.connection-banner button {text-decoration:underline;min-height:44px;color:inherit;font:inherit;background:transparent;border:0;cursor:pointer;}
+[hidden] {display:none!important;}
+.user-access-list {display:grid;gap:20px;}
+.access-row {padding:24px;background:#fff;border:1px solid #e3ded7;border-radius:14px;}
+.access-row h2 {font-size:20px;margin-bottom:6px;}
+.access-row p {font-size:14px;color:#655d55;line-height:1.8;overflow-wrap:anywhere;}
+.access-fields {display:flex;align-items:center;flex-wrap:wrap;gap:20px;margin:24px 0;}
+.access-fields label,.access-room-options label {font-size:14px;}
+.access-fields select {min-height:44px;font-size:16px;min-width:180px;}
+.access-room-options {display:flex;flex-direction:column;gap:12px;padding:16px 0;}
+.access-room-options .checkbox-label {min-height:44px;}
+.access-row .btn {min-height:44px;font-size:15px;}
+@media(max-width:700px){.session-content h1{font-size:25px;}.connection-banner{flex-wrap:wrap;gap:4px;}}
+.university-brand img {width:40px;height:auto;flex-shrink:0;object-fit:contain;}
+.university-brand {gap:14px;}
+.university-brand small {font-size:11px;letter-spacing:0;line-height:1.7;max-width:150px;}
+@font-face {font-family:"MorKhor";src:url('/fonts/MorKhor1.ttf') format('truetype');font-display:swap;font-weight:400;font-style:normal;}
+.student-page-heading h1,.session-content h1 {font-family:"MorKhor","IBM Plex Sans Thai",sans-serif;font-weight:400;}
+.session-content .university-brand img {width:48px;}
+.session-content .university-brand small {max-width:none;font-size:13px;}
+.password-login {margin-top:32px;}
+.password-login h2,.password-settings h2 {font-size:22px;line-height:1.5;margin:0 0 12px;}
+.password-login>p,.password-settings>p {font-size:14px;line-height:1.8;color:#655d55;margin-bottom:20px;}
+.password-login fieldset,.password-settings fieldset {padding:0;border:0;min-width:0;display:grid;gap:18px;}
+.password-login label,.password-settings label {display:grid;gap:8px;font-size:15px;font-weight:500;}
+.password-login input,.password-settings input {width:100%;min-height:48px;font:inherit;font-size:16px;padding:10px 14px;border:1px solid #c9c0b6;border-radius:8px;background:#fff;color:#302c29;}
+.password-input {position:relative;display:block;}
+.password-field {display:grid;gap:8px;}
+.password-input input {padding-right:54px;}
+.password-input button {position:absolute;right:2px;top:2px;width:44px;height:44px;display:grid;place-items:center;border:0;background:transparent;color:#655d55;border-radius:6px;cursor:pointer;}
+.password-submit {width:100%;min-height:48px;font-size:16px;}
+.password-help {font-size:14px;line-height:1.8;color:#655d55;margin:0;}
+.password-links {display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:8px;}
+.password-links button {border:0;background:transparent;padding:10px 0;min-height:44px;color:#962d1b;font:inherit;font-size:14px;text-decoration:underline;text-underline-offset:4px;cursor:pointer;}
+.password-divider {display:flex;align-items:center;gap:16px;color:#655d55;font-size:14px;margin:20px 0 0;}
+.password-divider::before,.password-divider::after {content:'';height:1px;background:#ddd6ce;flex:1;}
+.password-message {padding:14px 16px;background:#eef4ed;color:#365237;font-size:14px;line-height:1.8;border-radius:8px;}
+.password-settings {padding:24px;}
+.password-settings form {max-width:480px;margin-top:24px;}
+.password-login .session-error,.password-settings .session-error {margin:0;font-size:14px;line-height:1.8;}
+.password-login .session-google {margin-top:20px;}
+.password-login input:focus-visible,.password-settings input:focus-visible {outline:2px solid #a73b24;outline-offset:3px;}
+@media(max-width:700px){.session-page{padding:28px 20px;}.session-content .brand{margin-bottom:28px;}.password-login{margin-top:24px;}.password-settings{padding:20px;}}

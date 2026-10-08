@@ -1,0 +1,24 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      DEV_LOGIN: '0'
+    ports:
+      - '127.0.0.1:3001:3001'
+    restart: unless-stopped
+    init: true
+  worker:
+    build: .
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      DEV_LOGIN: '0'
+    command: ['node', 'dist/worker.js']
+    healthcheck:
+      disable: true
+    restart: unless-stopped
+    init: true

@@ -1,0 +1,1129 @@
+/* Task-first refinements for students; KKU red earth remains the primary accent. */
+:root {
+  --student-text: #302c29;
+  --student-secondary: #655d55;
+  --student-border: #e3ded7;
+  --student-surface: #fff;
+  --student-space: 24px;
+}
+::selection {
+  background: #f0cec0;
+  color: #632313;
+}
+input,
+textarea {
+  caret-color: var(--primary);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.student-shell {
+  font-family: "IBM Plex Sans Thai", sans-serif;
+  font-size: 16px;
+}
+.student-shell .workspace main {
+  padding: 28px 32px 24px;
+  max-width: 1440px;
+}
+.student-shell .topbar {
+  height: 72px;
+  padding: 0 32px;
+}
+.student-shell .nav-item {
+  font-size: 14px;
+  min-height: 48px;
+}
+.student-shell .nav-item.active {
+  box-shadow: none;
+  font-weight: 600;
+}
+.student-shell .nav-group-title {
+  font-size: 12px;
+  color: var(--student-secondary);
+}
+.student-shell .clock-button {
+  display: none;
+}
+.prototype-label {
+  color: var(--student-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.sidebar-reminder {
+  border-top: 1px solid var(--student-border);
+  padding: 20px 12px;
+  color: var(--student-secondary);
+  font-size: 13px;
+}
+.sidebar-reminder svg {
+  margin-bottom: 8px;
+}
+.sidebar-reminder strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+}
+.sidebar-reminder p {
+  margin-top: 6px;
+  line-height: 1.8;
+  font-size: 12px;
+}
+.student-page-heading {
+  margin: 0 0 24px;
+}
+.student-page-heading h1 {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--student-text);
+}
+.student-page-heading p {
+  font-size: 15px;
+  color: var(--student-secondary);
+  line-height: 1.7;
+  margin-top: 7px;
+}
+.student-search button,
+.student-bookings button,
+.student-search input,
+.student-search select,
+.student-booking-modal button,
+.student-booking-modal input {
+  min-height: 44px;
+}
+.student-search label,
+.student-booking-modal label {
+  font-size: 14px;
+  color: var(--student-text);
+}
+.student-search input,
+.student-search select,
+.student-booking-modal input,
+.student-booking-modal textarea {
+  font-size: 16px;
+  color: var(--student-text);
+  border-color: #bcb4ab;
+  background: #fff;
+  min-width: 0;
+}
+.student-search input:focus,
+.student-search select:focus,
+.student-booking-modal input:focus,
+.student-booking-modal textarea:focus {
+  border-color: var(--primary);
+}
+.student-search input::placeholder,
+.student-booking-modal textarea::placeholder {
+  color: #726b63;
+  opacity: 1;
+}
+.rooms-controls {
+  background: var(--student-surface);
+  border: 1px solid var(--student-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.rooms-main-fields {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 18px;
+  padding: 24px 24px 16px;
+}
+.people-input,
+.room-name-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 8px;
+}
+.people-input > svg,
+.room-name-input > svg {
+  position: absolute;
+  left: 12px;
+  color: var(--student-secondary);
+  pointer-events: none;
+}
+.people-input input,
+.room-name-input input {
+  padding-left: 38px;
+}
+.people-input input {
+  padding-right: 44px;
+}
+.people-input > span {
+  position: absolute;
+  right: 28px;
+  font-size: 14px;
+  pointer-events: none;
+}
+.rooms-search-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px 18px;
+}
+.quick-days {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.quick-days > span {
+  font-size: 13px;
+  color: var(--student-secondary);
+  margin-right: 4px;
+}
+.quick-days button {
+  border: 1px solid var(--student-border);
+  background: #fff;
+  color: var(--student-secondary);
+  border-radius: 7px;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+.quick-days button:hover {
+  background: #f8f4ef;
+}
+.quick-days button.selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 500;
+}
+.selection-hint {
+  font-size: 13px;
+  color: var(--student-secondary);
+  line-height: 1.7;
+}
+.selection-error {
+  font-size: 14px;
+  color: #962d1b;
+  line-height: 1.7;
+  max-width: 65ch;
+}
+.rooms-search-meta .selection-error {
+  flex-basis: 100%;
+}
+.rooms-extra-filters {
+  border-top: 1px solid var(--student-border);
+}
+.rooms-extra-filters > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 16px 24px;
+  list-style: none;
+  font-size: 14px;
+  color: var(--student-text);
+  min-height: 48px;
+}
+.rooms-extra-filters > summary::-webkit-details-marker {
+  display: none;
+}
+.rooms-extra-filters > summary > svg:last-child {
+  margin-left: auto;
+  transition: transform 0.18s ease-out;
+}
+.rooms-extra-filters[open] > summary > svg:last-child {
+  transform: rotate(180deg);
+}
+.optional-copy {
+  font-size: 13px;
+  color: var(--student-secondary);
+  margin-left: 5px;
+}
+.filter-count {
+  font-size: 12px;
+  border: 1px solid var(--student-border);
+  border-radius: 4px;
+  padding: 0 6px;
+}
+.rooms-extra-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding: 2px 24px 24px;
+}
+.rooms-extra-filters > .text-button {
+  margin: 0 24px 20px;
+  font-size: 14px;
+}
+.rooms-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 28px 0 18px;
+}
+.rooms-results-heading h2 {
+  font-size: 21px;
+  font-weight: 600;
+}
+.rooms-results-heading p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  color: var(--student-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+}
+.availability-toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.availability-toggle input[type="checkbox"] {
+  min-height: 18px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.all-rooms-hint {
+  font-size: 14px;
+  color: var(--student-secondary);
+  margin-bottom: 16px;
+}
+.student-room-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.student-room-card {
+  border: 1px solid var(--student-border);
+  border-radius: 14px;
+  background: var(--student-surface);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.student-room-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.room-kind-icon {
+  color: var(--student-secondary);
+  display: inline-flex;
+}
+.student-availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #275c3b;
+  background: #eff6ef;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+.student-availability.busy {
+  color: #755218;
+  background: #faf2e1;
+}
+.student-availability.closed {
+  color: #704c3f;
+  background: #f3ede8;
+}
+.student-room-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 6px;
+  overflow-wrap: anywhere;
+}
+.student-room-card .room-location,
+.student-booking-card .room-location {
+  font-size: 14px;
+  color: var(--student-secondary);
+  line-height: 1.7;
+  align-items: flex-start;
+}
+.student-room-card .room-location svg,
+.student-booking-card .room-location svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.student-room-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 16px 0;
+  color: var(--student-text);
+  font-size: 14px;
+}
+.student-room-facts > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.room-reference {
+  color: var(--student-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.student-room-amenities {
+  display: flex;
+  gap: 7px 16px;
+  flex-wrap: wrap;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  color: var(--student-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.student-room-amenities li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.student-room-amenities li::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #aaa098;
+}
+.student-room-action {
+  margin-top: auto;
+  border-top: 1px solid var(--student-border);
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.student-room-action .btn {
+  font-size: 15px;
+  min-height: 46px;
+  padding: 10px 18px;
+}
+.student-room-action small {
+  font-size: 13px;
+  color: var(--student-secondary);
+  line-height: 1.6;
+}
+.student-room-action button:disabled {
+  background: #ece8e2;
+  border-color: #e3ded7;
+  color: #6a6258;
+  opacity: 1;
+  cursor: not-allowed;
+}
+.room-unavailable-reason {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #704c3f;
+  margin: 0 0 18px;
+}
+.student-empty {
+  padding: 40px 24px;
+  text-align: center;
+  border: 1px solid var(--student-border);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--student-secondary);
+}
+.student-empty h2,
+.student-empty h3 {
+  font-size: 20px;
+  color: var(--student-text);
+  margin: 16px 0 8px;
+}
+.student-empty p {
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 60ch;
+  margin: 0 auto 20px;
+}
+.student-empty > div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.student-empty .btn {
+  font-size: 15px;
+}
+.student-booking-guide {
+  border-top: 1px solid var(--student-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  padding-top: 24px;
+  color: var(--student-secondary);
+  font-size: 14px;
+}
+.student-booking-guide strong {
+  font-size: 14px;
+  color: var(--student-text);
+  font-weight: 500;
+}
+.student-booking-guide ol {
+  display: flex;
+  gap: 26px;
+  flex-wrap: wrap;
+  padding-left: 22px;
+  margin: 0;
+  line-height: 1.8;
+}
+.student-booking-guide a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: var(--primary);
+}
+.student-warning {
+  border: 1px solid #dfcba5;
+  background: #fff7e8;
+  padding: 18px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  color: #6b4813;
+}
+.student-warning strong {
+  font-size: 15px;
+}
+.student-warning p {
+  font-size: 14px;
+  line-height: 1.7;
+  margin-top: 5px;
+}
+.student-warning a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  min-height: 44px;
+}
+.demo-settings {
+  border-top: 1px solid var(--student-border);
+  font-size: 13px;
+  color: var(--student-secondary);
+  margin-bottom: 16px;
+}
+.demo-settings > summary {
+  padding: 14px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  min-height: 44px;
+}
+.demo-settings > summary::-webkit-details-marker {
+  display: none;
+}
+.demo-settings > summary > span {
+  margin-left: auto;
+  font-size: 12px;
+}
+.demo-settings .demo-bar {
+  padding: 18px;
+  background: #f4eee4;
+  border: 0;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.demo-settings .demo-bar > label {
+  font-size: 13px;
+  flex-wrap: wrap;
+  white-space: normal;
+}
+.demo-settings .demo-bar select {
+  font-size: 14px;
+  min-height: 44px;
+  max-width: 100%;
+  width: auto;
+}
+.demo-settings .demo-bar strong {
+  font-size: 13px;
+}
+.demo-settings .demo-description {
+  font-size: 12px;
+}
+.demo-settings-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px 0;
+  font-size: 13px;
+}
+.demo-settings-actions > .btn {
+  min-height: 44px;
+}
+.demo-settings-actions > span {
+  margin-right: auto;
+}
+.student-shell .footer {
+  color: var(--student-secondary);
+  font-size: 12px;
+}
+.student-shell .breadcrumb {
+  font-size: 13px;
+  color: var(--student-secondary);
+}
+.student-shell .header-user strong {
+  font-size: 13px;
+}
+.student-shell .header-user small {
+  font-size: 12px;
+  color: var(--student-secondary);
+}
+.student-booking-modal {
+  width: min(660px, calc(100vw - 32px));
+  max-width: 660px;
+  font-family: "IBM Plex Sans Thai", sans-serif;
+}
+.student-booking-modal .modal-header h2 {
+  font-size: 23px;
+}
+.student-booking-modal .modal-header p {
+  font-size: 14px;
+  color: var(--student-secondary);
+  line-height: 1.7;
+}
+.student-booking-modal .booking-room-summary {
+  gap: 14px;
+  padding: 0;
+  margin-bottom: 18px;
+}
+.booking-room-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3eee6;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  color: var(--student-secondary);
+}
+.student-booking-modal .booking-room-summary h3 {
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 0 0 5px;
+}
+.student-booking-modal .room-location,
+.student-booking-modal .room-facts {
+  font-size: 14px;
+  color: var(--student-secondary);
+}
+.booking-reference {
+  font-size: 13px;
+  color: var(--student-secondary);
+  line-height: 1.7;
+  display: block;
+  font-variant-numeric: tabular-nums;
+  margin-top: 6px;
+}
+.student-booking-modal .schedule {
+  font-size: 15px;
+  background: #f6f3ee;
+  padding: 14px 16px;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  color: var(--student-text);
+}
+.student-booking-modal .room-facts {
+  margin: 14px 0;
+}
+.booking-policy-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--student-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 18px 0 24px;
+}
+.booking-policy-note svg {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.booking-essential-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.booking-essential-fields label {
+  margin: 0;
+}
+.purpose-shortcuts {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: -5px;
+}
+.purpose-shortcuts > span {
+  font-size: 12px;
+  color: var(--student-secondary);
+  flex-basis: 100%;
+}
+.purpose-shortcuts button {
+  background: #fff;
+  border: 1px solid #bcb4ab;
+  padding: 6px 11px;
+  border-radius: 7px;
+  min-height: 40px;
+  font-size: 13px;
+  color: var(--student-secondary);
+}
+.purpose-shortcuts button:hover,
+.purpose-shortcuts button[aria-pressed="true"] {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.booking-options {
+  border-top: 1px solid var(--student-border);
+  margin-top: 20px;
+}
+.booking-options > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.booking-options > summary > span {
+  margin-left: auto;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--student-secondary);
+}
+.booking-options > p {
+  font-size: 13px;
+  color: var(--student-secondary);
+  line-height: 1.7;
+}
+.booking-options fieldset {
+  margin: 10px 0;
+}
+.student-booking-modal .equipment-choice strong {
+  font-size: 14px;
+  color: var(--student-text);
+}
+.student-booking-modal .equipment-choice small {
+  font-size: 13px;
+  color: var(--student-secondary);
+}
+.student-booking-modal .participant-choices .checkbox-label {
+  font-size: 14px;
+  min-height: 44px;
+}
+.student-booking-modal .form-error {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #962d1b;
+}
+.student-booking-modal .modal-actions {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding: 16px 0 12px;
+  border-top: 1px solid var(--student-border);
+  margin-top: 22px;
+  z-index: 1;
+}
+.student-booking-modal .modal-actions .btn {
+  font-size: 15px;
+}
+.student-booking-modal .booking-success {
+  padding-top: 14px;
+}
+.student-booking-modal .booking-success h2 {
+  font-size: 23px;
+}
+.student-booking-modal .booking-success p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--student-secondary);
+}
+.booking-success-room {
+  display: block;
+  font-size: 18px;
+  margin: 20px 0 4px;
+}
+.booking-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.booking-page-heading .btn {
+  font-size: 15px;
+  min-height: 44px;
+}
+.student-checkin-reminder {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #c9d7c7;
+  background: #f2f6ef;
+  border-radius: 10px;
+  padding: 16px;
+  color: #33552e;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 24px;
+}
+.student-checkin-reminder svg {
+  flex-shrink: 0;
+}
+.student-booking-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.student-booking-tabs button {
+  border: 1px solid var(--student-border);
+  background: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  padding: 10px 16px;
+  color: var(--student-secondary);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.student-booking-tabs button.selected {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 500;
+}
+.student-booking-tabs button:hover {
+  border-color: var(--primary);
+}
+.student-booking-tabs button > span {
+  font-size: 12px;
+  min-width: 18px;
+  text-align: center;
+}
+.student-booking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.student-booking-card {
+  border: 1px solid var(--student-border);
+  border-radius: 14px;
+  background: #fff;
+  padding: 24px;
+  min-width: 0;
+}
+.student-booking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.student-booking-card-header h2 {
+  font-size: 20px;
+  line-height: 1.5;
+  margin-bottom: 5px;
+  overflow-wrap: anywhere;
+}
+.student-booking-card .badge {
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  line-height: 1.5;
+}
+.student-booking-time {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin: 18px 0 14px;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.student-booking-time > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.student-booking-purpose {
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.booking-next-step {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--student-secondary);
+  margin-top: 12px;
+}
+.student-booking-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--student-border);
+  padding-top: 18px;
+  margin-top: 20px;
+}
+.student-booking-actions > div {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.student-booking-actions .text-button,
+.student-booking-actions .btn {
+  font-size: 14px;
+  min-height: 44px;
+}
+.booking-cancel-hint {
+  font-size: 13px;
+  color: var(--student-secondary);
+  line-height: 1.7;
+  margin-top: 10px;
+}
+@media (max-width: 1150px) {
+  .rooms-main-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .student-room-grid {
+    grid-template-columns: 1fr;
+  }
+  .student-room-action {
+    flex-wrap: nowrap;
+  }
+}
+@media (max-width: 700px) {
+  .student-shell .workspace main {
+    padding: 22px 16px;
+  }
+  .student-shell .topbar {
+    height: 64px;
+    padding: 0 12px;
+  }
+  .prototype-label {
+    display: none;
+  }
+  .student-page-heading h1 {
+    font-size: 25px;
+  }
+  .student-page-heading p {
+    font-size: 14px;
+  }
+  .rooms-main-fields {
+    gap: 14px 12px;
+    padding: 20px 16px 14px;
+  }
+  .rooms-main-fields > label:first-child {
+    grid-column: 1/-1;
+  }
+  .rooms-main-fields > label:last-child {
+    grid-column: 1/-1;
+  }
+  .rooms-search-meta {
+    padding: 0 16px 16px;
+  }
+  .rooms-extra-filters > summary {
+    padding: 14px 16px;
+  }
+  .rooms-extra-filters .optional-copy {
+    display: none;
+  }
+  .rooms-extra-fields {
+    grid-template-columns: 1fr;
+    padding: 2px 16px 20px;
+  }
+  .rooms-extra-filters > .text-button {
+    margin-left: 16px;
+  }
+  .rooms-results-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    margin: 24px 0 14px;
+  }
+  .rooms-results-heading h2 {
+    font-size: 20px;
+  }
+  .rooms-results-heading p {
+    font-size: 14px;
+  }
+  .availability-toggle {
+    font-size: 14px !important;
+  }
+  .student-room-card {
+    padding: 20px;
+  }
+  .student-room-card h3 {
+    font-size: 19px;
+  }
+  .student-room-action {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .student-room-action .btn {
+    width: 100%;
+  }
+  .student-room-action small {
+    text-align: center;
+    width: 100%;
+  }
+  .student-room-amenities {
+    margin-bottom: 20px;
+  }
+  .student-booking-guide {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .student-booking-guide ol {
+    display: block;
+  }
+  .student-booking-guide li + li {
+    margin-top: 6px;
+  }
+  .student-warning {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+  .student-empty {
+    padding: 30px 18px;
+  }
+  .booking-page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .student-booking-tabs {
+    gap: 7px;
+  }
+  .student-booking-tabs button {
+    padding: 9px 11px;
+    font-size: 13px;
+  }
+  .student-booking-card {
+    padding: 20px 16px;
+  }
+  .student-booking-card-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .student-booking-card-header h2 {
+    font-size: 19px;
+  }
+  .student-booking-time {
+    font-size: 14px;
+    gap: 8px 16px;
+  }
+  .student-booking-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .student-booking-actions > div {
+    display: flex;
+    flex-direction: column;
+  }
+  .student-booking-actions .btn {
+    width: 100%;
+  }
+  .student-booking-actions .text-button {
+    align-self: flex-start;
+  }
+  .student-booking-modal {
+    width: calc(100vw - 24px);
+    max-height: 94vh;
+  }
+  .student-booking-modal .modal-inner {
+    padding: 22px 18px;
+  }
+  .student-booking-modal .modal-header h2 {
+    font-size: 21px;
+  }
+  .student-booking-modal .booking-room-summary h3 {
+    font-size: 18px;
+  }
+  .student-booking-modal .booking-room-summary {
+    align-items: flex-start;
+  }
+  .student-booking-modal .schedule {
+    font-size: 14px;
+    padding: 12px;
+    gap: 10px;
+  }
+  .student-booking-modal .modal-actions {
+    bottom: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    padding-bottom: 12px;
+  }
+  .student-booking-modal .modal-actions .btn {
+    width: 100%;
+  }
+  .demo-settings .demo-bar > span {
+    flex-wrap: wrap;
+  }
+  .demo-settings .demo-description {
+    border: 0;
+    padding: 0;
+  }
+  .demo-settings .demo-bar > label {
+    font-size: 13px;
+  }
+  .demo-settings .demo-bar select {
+    width: 100%;
+    max-width: 100%;
+    font-size: 14px;
+  }
+  .demo-settings-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rooms-extra-filters > summary > svg:last-child {
+    transition: none;
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "kku-room-booking-prototype",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "apps/web",
+    "apps/backend"
+  ],
+  "scripts": {
+    "check:connections": "node --env-file-if-exists=.env --env-file-if-exists=.env.connection --import tsx scripts/check-connections.ts",
+    "dev": "npm run dev --workspace apps/web",
+    "build": "npm run build --workspace apps/web && npm run build --workspace apps/backend",
+    "dev:api": "npm run dev --workspace apps/backend",
+    "start": "npm run start --workspace apps/backend",
+    "worker": "npm run worker --workspace apps/backend",
+    "test:backend": "tsx --tsconfig apps/backend/tsconfig.json --test tests/backend/*.test.ts",
+    "preview": "npm run preview --workspace apps/web",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@types/node": "^24.0.0",
+    "prettier": "^3.9.9",
+    "tsx": "^4.20.0"
+  },
+  "overrides": {
+    "esbuild": "0.28.1"
+  }
+}

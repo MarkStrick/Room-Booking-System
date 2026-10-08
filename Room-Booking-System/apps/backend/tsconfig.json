@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
+    "types": ["node"]
+  },
+  "include": ["src", "../../packages/core/src", "../../packages/contracts/src"]
+}
