@@ -8,7 +8,7 @@ for (const item of await readdir(output, { withFileTypes: true })) {
   if (item.isFile()) await unlink(new URL(item.name, output));
 }
 await build({
-  entryPoints: ['src/main.ts', 'src/worker.ts'],
+  entryPoints: { main: 'src/start.ts', worker: 'src/worker.ts', vercel: 'src/vercel.ts' },
   outdir: 'dist',
   bundle: true,
   packages: 'external',

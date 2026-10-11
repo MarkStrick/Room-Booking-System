@@ -5,6 +5,7 @@ export function projectState(state:AppState,user:User):AppState {
  const bookingIds = new Set(authorized.map(b=>b.id));
  const users = new Set([user.id,...authorized.flatMap(b=>[b.userId,...b.participants])]);
  return {...state,
+  settings:state.settings ? {...state.settings,workerAt:user.role==='ADMIN'?state.settings.workerAt:undefined}:undefined,
   users:state.users.filter(u=>user.role==='ADMIN'||users.has(u.id)).map(u=>u.id===user.id||user.role==='ADMIN'?u:{...u,email:'',phone:'',affiliation:''}),
   bookings:state.bookings.filter(b=>bookingIds.has(b.id)||activeStatuses.includes(b.status)).map(b=>bookingIds.has(b.id)?b:{id:b.id,ref:'',userId:0,roomId:b.roomId,start:b.start,end:b.end,status:b.status,purpose:'',attendees:0,participants:[],equipment:[],createdAt:''}),
   notices:state.notices.filter(n=>user.role==='ADMIN'||n.userId===user.id),

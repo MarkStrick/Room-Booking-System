@@ -1,6 +1,6 @@
 .session-page {
  min-height:100dvh;display:grid;place-items:center;padding:40px 20px;background:#f8f7f4;color:#302c29;
- font-family:"IBM Plex Sans Thai",sans-serif;
+ font-family:"Sarabun","Noto Sans Thai","Inter",system-ui,sans-serif;
 }
 .session-content {width:100%;max-width:480px;}
 .session-content .brand {margin-bottom:48px;}
@@ -31,8 +31,7 @@
 .university-brand img {width:40px;height:auto;flex-shrink:0;object-fit:contain;}
 .university-brand {gap:14px;}
 .university-brand small {font-size:11px;letter-spacing:0;line-height:1.7;max-width:150px;}
-@font-face {font-family:"MorKhor";src:url('/fonts/MorKhor1.ttf') format('truetype');font-display:swap;font-weight:400;font-style:normal;}
-.student-page-heading h1,.session-content h1 {font-family:"MorKhor","IBM Plex Sans Thai",sans-serif;font-weight:400;}
+.student-page-heading h1,.session-content h1 {font-family:"Sarabun","Noto Sans Thai","Inter",system-ui,sans-serif;font-weight:700;}
 .session-content .university-brand img {width:48px;}
 .session-content .university-brand small {max-width:none;font-size:13px;}
 .password-login {margin-top:32px;}
@@ -58,3 +57,13 @@
 .password-login .session-google {margin-top:20px;}
 .password-login input:focus-visible,.password-settings input:focus-visible {outline:2px solid #a73b24;outline-offset:3px;}
 @media(max-width:700px){.session-page{padding:28px 20px;}.session-content .brand{margin-bottom:28px;}.password-login{margin-top:24px;}.password-settings{padding:20px;}}
+.sandbox-banner {position:sticky;z-index:40;justify-content:space-between;flex-wrap:wrap;min-height:68px;}
+.sandbox-frame .sidebar {top:68px;}
+@media(max-width:700px){.sandbox-banner{min-height:144px;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;}.sandbox-frame .sidebar{top:144px;}}
+.readiness-panel {padding:24px;}
+.readiness-panel>p,.readiness-list p {color:#655d55;font-size:15px;line-height:1.8;overflow-wrap:anywhere;}
+.readiness-panel .holiday-actions {flex-wrap:wrap;margin:20px 0;}
+.readiness-list {padding:0;margin:20px 0;list-style:none;}
+.readiness-list li {padding:16px 0;border-bottom:1px solid #e3ded7;}
+.readiness-list li>div {display:flex;gap:12px;justify-content:space-between;align-items:center;}
+.readiness-list p {margin:8px 0 0;}

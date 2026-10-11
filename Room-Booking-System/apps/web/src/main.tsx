@@ -1,14 +1,18 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./app/App";
+import { ReferenceApp as App } from "./reference/ReferenceApp";
 import { DemoProvider } from "./app/DemoProvider";
+import { AppErrorBoundary } from './components/AppErrorBoundary';
 import "./styles.css";
 import "./student.css";
 import "./server.css";
+import "./integrated-ui.css";
+import "./reference/reference.css";
+import "./reference/desktop.css";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <DemoProvider>
+    <AppErrorBoundary><DemoProvider>
       <App />
-    </DemoProvider>
+    </DemoProvider></AppErrorBoundary>
   </StrictMode>,
 );

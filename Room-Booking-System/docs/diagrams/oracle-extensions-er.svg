@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2640" height="2580" viewBox="0 0 2640 2580">
+<rect width="100%" height="100%" fill="#F7F9FC"/>
+<text x="70" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="38" font-weight="700" fill="#20354D">KKU SPACE / Oracle extensions ER</text>
+<text x="70" y="123" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="400" fill="#63738A">12 added tables | 30 total Oracle tables including migration journal | SQL source model only</text>
+<text x="70" y="161" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#63738A">SOLID: FK   |   DASHED: JSON / APPLICATION   |   PURPLE: EMBEDDED   |   GRAY: LEGACY</text>
+<polyline points="2280.0,347 2280.0,720" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="2274.2468935367497,709.4690092573155 2280.0,720 2285.7531064632503,709.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="570,293.5 594,293.5 594,690 2006,690 2006,843.5 2030,843.5" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="2019.4690092573155,849.2531064632504 2030,843.5 2019.4690092573155,837.7468935367496" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="960.0,347 960.0,371 680,371 680,1246 960.0,1246 960.0,1270" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="954.2468935367496,1259.4690092573155 960.0,1270 965.7531064632504,1259.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="320.0,347 320.0,371 680,371 680,1246 960.0,1246 960.0,1270" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="954.2468935367496,1259.4690092573155 960.0,1270 965.7531064632504,1259.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="570,293.5 594,293.5 594,829.5 710,829.5" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="699.4690092573155,835.2531064632504 710,829.5 699.4690092573155,823.7468935367496" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="320.0,347 320.0,720" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="314.24689353674955,709.4690092573155 320.0,720 325.75310646325045,709.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="320.0,347 320.0,371 40,371 40,1846 320.0,1846 320.0,1870" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="314.24689353674955,1859.4690092573155 320.0,1870 325.75310646325045,1859.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="320.0,347 320.0,371 40,371 40,1246 320.0,1246 320.0,1270" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="314.24689353674955,1259.4690092573155 320.0,1270 325.75310646325045,1259.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="2280.0,347 2280.0,371 2000,371 2000,1246 2280.0,1246 2280.0,1270" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="2274.2468935367497,1259.4690092573155 2280.0,1270 2285.7531064632503,1259.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="570,293.5 594,293.5 594,1240 2006,1240 2006,1407.5 2030,1407.5" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="2019.4690092573155,1413.2531064632503 2030,1407.5 2019.4690092573155,1401.7468935367497" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="570,293.5 594,293.5 594,1240 1326,1240 1326,1379.5 1350,1379.5" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="1339.4690092573155,1385.2531064632503 1350,1379.5 1339.4690092573155,1373.7468935367497" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="1600.0,347 1600.0,720" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="1594.2468935367497,709.4690092573155 1600.0,720 1605.7531064632503,709.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<rect x="73" y="245" width="500" height="107" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="240" width="500" height="107" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="70" y="240" width="500" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="88" y="271" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">users</text>
+<text x="88" y="305" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">CORE REF / PAGE 04</text>
+<text x="88" y="337" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">PK user_id</text>
+<rect x="2033" y="245" width="500" height="107" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="2030" y="240" width="500" height="107" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="2030" y="240" width="500" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="2048" y="271" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">room</text>
+<text x="2048" y="305" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">CORE REF / PAGE 04</text>
+<text x="2048" y="337" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">PK room_id</text>
+<rect x="713" y="245" width="500" height="107" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="710" y="240" width="500" height="107" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="710" y="240" width="500" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="728" y="271" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">booking</text>
+<text x="728" y="305" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">CORE REF / PAGE 04</text>
+<text x="728" y="337" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">PK booking_id</text>
+<rect x="1353" y="245" width="500" height="107" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1350" y="240" width="500" height="107" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="1350" y="240" width="500" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="1368" y="271" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">booking_equipment</text>
+<text x="1368" y="305" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">CORE REF / PAGE 04</text>
+<text x="1368" y="337" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">PK booking_booking_id, equipment_equipment_id</text>
+<rect x="73" y="725" width="500" height="163" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="720" width="500" height="163" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="70" y="720" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="88" y="751" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">login_identity</text>
+<text x="88" y="785" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="88" y="815" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK provider: VARCHAR2(20)</text>
+<text x="88" y="843" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK subject: VARCHAR2(255)</text>
+<text x="88" y="871" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK user_id: NUMBER(10)</text>
+<rect x="713" y="725" width="500" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="710" y="720" width="500" height="219" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="710" y="720" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="728" y="751" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">command_attempt</text>
+<text x="728" y="785" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="728" y="815" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK actor_user_id: NUMBER(10)</text>
+<text x="728" y="843" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK request_key: VARCHAR2(100)</text>
+<text x="728" y="871" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   request_hash: VARCHAR2(64)</text>
+<text x="728" y="899" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   result_json: CLOB ?</text>
+<text x="728" y="927" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   created_at: TS</text>
+<rect x="1353" y="725" width="500" height="275" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1350" y="720" width="500" height="275" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="1350" y="720" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="1368" y="751" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">stock_movement</text>
+<text x="1368" y="785" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="1368" y="815" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK movement_id: NUMBER(10)</text>
+<text x="1368" y="843" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK booking_id: NUMBER(10)</text>
+<text x="1368" y="871" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK equipment_id: NUMBER(10)</text>
+<text x="1368" y="899" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   movement_type: VARCHAR2(10)</text>
+<text x="1368" y="927" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   quantity: NUMBER(5)</text>
+<text x="1368" y="955" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   source_event_key: VARCHAR2(150)</text>
+<text x="1368" y="983" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   occurred_at: TS</text>
+<rect x="2033" y="725" width="500" height="247" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="2030" y="720" width="500" height="247" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="2030" y="720" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="2048" y="751" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">room_closure</text>
+<text x="2048" y="785" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="2048" y="815" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK closure_id: NUMBER(10)</text>
+<text x="2048" y="843" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK room_id: NUMBER(10)</text>
+<text x="2048" y="871" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   start_at: TS</text>
+<text x="2048" y="899" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   end_at: TS</text>
+<text x="2048" y="927" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   reason: VARCHAR2(500)</text>
+<text x="2048" y="955" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK actor_user_id: NUMBER(10)</text>
+<rect x="73" y="1275" width="500" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="1270" width="500" height="191" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="70" y="1270" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="88" y="1301" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">login_session</text>
+<text x="88" y="1335" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="88" y="1365" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK token_hash: VARCHAR2(64)</text>
+<text x="88" y="1393" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK user_id: NUMBER(10)</text>
+<text x="88" y="1421" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   csrf_hash: VARCHAR2(64)</text>
+<text x="88" y="1449" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   expires_at: TS</text>
+<rect x="713" y="1275" width="500" height="247" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="710" y="1270" width="500" height="247" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="710" y="1270" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="728" y="1301" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">booking_violation</text>
+<text x="728" y="1335" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="728" y="1365" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK violation_id: NUMBER(10)</text>
+<text x="728" y="1393" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK booking_id: NUMBER(10)</text>
+<text x="728" y="1421" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK affected_user_id: NUMBER(10)</text>
+<text x="728" y="1449" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   violation_type: VARCHAR2(20)</text>
+<text x="728" y="1477" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   occurred_at: TS</text>
+<text x="728" y="1505" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   source_event_key: VARCHAR2(150)</text>
+<rect x="1353" y="1275" width="500" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1350" y="1270" width="500" height="219" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="1350" y="1270" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="1368" y="1301" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">help_message</text>
+<text x="1368" y="1335" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="1368" y="1365" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK message_id: NUMBER(10)</text>
+<text x="1368" y="1393" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK user_id: NUMBER(10)</text>
+<text x="1368" y="1421" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   question: VARCHAR2(1000)</text>
+<text x="1368" y="1449" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   answer: VARCHAR2(2000) ?</text>
+<text x="1368" y="1477" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   created_at: TS</text>
+<rect x="2033" y="1275" width="500" height="275" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="2030" y="1270" width="500" height="275" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="2030" y="1270" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="2048" y="1301" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">room_inspection</text>
+<text x="2048" y="1335" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="2048" y="1365" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK inspection_id: NUMBER(10)</text>
+<text x="2048" y="1393" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK room_id: NUMBER(10)</text>
+<text x="2048" y="1421" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">FK actor_user_id: NUMBER(10)</text>
+<text x="2048" y="1449" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   inspected_at: TS</text>
+<text x="2048" y="1477" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   condition: VARCHAR2(100)</text>
+<text x="2048" y="1505" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   note: VARCHAR2(1000) ?</text>
+<text x="2048" y="1533" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   items_json: CLOB ?</text>
+<rect x="73" y="1875" width="500" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="1870" width="500" height="219" fill="#F1F3F6" stroke="#626C79" stroke-width="1"/>
+<rect x="70" y="1870" width="500" height="45" fill="#626C79" stroke="none" stroke-width="1"/>
+<text x="88" y="1901" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">login_credential</text>
+<text x="88" y="1935" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#626C79">ADDED ORACLE TABLE</text>
+<text x="88" y="1965" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK user_id: NUMBER(10)</text>
+<text x="88" y="1993" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   password_hash: VARCHAR2(512)</text>
+<text x="88" y="2021" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   failed_attempts: NUMBER(5)</text>
+<text x="88" y="2049" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   locked_until: TS ?</text>
+<text x="88" y="2077" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   updated_at: TS</text>
+<rect x="713" y="1875" width="500" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="710" y="1870" width="500" height="191" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="710" y="1870" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="728" y="1901" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">help_faq</text>
+<text x="728" y="1935" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="728" y="1965" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK faq_id: NUMBER(10)</text>
+<text x="728" y="1993" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   question: VARCHAR2(300)</text>
+<text x="728" y="2021" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   answer: VARCHAR2(2000)</text>
+<text x="728" y="2049" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   is_active: NUMBER(1)</text>
+<rect x="1353" y="1875" width="500" height="107" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1350" y="1870" width="500" height="107" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="1350" y="1870" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="1368" y="1901" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">kku_app_lock</text>
+<text x="1368" y="1935" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="1368" y="1965" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK id: NUMBER(1)</text>
+<rect x="2033" y="1875" width="500" height="163" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="2030" y="1870" width="500" height="163" fill="#FBF0F3" stroke="#733E4C" stroke-width="1"/>
+<rect x="2030" y="1870" width="500" height="45" fill="#733E4C" stroke="none" stroke-width="1"/>
+<text x="2048" y="1901" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">kku_schema_migration</text>
+<text x="2048" y="1935" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#733E4C">ADDED ORACLE TABLE</text>
+<text x="2048" y="1965" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">PK name: VARCHAR2(100)</text>
+<text x="2048" y="1993" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   status: VARCHAR2(10)</text>
+<text x="2048" y="2021" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#20354D">   applied_at: TS ?</text>
+<rect x="2287.0" y="593.0999999999999" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="2297.0" y="613.0999999999999" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="1549.9" y="675.0" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1559.9" y="695.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="687.0" y="968.5" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="697.0" y="988.5" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="687.0" y="618.5" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="697.0" y="638.5" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="601.0" y="653.7" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="611.0" y="673.7" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="327.0" y="593.0999999999999" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="337.0" y="613.0999999999999" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="47.0" y="1093.5" width="67.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="57.0" y="1113.5" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..1</text>
+<rect x="47.0" y="968.5" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="57.0" y="988.5" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="2007.0" y="618.5" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="2017.0" y="638.5" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="1549.9" y="1225.0" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1559.9" y="1245.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="601.0" y="941.05" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="611.0" y="961.05" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<rect x="1607.0" y="593.0999999999999" width="65.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1617.0" y="613.0999999999999" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..*</text>
+<text x="70" y="2475" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">Outlined CORE REF cards point to original tables on page 04; they are not additional tables.</text>
+<text x="70" y="2506" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">Oracle notification stores delivery queue fields itself. PostgreSQL uses separate notices and outbox tables.</text>
+<text x="70" y="2537" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">Legacy login_credential remains in the Oracle design. Current application uses PostgreSQL + Google login.</text>
+<text x="2460" y="2563" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">05 / 05</text>
+</svg>

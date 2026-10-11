@@ -19,37 +19,25 @@ test('Argon2id uses a unique salt, verifies Unicode and never returns plaintext'
  assert.deepEqual(Object.fromEntries(fields[3].split(',').map(pair=>pair.split('='))),{m:'65536',t:'3',p:'1'});assert.notEqual(a,b);assert.ok(!a.includes(value));
  assert.equal(await verifyPassword(a,value),true);assert.equal(await verifyPassword(a,'incorrect'),false);assert.equal(await verifyPassword('broken',value),false);
 });
-test('password HTTP login has CSRF, hash isolation, durable lockout, session revocation and password change',async()=>{
+test('Google-only HTTP surface disables every password entry point without changing stored accounts',async()=>{
  const initial=emptyData();initial.state.users.push({id:1,email:'login@example.com',name:'Test user',role:'USER',active:true,phone:'',affiliation:''});
  initial.credentials.push({userId:1,passwordHash:await hashPassword(password),failedAttempts:0,updatedAt:new Date().toISOString()});
  const store=new SqliteStore(':memory:',initial),app=await createApplication(store,readConfig({APP_ORIGIN:origin}));
  await app.listen(0,'127.0.0.1');const base=await app.getUrl();
- const call=(path:string,body:unknown,headers:Record<string,string>={})=>fetch(`${base}/api${path}`,{method:'POST',headers:{origin,'content-type':'application/json',...headers},body:JSON.stringify(body)});
- const login=(pass=password,mail='login@example.com')=>call('/auth/password/login',{email:mail,password:pass});
  try {
-  assert.equal((await call('/auth/password/login',{email:'login@example.com',password},{origin:'https://other.example'})).status,403);
-  const unknown=await login('wrong','missing@example.com'),incorrect=await login('wrong');
-  assert.equal(unknown.status,401);assert.deepEqual(await unknown.json(),await incorrect.json());
-  const response=await login();assert.equal(response.status,201);
-  const session=await response.json(),cookie=response.headers.get('set-cookie')!.split(';')[0];
-  assert.equal(session.hasPassword,true);assert.ok(!JSON.stringify(session).includes('passwordHash'));assert.ok(!JSON.stringify(session).includes('$argon2id$'));
-  const body={password:changed,currentPassword:password};
-  assert.equal((await call('/auth/password/set',body,{cookie})).status,403);
-  assert.equal((await call('/auth/password/set',{...body,currentPassword:'wrong'},{cookie,'x-csrf-token':session.csrfToken})).status,401);
-  const change=await call('/auth/password/set',body,{cookie,'x-csrf-token':session.csrfToken});assert.equal(change.status,201);
-  assert.equal((await fetch(`${base}/api/session`,{headers:{cookie}})).status,401);
-  assert.equal((await login()).status,401);assert.equal((await login(changed)).status,201);
-  for(let i=0;i<5;i++)assert.equal((await login('wrong')).status,401);
-  assert.ok((await store.read()).credentials[0].lockedUntil);assert.equal((await login(changed)).status,401);
-  await store.transaction(d=>{d.credentials[0].lockedUntil=new Date(Date.now()-1000).toISOString();});
-  assert.equal((await login(changed)).status,201);
-  await store.transaction(d=>{d.state.users[0].active=false;});
-  assert.equal((await login(changed)).status,401);
+  const before=await store.read();
+  const config=await (await fetch(base+'/api/config')).json();assert.equal(config.passwordReady,false);assert.equal(config.registrationReady,false);
+  for(const path of ['login','register','confirm','request-reset','reset','set']) {
+   const response=await fetch(base+'/api/auth/password/'+path,{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify({email:'login@example.com',password,token:'legacy-token'})});
+   assert.equal(response.status,404);assert.equal(response.headers.get('set-cookie'),null);
+  }
+  assert.deepEqual(await store.read(),before);
+  assert.equal((await fetch(base+'/api/auth/google',{redirect:'manual'})).status,503);
  }finally{await app.close();await store.close();}
 });
 test('self enrollment verifies one-use email tokens, reset revokes sessions, mail failure cannot activate accounts',async()=>{
  const store=new SqliteStore(':memory:');const messages:string[]=[];
- const c=readConfig({APP_ORIGIN:origin,SMTP_HOST:'test-mail',MAIL_FROM:'test@example.com'});
+ const c=readConfig({APP_ORIGIN:origin,SMTP_HOST:'test-mail',MAIL_FROM:'test@example.com',ALLOW_PUBLIC_GOOGLE:'1'});
  const auth=new PasswordAuth(store,c,async(_to,_subject,content)=>{messages.push(content);});
  const req={headers:{origin}} as Request;
  function lastToken(){return messages.at(-1)!.match(/token=([A-Za-z0-9_-]{43})/)![1];}
@@ -77,7 +65,7 @@ test('self enrollment verifies one-use email tokens, reset revokes sessions, mai
  }finally{await store.close();}
 });
 test('Google accepts verified emails on any domain; public signup cannot choose roles',()=>{
- const c=readConfig({}),d=emptyData(),now=new Date().toISOString();
+ const c=readConfig({ALLOW_PUBLIC_GOOGLE:'1'}),d=emptyData(),now=new Date().toISOString();
  const user=linkGoogle(d,{sub:'public-google-user',email:'public@example.com',email_verified:true},c,now);assert.equal(user.role,'USER');
  assert.throws(()=>linkGoogle(d,{sub:'unverified',email:'another@example.com',email_verified:false},c,now));
 });

@@ -1,13 +1,14 @@
 import type { AppState, Command, User } from '../../../../packages/contracts/src/index';
 export interface Session {user:User;csrfToken:string;state:AppState;hasPassword?:boolean}
-export interface PublicConfig {googleReady:boolean;passwordReady:boolean;registrationReady:boolean;devLogin:boolean;allowedDomains:string[]}
+export interface PublicConfig {googleReady:boolean;passwordReady:boolean;registrationReady:boolean;allowedDomains:string[]}
 export class ApiError extends Error {constructor(message:string,public status:number){super(message);}}
 export async function request<T>(path:string,options:RequestInit={}):Promise<T> {
  let response:Response;
- try{response=await fetch(`/api${path}`,{...options,credentials:'same-origin',headers:{'content-type':'application/json',...options.headers}});}
- catch(e){if((e as Error).name==='AbortError')throw e;throw new ApiError('เชื่อมต่อระบบไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่',0);}
+ try{response=await fetch(`/api${path}`,{...options,signal:options.signal??AbortSignal.timeout(25000),credentials:'same-origin',headers:{'content-type':'application/json',...options.headers}});}
+ catch(e){if((e as Error).name==='AbortError')throw e;throw new ApiError((e as Error).name==='TimeoutError'?'ระบบตอบกลับช้า กรุณาลองอีกครั้ง':'เชื่อมต่อระบบไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่',0);}
  const body=await response.json().catch(()=>null);
- if(!response.ok)throw new ApiError(typeof body?.message==='string'?body.message:'ไม่สามารถทำรายการได้ในขณะนี้ กรุณาลองอีกครั้ง',response.status);
+ if(!response.ok)throw new ApiError(typeof body?.message==='string'?body.message:response.status===429?'ทำรายการถี่เกินไป กรุณารอสักครู่แล้วลองใหม่':'ไม่สามารถทำรายการได้ในขณะนี้ กรุณาลองอีกครั้ง',response.status);
+ if(body===null)throw new ApiError('ระบบส่งข้อมูลกลับไม่ครบ กรุณาลองอีกครั้ง',502);
  return body as T;
 }
 export async function sendCommand(command:Command,csrf:string) {

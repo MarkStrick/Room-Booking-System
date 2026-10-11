@@ -1,6 +1,6 @@
 /* KKU red-earth primary follows https://www.kku.ac.th/en/about/emblem. */
 :root {
-  font-family: "Inter", "IBM Plex Sans Thai", sans-serif;
+  font-family: "Sarabun", "Noto Sans Thai", "Inter", system-ui, sans-serif;
   color: #302c29;
   background: #f8f7f4;
   font-synthesis: none;
@@ -56,7 +56,7 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: "IBM Plex Sans Thai", "Inter", sans-serif;
+  font-family: "Sarabun", "Noto Sans Thai", "Inter", system-ui, sans-serif;
   letter-spacing: -0.02em;
 }
 h1 {
@@ -3401,3 +3401,19 @@ tbody tr:hover {
     display: none;
   }
 }
+/* Holiday controls follow the existing administrative list layout. */
+.holiday-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.holiday-panel > .subtle { padding: 20px 24px; }
+.holiday-panel .section-heading, .holiday-row { flex-wrap: wrap; }
+.room-photo { object-fit: cover; width: 100%; aspect-ratio: 2 / 1; }
+.asset-editor { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 12px; align-items: end; margin-bottom: 16px; }
+.operations-note { padding: 20px 24px; }
+.handover-row { align-items: flex-start; flex-wrap: wrap; }
+.handover-item { display: grid; gap: 12px; max-width: 100%; }
+.handover-item input { max-width: 120px; }
+.help-settings > summary { padding: 20px 24px; cursor: pointer; font-weight: 600; }
+.help-settings > form { display: grid; gap: 20px; padding: 24px; }
+.help-settings fieldset { display: grid; gap: 12px; }
+.public-catalog { width: min(1200px, 100%); margin: auto; padding: 24px; }
+.public-catalog > header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 32px; }
+@media(max-width:600px) { .asset-editor { grid-template-columns: 1fr 1fr; } .asset-editor > label:first-child { grid-column: 1 / -1; } }

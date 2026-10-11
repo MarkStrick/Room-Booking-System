@@ -1,0 +1,14 @@
+{
+  "name": "Booking Room KKU UI Import",
+  "id": "booking-room-kku-ui-import",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": [
+    "figma"
+  ],
+  "networkAccess": {
+    "allowedDomains": [
+      "none"
+    ]
+  }
+}

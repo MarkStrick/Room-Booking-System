@@ -1,7 +1,7 @@
 import type { AppState } from '../../../../packages/contracts/src/index';
 export interface SessionRecord {hash:string;userId:number;csrf:string;expiresAt:string}
 export interface Identity {subject:string;userId:number}
-export interface Attempt {key:string;actorId:number;hash:string;bookingId?:number;at:string}
+export interface Attempt {key:string;actorId:number;hash:string;bookingId?:number;at:string;rejection?:{code:string;message:string};rateCount?:number;rateUntil?:string}
 export interface Outbox {noticeId:number;status:'QUEUED'|'SENDING'|'SENT'|'FAILED';attempts:number;nextAt:string;leaseUntil?:string;leaseToken?:string;sentAt?:string;error?:string}
 export interface AuthFlow {hash:string;verifier:string;state:string;nonce:string;expiresAt:string}
 export interface PasswordCredential {userId:number;passwordHash:string;updatedAt:string;failedAttempts:number;lockedUntil?:string}

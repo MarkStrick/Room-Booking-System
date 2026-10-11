@@ -1,5 +1,19 @@
 # ผลเชื่อมต่อ Supabase — 9 ตุลาคม 2569
 
+## สถานะล่าสุด 12 ตุลาคม 2569
+
+ติดตั้ง `sql_security_hardening` แล้ว: runtime `kku_server` ไม่เป็นเจ้าของตาราง มี DML ผ่าน RLS policy เฉพาะ role ทั้ง 23 ตาราง ไม่มี CREATE/TRUNCATE/BYPASSRLS; anon/authenticated เข้า private schema ไม่ได้ constraints validated ครบ และ Security Advisor ไม่มี lints ตรวจการเชื่อมต่อจากเครื่องผ่าน TLS และ schema/permissions แล้ว SMTP ยังรอตั้งค่า ดู [ผล SQL/security](SQL_SECURITY.md) ข้อมูล ownership ด้านล่างเป็นหลักฐานก่อน migration
+
+## สถานะล่าสุด 10 ตุลาคม 2569
+
+ผลด้านล่างเป็นหลักฐานย้อนหลังวันที่ 9 ต.ค. รอบแก้ Audit ตรวจ cloud ผ่าน Supabase MCP ว่า project ACTIVE_HEALTHY และติดตั้ง `audit_settings` สำเร็จ มี 23 ตารางรวม app_lock ตาราง settings เปิด RLS, anon/authenticated ไม่มีสิทธิ์ ส่วน runtime kku_server มีสิทธิ์อ่าน/เขียน
+
+เครือข่ายเครื่องนี้ resolve direct hostname ด้วย system DNS ไม่ได้ (ENOTFOUND); DNS สาธารณะคืน IPv6 แต่ TCP ไป IPv6 เป็น ENETUNREACH จึงยังต่อ API/worker ในเครื่องเข้าฐาน cloud รอบนี้ไม่ได้ ต้องรับ Session pooler endpoint ที่ถูกต้องจากหน้า Connect ตาม [runbook](OPERATIONS_RUNBOOK.md) ไม่เดา hostname หรือแก้ TLS verification
+
+Google OAuth, SMTP/MAIL_FROM และ public HTTPS origin ยังไม่มีค่าบริการจริง การทดสอบ workflow รอบใหม่ใช้ SQLite แยกและ PostgreSQL/PGlite ไม่สร้างบัญชีหรือการจองทดสอบใน cloud ดู [ผลตรวจหลังแก้ทั้งหมด](AUDIT_FIX_VERIFICATION.md)
+
+## หลักฐานวันที่ 9 ตุลาคม 2569
+
 โปรเจกต์ KKU Space ใน MarkStrick's Org ภูมิภาค Singapore (`dvdjnociifxfhqkcqqsr`) ติดตั้งตาราง 22 ตารางใน `kku_private` แล้ว ใช้ PostgreSQL 17 และ migration ผ่าน Supabase MCP
 
 API และ worker ในเครื่องใช้ฐานข้อมูลนี้ผ่าน direct connection และ TLS ที่ตรวจ certificate โดยใช้ CA จากหน้าตั้งค่า Supabase บัญชีฐานข้อมูล `kku_server` เป็นเจ้าของเฉพาะ schema/tables ของแอป ไม่มีสิทธิ์ superuser, สร้างฐานข้อมูล, สร้าง role หรือ replication ไม่ใช้รหัสผ่านหลัก `postgres` ของเจ้าของโปรเจกต์

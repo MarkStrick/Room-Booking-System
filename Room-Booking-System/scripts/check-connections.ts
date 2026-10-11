@@ -25,7 +25,7 @@ if (!configured('DATABASE_URL')) result('Supabase PostgreSQL', false, 'set DATAB
 else {
   let store: PostgresStore | undefined;
   try {
-    store = new PostgresStore({ databaseUrl: env.DATABASE_URL, databaseCa: env.DATABASE_CA_PATH || undefined });
+    store = new PostgresStore({ databaseUrl: env.DATABASE_URL, databaseCa: env.DATABASE_CA_PATH || undefined, databaseCaPem: env.DATABASE_CA_PEM?.replace(/\\n/g,'\n') });
     const client = await store.pool.connect();
     try {
       await client.query('BEGIN READ ONLY');
@@ -36,7 +36,10 @@ else {
           (has_table_privilege(c.oid, 'INSERT') AND has_table_privilege(c.oid, 'UPDATE')
             AND has_table_privilege(c.oid, 'DELETE')) AS writable,
           (r.rolbypassrls OR NOT c.relrowsecurity OR
-            (pg_has_role(current_user, c.relowner, 'USAGE') AND NOT c.relforcerowsecurity)) AS "serverAccess"
+            (pg_has_role(current_user, c.relowner, 'USAGE') AND NOT c.relforcerowsecurity) OR
+            EXISTS (SELECT 1 FROM pg_policies p WHERE p.schemaname=n.nspname AND p.tablename=c.relname
+              AND p.policyname='server_access' AND p.cmd='ALL' AND p.qual='true' AND p.with_check='true'
+              AND current_user='kku_server' AND 'kku_server'=ANY(p.roles))) AS "serverAccess"
         FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
         JOIN pg_roles r ON r.rolname=current_user
         WHERE n.nspname='kku_private' AND c.relkind='r'`);
@@ -44,13 +47,19 @@ else {
       const rows = new Map(schema.rows.map(row => [row.name, row]));
       const missing = expected.filter(name => !rows.has(name));
       const unsafe = tables.filter(name => rows.has(name) && !rows.get(name)!.rls);
-      const inaccessible = expected.filter(name => rows.has(name) && (!rows.get(name)!.readable || !rows.get(name)!.writable || !rows.get(name)!.serverAccess));
+      const inaccessible = expected.filter(name => rows.has(name) && (!rows.get(name)!.readable || (name!=='app_lock'&&!rows.get(name)!.writable) || !rows.get(name)!.serverAccess));
+      const privileges=await client.query<{safe:boolean}>(`SELECT NOT (r.rolsuper OR r.rolcreatedb OR r.rolcreaterole OR r.rolbypassrls
+        OR has_schema_privilege('kku_private','CREATE')
+        OR EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+          WHERE n.nspname='kku_private' AND c.relkind='r' AND (pg_has_role(current_user,c.relowner,'USAGE') OR has_table_privilege(c.oid,'TRUNCATE')))) AS safe
+        FROM pg_roles r WHERE r.rolname=current_user`);
+      result('Database runtime privileges',privileges.rows[0]?.safe===true,'runtime must have DML access without ownership, DDL, TRUNCATE or elevated role flags');
       result('Database TLS', true, 'connected with certificate verification');
       result('Database schema', !missing.length && !unsafe.length && !inaccessible.length,
-        missing.length ? `missing ${missing.length} tables; apply both supabase/migrations scripts` :
+        missing.length ? `missing ${missing.length} tables; apply the supabase/migrations scripts` :
         unsafe.length ? 'application tables missing row level security' :
         inaccessible.length ? 'server database role lacks table permissions or access through RLS' :
-        'all 22 application tables present, application RLS enabled and server table permissions available; booking flow still needs testing');
+        `all ${expected.length} application tables present, application RLS enabled and server table permissions available; booking flow still needs testing`);
     } finally {
       await client.query('ROLLBACK').catch(() => undefined);
       client.release();
@@ -59,7 +68,7 @@ else {
   finally { await store?.close(); }
 }
 
-if (!configured('GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET')) result('Google Login', false, 'set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET for a Web application OAuth client');
+if (!configured('GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET')) result('Google Login', false, 'required: configure a Web application OAuth client; Google is the only sign-in method');
 else {
   try {
     const response = await fetch('https://accounts.google.com/.well-known/openid-configuration', { signal: AbortSignal.timeout(10000) });

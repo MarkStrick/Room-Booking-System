@@ -1,0 +1,1246 @@
+{
+  "rls": [
+    {
+      "table": "app_lock",
+      "enabled": true
+    },
+    {
+      "table": "assignments",
+      "enabled": true
+    },
+    {
+      "table": "attempts",
+      "enabled": true
+    },
+    {
+      "table": "audit",
+      "enabled": true
+    },
+    {
+      "table": "bookings",
+      "enabled": true
+    },
+    {
+      "table": "buildings",
+      "enabled": true
+    },
+    {
+      "table": "closures",
+      "enabled": true
+    },
+    {
+      "table": "credentials",
+      "enabled": true
+    },
+    {
+      "table": "equipment",
+      "enabled": true
+    },
+    {
+      "table": "flows",
+      "enabled": true
+    },
+    {
+      "table": "holidays",
+      "enabled": true
+    },
+    {
+      "table": "identities",
+      "enabled": true
+    },
+    {
+      "table": "inspections",
+      "enabled": true
+    },
+    {
+      "table": "messages",
+      "enabled": true
+    },
+    {
+      "table": "notices",
+      "enabled": true
+    },
+    {
+      "table": "outbox",
+      "enabled": true
+    },
+    {
+      "table": "password_tokens",
+      "enabled": true
+    },
+    {
+      "table": "penalties",
+      "enabled": true
+    },
+    {
+      "table": "rooms",
+      "enabled": true
+    },
+    {
+      "table": "sessions",
+      "enabled": true
+    },
+    {
+      "table": "settings",
+      "enabled": true
+    },
+    {
+      "table": "users",
+      "enabled": true
+    },
+    {
+      "table": "violations",
+      "enabled": true
+    }
+  ],
+  "schema": "kku_private",
+  "columns": [
+    {
+      "data_type": "integer",
+      "table_name": "app_lock",
+      "column_name": "id",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "assignments",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "assignments",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "attempts",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "attempts",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "audit",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "audit",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "bookings",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "bookings",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "bookings",
+      "column_name": "user_key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 3,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "bookings",
+      "column_name": "room_key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 4,
+      "generation_expression": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "bookings",
+      "column_name": "start_at",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 5,
+      "generation_expression": null
+    },
+    {
+      "data_type": "timestamp with time zone",
+      "table_name": "bookings",
+      "column_name": "end_at",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 6,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "bookings",
+      "column_name": "status",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 7,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "buildings",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "buildings",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "closures",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "closures",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "credentials",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "credentials",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "equipment",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "equipment",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "flows",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "flows",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "holidays",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "holidays",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "identities",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "identities",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "inspections",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "inspections",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "messages",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "messages",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "notices",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "notices",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "outbox",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "outbox",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "password_tokens",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "password_tokens",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "penalties",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "penalties",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "rooms",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "rooms",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "rooms",
+      "column_name": "building_key",
+      "is_nullable": "NO",
+      "is_generated": "ALWAYS",
+      "column_default": null,
+      "ordinal_position": 3,
+      "generation_expression": "(payload ->> 'buildingId'::text)"
+    },
+    {
+      "data_type": "text",
+      "table_name": "sessions",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "sessions",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "settings",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "settings",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "users",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "users",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    },
+    {
+      "data_type": "text",
+      "table_name": "violations",
+      "column_name": "key",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 1,
+      "generation_expression": null
+    },
+    {
+      "data_type": "jsonb",
+      "table_name": "violations",
+      "column_name": "payload",
+      "is_nullable": "NO",
+      "is_generated": "NEVER",
+      "column_default": null,
+      "ordinal_position": 2,
+      "generation_expression": null
+    }
+  ],
+  "indexes": [
+    {
+      "indexdef": "CREATE UNIQUE INDEX app_lock_pkey ON kku_private.app_lock USING btree (id)",
+      "indexname": "app_lock_pkey",
+      "tablename": "app_lock"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX assignments_pkey ON kku_private.assignments USING btree (key)",
+      "indexname": "assignments_pkey",
+      "tablename": "assignments"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX attempts_pkey ON kku_private.attempts USING btree (key)",
+      "indexname": "attempts_pkey",
+      "tablename": "attempts"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX audit_pkey ON kku_private.audit USING btree (key)",
+      "indexname": "audit_pkey",
+      "tablename": "audit"
+    },
+    {
+      "indexdef": "CREATE INDEX booking_no_overlap ON kku_private.bookings USING gist (room_key, tstzrange(start_at, end_at, '[)'::text)) WHERE (status = ANY (ARRAY['PENDING'::text, 'APPROVED'::text, 'CHECKED_IN'::text]))",
+      "indexname": "booking_no_overlap",
+      "tablename": "bookings"
+    },
+    {
+      "indexdef": "CREATE INDEX bookings_owner_time ON kku_private.bookings USING btree (user_key, start_at DESC)",
+      "indexname": "bookings_owner_time",
+      "tablename": "bookings"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX bookings_pkey ON kku_private.bookings USING btree (key)",
+      "indexname": "bookings_pkey",
+      "tablename": "bookings"
+    },
+    {
+      "indexdef": "CREATE INDEX bookings_room_time ON kku_private.bookings USING btree (room_key, start_at)",
+      "indexname": "bookings_room_time",
+      "tablename": "bookings"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX buildings_pkey ON kku_private.buildings USING btree (key)",
+      "indexname": "buildings_pkey",
+      "tablename": "buildings"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX closures_pkey ON kku_private.closures USING btree (key)",
+      "indexname": "closures_pkey",
+      "tablename": "closures"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX credentials_pkey ON kku_private.credentials USING btree (key)",
+      "indexname": "credentials_pkey",
+      "tablename": "credentials"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX equipment_pkey ON kku_private.equipment USING btree (key)",
+      "indexname": "equipment_pkey",
+      "tablename": "equipment"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX flows_pkey ON kku_private.flows USING btree (key)",
+      "indexname": "flows_pkey",
+      "tablename": "flows"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX holidays_pkey ON kku_private.holidays USING btree (key)",
+      "indexname": "holidays_pkey",
+      "tablename": "holidays"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX identities_pkey ON kku_private.identities USING btree (key)",
+      "indexname": "identities_pkey",
+      "tablename": "identities"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX inspections_pkey ON kku_private.inspections USING btree (key)",
+      "indexname": "inspections_pkey",
+      "tablename": "inspections"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX messages_pkey ON kku_private.messages USING btree (key)",
+      "indexname": "messages_pkey",
+      "tablename": "messages"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX notices_pkey ON kku_private.notices USING btree (key)",
+      "indexname": "notices_pkey",
+      "tablename": "notices"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX outbox_pkey ON kku_private.outbox USING btree (key)",
+      "indexname": "outbox_pkey",
+      "tablename": "outbox"
+    },
+    {
+      "indexdef": "CREATE INDEX outbox_status ON kku_private.outbox USING btree (((payload ->> 'status'::text)), ((payload ->> 'nextAt'::text)))",
+      "indexname": "outbox_status",
+      "tablename": "outbox"
+    },
+    {
+      "indexdef": "CREATE INDEX password_tokens_expiry ON kku_private.password_tokens USING btree (((payload ->> 'expiresAt'::text)))",
+      "indexname": "password_tokens_expiry",
+      "tablename": "password_tokens"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX password_tokens_pkey ON kku_private.password_tokens USING btree (key)",
+      "indexname": "password_tokens_pkey",
+      "tablename": "password_tokens"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX penalties_pkey ON kku_private.penalties USING btree (key)",
+      "indexname": "penalties_pkey",
+      "tablename": "penalties"
+    },
+    {
+      "indexdef": "CREATE INDEX rooms_building ON kku_private.rooms USING btree (building_key)",
+      "indexname": "rooms_building",
+      "tablename": "rooms"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX rooms_code_unique ON kku_private.rooms USING btree (lower((payload ->> 'code'::text)))",
+      "indexname": "rooms_code_unique",
+      "tablename": "rooms"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX rooms_pkey ON kku_private.rooms USING btree (key)",
+      "indexname": "rooms_pkey",
+      "tablename": "rooms"
+    },
+    {
+      "indexdef": "CREATE INDEX sessions_expiry ON kku_private.sessions USING btree (((payload ->> 'expiresAt'::text)))",
+      "indexname": "sessions_expiry",
+      "tablename": "sessions"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX sessions_pkey ON kku_private.sessions USING btree (key)",
+      "indexname": "sessions_pkey",
+      "tablename": "sessions"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX settings_pkey ON kku_private.settings USING btree (key)",
+      "indexname": "settings_pkey",
+      "tablename": "settings"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX users_email_unique ON kku_private.users USING btree (lower((payload ->> 'email'::text)))",
+      "indexname": "users_email_unique",
+      "tablename": "users"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX users_pkey ON kku_private.users USING btree (key)",
+      "indexname": "users_pkey",
+      "tablename": "users"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX violations_once ON kku_private.violations USING btree (((payload ->> 'bookingId'::text)), ((payload ->> 'type'::text)))",
+      "indexname": "violations_once",
+      "tablename": "violations"
+    },
+    {
+      "indexdef": "CREATE UNIQUE INDEX violations_pkey ON kku_private.violations USING btree (key)",
+      "indexname": "violations_pkey",
+      "tablename": "violations"
+    }
+  ],
+  "constraints": [
+    {
+      "name": "app_lock_id_check",
+      "type": "c",
+      "definition": "CHECK ((id = 1))",
+      "table_name": "app_lock"
+    },
+    {
+      "name": "app_lock_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (id)",
+      "table_name": "app_lock"
+    },
+    {
+      "name": "assignments_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "assignments"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "assignments"
+    },
+    {
+      "name": "attempts_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "attempts"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "attempts"
+    },
+    {
+      "name": "audit_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "audit"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "audit"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "audit"
+    },
+    {
+      "name": "booking_no_overlap",
+      "type": "x",
+      "definition": "EXCLUDE USING gist (room_key WITH =, tstzrange(start_at, end_at, '[)'::text) WITH &&) WHERE ((status = ANY (ARRAY['PENDING'::text, 'APPROVED'::text, 'CHECKED_IN'::text])))",
+      "table_name": "bookings"
+    },
+    {
+      "name": "bookings_check",
+      "type": "c",
+      "definition": "CHECK ((((end_at - start_at) >= '00:30:00'::interval) AND ((end_at - start_at) <= '04:00:00'::interval)))",
+      "table_name": "bookings"
+    },
+    {
+      "name": "bookings_check1",
+      "type": "c",
+      "definition": "CHECK ((((payload ->> 'id'::text) = key) AND ((payload ->> 'roomId'::text) = room_key) AND ((payload ->> 'userId'::text) = user_key) AND ((payload ->> 'status'::text) = status)))",
+      "table_name": "bookings"
+    },
+    {
+      "name": "bookings_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "bookings"
+    },
+    {
+      "name": "bookings_required",
+      "type": "c",
+      "definition": "CHECK (((((payload ->> 'roomId'::text) = room_key) AND ((payload ->> 'userId'::text) = user_key) AND ((payload ->> 'status'::text) = status) AND (jsonb_typeof((payload -> 'start'::text)) = 'string'::text) AND (((payload ->> 'start'::text))::timestamp with time zone = start_at) AND (jsonb_typeof((payload -> 'end'::text)) = 'string'::text) AND (((payload ->> 'end'::text))::timestamp with time zone = end_at) AND (jsonb_typeof((payload -> 'attendees'::text)) = 'number'::text) AND ((((payload ->> 'attendees'::text))::numeric >= (1)::numeric) AND (((payload ->> 'attendees'::text))::numeric <= (2147483647)::numeric)) AND (((payload ->> 'attendees'::text))::numeric = trunc(((payload ->> 'attendees'::text))::numeric))) IS TRUE))",
+      "table_name": "bookings"
+    },
+    {
+      "name": "bookings_room_key_fkey",
+      "type": "f",
+      "definition": "FOREIGN KEY (room_key) REFERENCES kku_private.rooms(key)",
+      "table_name": "bookings"
+    },
+    {
+      "name": "bookings_status_check",
+      "type": "c",
+      "definition": "CHECK ((status = ANY (ARRAY['PENDING'::text, 'APPROVED'::text, 'REJECTED'::text, 'CANCELLED'::text, 'CHECKED_IN'::text, 'COMPLETED'::text, 'NO_SHOW'::text])))",
+      "table_name": "bookings"
+    },
+    {
+      "name": "bookings_user_key_fkey",
+      "type": "f",
+      "definition": "FOREIGN KEY (user_key) REFERENCES kku_private.users(key)",
+      "table_name": "bookings"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "bookings"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "bookings"
+    },
+    {
+      "name": "buildings_floors",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'floors'::text)) = 'number'::text) AND ((((payload ->> 'floors'::text))::numeric >= (1)::numeric) AND (((payload ->> 'floors'::text))::numeric <= (2147483647)::numeric)) AND (((payload ->> 'floors'::text))::numeric = trunc(((payload ->> 'floors'::text))::numeric))) IS TRUE))",
+      "table_name": "buildings"
+    },
+    {
+      "name": "buildings_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "buildings"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "buildings"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "buildings"
+    },
+    {
+      "name": "closures_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "closures"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "closures"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "closures"
+    },
+    {
+      "name": "credentials_check",
+      "type": "c",
+      "definition": "CHECK (((payload ->> 'userId'::text) = key))",
+      "table_name": "credentials"
+    },
+    {
+      "name": "credentials_key_fkey",
+      "type": "f",
+      "definition": "FOREIGN KEY (key) REFERENCES kku_private.users(key)",
+      "table_name": "credentials"
+    },
+    {
+      "name": "credentials_payload_check",
+      "type": "c",
+      "definition": "CHECK (((payload ->> 'passwordHash'::text) ~~ '$argon2id$%'::text))",
+      "table_name": "credentials"
+    },
+    {
+      "name": "credentials_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "credentials"
+    },
+    {
+      "name": "credentials_required",
+      "type": "c",
+      "definition": "CHECK (((((payload ->> 'userId'::text) = key) AND (jsonb_typeof((payload -> 'passwordHash'::text)) = 'string'::text) AND ((payload ->> 'passwordHash'::text) ~~ '$argon2id$%'::text)) IS TRUE))",
+      "table_name": "credentials"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "credentials"
+    },
+    {
+      "name": "equipment_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "equipment"
+    },
+    {
+      "name": "equipment_quantities",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'total'::text)) = 'number'::text) AND (jsonb_typeof((payload -> 'remaining'::text)) = 'number'::text) AND ((((payload ->> 'total'::text))::numeric >= (0)::numeric) AND (((payload ->> 'total'::text))::numeric <= (100000)::numeric)) AND ((((payload ->> 'remaining'::text))::numeric >= (0)::numeric) AND (((payload ->> 'remaining'::text))::numeric <= ((payload ->> 'total'::text))::numeric)) AND (((payload ->> 'total'::text))::numeric = trunc(((payload ->> 'total'::text))::numeric)) AND (((payload ->> 'remaining'::text))::numeric = trunc(((payload ->> 'remaining'::text))::numeric))) IS TRUE))",
+      "table_name": "equipment"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "equipment"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "equipment"
+    },
+    {
+      "name": "flows_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "flows"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "flows"
+    },
+    {
+      "name": "holidays_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "holidays"
+    },
+    {
+      "name": "identities_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "identities"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "identities"
+    },
+    {
+      "name": "inspections_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "inspections"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "inspections"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "inspections"
+    },
+    {
+      "name": "messages_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "messages"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "messages"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "messages"
+    },
+    {
+      "name": "notices_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "notices"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "notices"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "notices"
+    },
+    {
+      "name": "outbox_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "outbox"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "outbox"
+    },
+    {
+      "name": "password_tokens_check",
+      "type": "c",
+      "definition": "CHECK (((payload ->> 'tokenHash'::text) = key))",
+      "table_name": "password_tokens"
+    },
+    {
+      "name": "password_tokens_payload_check",
+      "type": "c",
+      "definition": "CHECK (((payload ->> 'kind'::text) = ANY (ARRAY['register'::text, 'reset'::text])))",
+      "table_name": "password_tokens"
+    },
+    {
+      "name": "password_tokens_payload_check1",
+      "type": "c",
+      "definition": "CHECK ((((payload ->> 'passwordHash'::text) IS NULL) OR ((payload ->> 'passwordHash'::text) ~~ '$argon2id$%'::text)))",
+      "table_name": "password_tokens"
+    },
+    {
+      "name": "password_tokens_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "password_tokens"
+    },
+    {
+      "name": "password_tokens_required",
+      "type": "c",
+      "definition": "CHECK (((((payload ->> 'tokenHash'::text) = key) AND ((payload ->> 'kind'::text) = ANY (ARRAY['register'::text, 'reset'::text])) AND (jsonb_typeof((payload -> 'expiresAt'::text)) = 'string'::text) AND (jsonb_typeof((payload -> 'email'::text)) = 'string'::text) AND (((payload ->> 'kind'::text) <> 'register'::text) OR ((jsonb_typeof((payload -> 'passwordHash'::text)) = 'string'::text) AND ((payload ->> 'passwordHash'::text) ~~ '$argon2id$%'::text)))) IS TRUE))",
+      "table_name": "password_tokens"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "password_tokens"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "penalties"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "penalties"
+    },
+    {
+      "name": "penalties_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "penalties"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "rooms"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "rooms"
+    },
+    {
+      "name": "rooms_building_fk",
+      "type": "f",
+      "definition": "FOREIGN KEY (building_key) REFERENCES kku_private.buildings(key)",
+      "table_name": "rooms"
+    },
+    {
+      "name": "rooms_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "rooms"
+    },
+    {
+      "name": "rooms_required",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'code'::text)) = 'string'::text) AND ((length(btrim((payload ->> 'code'::text))) >= 1) AND (length(btrim((payload ->> 'code'::text))) <= 30)) AND (jsonb_typeof((payload -> 'capacity'::text)) = 'number'::text) AND ((((payload ->> 'capacity'::text))::numeric >= (1)::numeric) AND (((payload ->> 'capacity'::text))::numeric <= (2147483647)::numeric)) AND (((payload ->> 'capacity'::text))::numeric = trunc(((payload ->> 'capacity'::text))::numeric)) AND ((payload ->> 'status'::text) = ANY (ARRAY['AVAILABLE'::text, 'MAINTENANCE'::text, 'CLOSED'::text])) AND (jsonb_typeof((payload -> 'floor'::text)) = 'number'::text) AND (((payload ->> 'floor'::text))::numeric >= (1)::numeric) AND (((payload ->> 'floor'::text))::numeric = trunc(((payload ->> 'floor'::text))::numeric))) IS TRUE))",
+      "table_name": "rooms"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "sessions"
+    },
+    {
+      "name": "sessions_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "sessions"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "settings"
+    },
+    {
+      "name": "settings_key_check",
+      "type": "c",
+      "definition": "CHECK ((key = 'site'::text))",
+      "table_name": "settings"
+    },
+    {
+      "name": "settings_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "settings"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "users"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "users"
+    },
+    {
+      "name": "users_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "users"
+    },
+    {
+      "name": "users_required",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'email'::text)) = 'string'::text) AND ((length(btrim((payload ->> 'email'::text))) >= 3) AND (length(btrim((payload ->> 'email'::text))) <= 254)) AND ((payload ->> 'email'::text) = btrim((payload ->> 'email'::text))) AND ((payload ->> 'role'::text) = ANY (ARRAY['USER'::text, 'STAFF'::text, 'ADMIN'::text])) AND (jsonb_typeof((payload -> 'active'::text)) = 'boolean'::text)) IS TRUE))",
+      "table_name": "users"
+    },
+    {
+      "name": "payload_identity",
+      "type": "c",
+      "definition": "CHECK ((((jsonb_typeof((payload -> 'id'::text)) = 'number'::text) AND ((payload ->> 'id'::text) = key) AND (key ~ '^[1-9][0-9]*$'::text)) IS TRUE))",
+      "table_name": "violations"
+    },
+    {
+      "name": "payload_object",
+      "type": "c",
+      "definition": "CHECK ((jsonb_typeof(payload) = 'object'::text))",
+      "table_name": "violations"
+    },
+    {
+      "name": "violations_pkey",
+      "type": "p",
+      "definition": "PRIMARY KEY (key)",
+      "table_name": "violations"
+    }
+  ]
+}

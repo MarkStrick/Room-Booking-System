@@ -3,11 +3,14 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "engines": { "node": "24.x" },
   "workspaces": [
     "apps/web",
     "apps/backend"
   ],
   "scripts": {
+    "admin:bootstrap": "node --env-file-if-exists=.env --import tsx scripts/bootstrap-admin.ts",
+    "test:vercel": "tsx tests/vercel-smoke.ts",
     "check:connections": "node --env-file-if-exists=.env --env-file-if-exists=.env.connection --import tsx scripts/check-connections.ts",
     "dev": "npm run dev --workspace apps/web",
     "build": "npm run build --workspace apps/web && npm run build --workspace apps/backend",
@@ -15,6 +18,7 @@
     "start": "npm run start --workspace apps/backend",
     "worker": "npm run worker --workspace apps/backend",
     "test:backend": "tsx --tsconfig apps/backend/tsconfig.json --test tests/backend/*.test.ts",
+    "test:sql-security": "tsx --tsconfig apps/backend/tsconfig.json --test tests/backend/database.test.ts tests/backend/sql-security.test.ts tests/backend/oracle-queries.test.ts",
     "preview": "npm run preview --workspace apps/web",
     "test": "tsx --test tests/*.test.ts"
   },

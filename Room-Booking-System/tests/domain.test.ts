@@ -5,6 +5,7 @@ import {
   executeCommand,
   availability,
   DomainError,
+  RecordedRejection,
   stamp,
   suspended,
   violationCount,
@@ -113,7 +114,39 @@ test("owner and assigned room boundaries enforced", () => {
     () => executeCommand(s, 1, { type: "CANCEL", bookingId: 1 }),
     errorCode("CANCELLATION_TOO_LATE"),
   );
-  assert.equal(s.violations.length, 3); // Deferred late-cancel proposal must not add a violation.
+  assert.equal(s.violations.length, 3); // Commands never mutate their input state.
+});
+
+test("late cancellation records one violation without cancelling or releasing equipment", () => {
+  let s = executeCommand(createSeed(), 1, request());
+  const bookingId = s.bookings[0].id;
+  s.now = stamp("2026-10-09", "08:01");
+  const original = structuredClone(s);
+  function reject(state: typeof s) {
+    try {
+      executeCommand(state, 1, { type: "CANCEL", bookingId });
+      assert.fail("Late cancellation must be rejected");
+    } catch (e) {
+      assert.ok(e instanceof RecordedRejection);
+      assert.equal(e.code, "CANCELLATION_TOO_LATE");
+      return e.state;
+    }
+  }
+  s = reject(s);
+  assert.deepEqual(original.bookings, s.bookings);
+  assert.deepEqual(original.equipment, s.equipment);
+  assert.deepEqual(original.notices, s.notices);
+  assert.equal(s.violations.filter(v => v.bookingId === bookingId && v.type === "LATE_CANCEL").length, 1);
+  assert.equal(violationCount(s, 1), 1);
+  const auditCount = s.audit.length;
+  s = reject(s);
+  assert.equal(s.violations.filter(v => v.bookingId === bookingId).length, 1);
+  assert.equal(s.audit.length, auditCount);
+  assert.throws(() => executeCommand(s, 4, { type: "CANCEL", bookingId }), errorCode("FORBIDDEN"));
+  const onTime = { ...original, now: stamp("2026-10-09", "08:00") };
+  const cancelled = executeCommand(onTime, 1, { type: "CANCEL", bookingId });
+  assert.equal(cancelled.bookings[0].status, "CANCELLED");
+  assert.deepEqual(cancelled.violations, original.violations);
 });
 
 test("pending quota, room capacity, advance range and holiday enforced", () => {
@@ -260,4 +293,101 @@ test("equipment edits cannot discard allocations; rejected request releases them
     reason: "ไม่เหมาะสมกับการใช้งาน",
   });
   assert.equal(s.equipment.find((e) => e.id === 1)!.remaining, 5);
+});
+
+test("room capacity changes protect active bookings but allow equal capacity and completed history", () => {
+  const seed = createSeed();
+  seed.bookings = [];
+  const pending = executeCommand(seed, 1, { ...request(), participants: [] });
+  const room = pending.rooms.find(r => r.id === 1)!;
+  for (const status of ["PENDING", "APPROVED", "CHECKED_IN"] as const) {
+    const state = structuredClone(pending);
+    state.bookings[0].status = status;
+    const before = structuredClone(state);
+    assert.throws(
+      () => executeCommand(state, 3, { type: "ROOM_SAVE", room: { ...room, capacity: 3 } }),
+      errorCode("ROOM_CAPACITY_CONFLICT"),
+    );
+    assert.deepEqual(state, before);
+    const changed = executeCommand(state, 3, { type: "ROOM_SAVE", room: { ...room, capacity: 4 } });
+    assert.equal(changed.rooms.find(r => r.id === 1)!.capacity, 4);
+    assert.deepEqual(changed.bookings, state.bookings);
+    assert.deepEqual(changed.equipment, state.equipment);
+  }
+  for (const status of ["COMPLETED", "CANCELLED", "REJECTED", "NO_SHOW"] as const) {
+    const state = structuredClone(pending);
+    state.bookings[0].status = status;
+    const changed = executeCommand(state, 3, { type: "ROOM_SAVE", room: { ...room, capacity: 3 } });
+    assert.equal(changed.rooms.find(r => r.id === 1)!.capacity, 3);
+    assert.deepEqual(changed.bookings, state.bookings);
+  }
+  const otherRoom = pending.rooms.find(r => r.id === 3)!;
+  assert.doesNotThrow(() => executeCommand(pending, 3, { type: "ROOM_SAVE", room: { ...otherRoom, capacity: 1 } }));
+});
+
+test("approval rechecks current capacity and leaves over-capacity requests available for rejection", () => {
+  const seed = createSeed();
+  seed.bookings = [];
+  const pending = executeCommand(seed, 1, { ...request(), participants: [] });
+  const bookingId = pending.bookings[0].id;
+  // Older data or external maintenance may already have an inconsistent capacity.
+  pending.rooms.find(r => r.id === 1)!.capacity = 3;
+  const before = structuredClone(pending);
+  assert.throws(
+    () => executeCommand(pending, 2, { type: "DECIDE", bookingId, approve: true, reason: "" }),
+    errorCode("ROOM_CAPACITY_EXCEEDED"),
+  );
+  assert.deepEqual(pending, before);
+  const rejected = executeCommand(pending, 2, { type: "DECIDE", bookingId, approve: false, reason: "จำนวนคนเกินความจุปัจจุบัน" });
+  assert.equal(rejected.bookings[0].status, "REJECTED");
+  assert.equal(rejected.equipment.find(e => e.id === 1)!.remaining, seed.equipment.find(e => e.id === 1)!.remaining);
+  const fitting = structuredClone(pending);
+  fitting.rooms.find(r => r.id === 1)!.capacity = 4;
+  assert.equal(executeCommand(fitting, 2, { type: "DECIDE", bookingId, approve: true, reason: "" }).bookings[0].status, "APPROVED");
+});
+test("holiday CRUD validates dates and permissions, and controls booking availability", () => {
+  let s = createSeed();
+  s.bookings = [];
+  const save = { type: "HOLIDAY_SAVE", date: "2026-10-10" } as const;
+  for (const actor of [1, 2]) assert.throws(() => executeCommand(s, actor, save));
+  for (const date of ["2026-02-29", "2026-04-31", "2026-1-10", "invalid", ""]) {
+    assert.throws(() => executeCommand(s, 3, { ...save, date }), errorCode("INVALID_HOLIDAY_DATE"));
+  }
+  s = executeCommand(s, 3, save);
+  assert.ok(s.holidays.includes(save.date));
+  assert.throws(() => executeCommand(s, 3, save), errorCode("HOLIDAY_DUPLICATE"));
+  const booking = { ...request(), start: stamp(save.date, "10:00"), end: stamp(save.date, "12:00") };
+  assert.equal(availability(s, s.rooms[0], booking.start, booking.end).kind, "closed");
+  assert.throws(() => executeCommand(s, 1, booking));
+  for (const actor of [1, 2]) assert.throws(() => executeCommand(s, actor, { type: "HOLIDAY_DELETE", date: save.date }));
+  const updated = executeCommand(s, 3, { ...save, previousDate: save.date, date: "2026-10-11" });
+  assert.ok(!updated.holidays.includes(save.date));
+  assert.ok(updated.holidays.includes("2026-10-11"));
+  assert.throws(() => executeCommand(updated, 3, { ...save, previousDate: save.date }), errorCode("HOLIDAY_NOT_FOUND"));
+  s = executeCommand(s, 3, { type: "HOLIDAY_DELETE", date: save.date });
+  assert.doesNotThrow(() => executeCommand(s, 1, booking));
+  assert.throws(() => executeCommand(s, 3, { type: "HOLIDAY_DELETE", date: save.date }), errorCode("HOLIDAY_NOT_FOUND"));
+  assert.doesNotThrow(() => executeCommand(s, 3, { ...save, date: "2028-02-29" }));
+  assert.ok(s.audit.some(a => JSON.stringify(a).includes("ลบวันหยุด")));
+});
+
+test("holiday additions and edits preserve active bookings and reject conflicts atomically", () => {
+  const seed = createSeed(); seed.bookings = [];
+  const pending = executeCommand(seed, 1, request());
+  for (const status of ["PENDING", "APPROVED", "CHECKED_IN"] as const) {
+    const state = structuredClone(pending); state.bookings[0].status = status;
+    const before = structuredClone(state);
+    for (const previousDate of [undefined, "2026-10-13"]) {
+      assert.throws(() => executeCommand(state, 3, { type: "HOLIDAY_SAVE", date: "2026-10-09", previousDate }), errorCode("HOLIDAY_BOOKING_CONFLICT"));
+      assert.deepEqual(state, before);
+    }
+  }
+  for (const status of ["CANCELLED", "REJECTED", "COMPLETED", "NO_SHOW"] as const) {
+    const state = structuredClone(pending); state.bookings[0].status = status;
+    const changed = executeCommand(state, 3, { type: "HOLIDAY_SAVE", date: "2026-10-09" });
+    assert.deepEqual(changed.bookings, state.bookings);
+    assert.deepEqual(changed.equipment, state.equipment);
+  }
+  const stale = structuredClone(pending); stale.holidays.push("2026-10-09");
+  assert.throws(() => executeCommand(stale, 2, { type: "DECIDE", bookingId: stale.bookings[0].id, approve: true, reason: "" }));
 });

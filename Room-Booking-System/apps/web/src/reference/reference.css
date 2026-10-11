@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Isolate the reference's Tailwind baseline from the existing administration UI. */
+.reference-ui {
+  font-family: 'Sarabun', 'Noto Sans Thai', 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #111827;
+  --primary: #A4233B;
+  --primary-dark: #8B1E32;
+  --primary-soft: #fef2f2;
+  --ink: #111827;
+  --line: #f3f4f6;
+}
+.reference-ui *, .reference-ui ::before, .reference-ui ::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
+}
+.reference-ui :where(h1,h2,h3,h4,p,figure):not(:where(.legacy-page *)) {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: normal;
+  font-family: inherit;
+}
+.reference-ui :where(button,input,select,textarea):not(:where(.legacy-page *)) {
+  font-family: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+.reference-ui :where(button):not(:where(.legacy-page *)) {
+  background-color: transparent;
+  background-image: none;
+  text-transform: none;
+}
+.reference-ui :where(img,svg):not(:where(.legacy-page *)) { display: block; vertical-align: middle; }
+.reference-ui :where(img):not(:where(.legacy-page *)) { max-width: 100%; height: auto; }
+.reference-ui :where(input,textarea)::placeholder { opacity: 1; color: #9ca3af; }
+.reference-ui :is(input,select,textarea):not(:where(.legacy-page *)) { min-height: 0; font-weight: inherit; }
+.reference-ui label:not(:where(.legacy-page *)) { display: block; flex-direction: row; align-items: normal; gap: 0; text-align: start; font-weight: inherit; }
+.reference-ui :where(button,a,input,textarea,select):focus-visible { outline: 2px solid #A4233B; outline-offset: 2px; }
+.reference-ui ::selection { background: #A4233B; color: white; }
+.reference-ui input, .reference-ui textarea { caret-color: #A4233B; }
+.reference-ui .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.reference-ui .scrollbar-hide::-webkit-scrollbar { display: none; }
+.reference-ui .animate-slide-up { animation: referenceSlideUp .3s ease-out; }
+.reference-ui .animate-fade-in { animation: referenceFadeIn .3s ease-out; }
+.reference-ui .animate-scale-in { animation: referenceScaleIn .25s ease-out; }
+@keyframes referenceSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes referenceFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes referenceScaleIn { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
+.reference-ui .reference-frame { height: 100dvh; }
+.reference-ui .reference-date { min-width: 0; width: 0; }
+.reference-ui .legacy-page { padding: 16px; overflow-y: auto; flex: 1; min-height: 0; }
+.reference-ui .legacy-page .metrics-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.reference-ui .legacy-page :is(.help-grid,.profile-grid,.manage-grid) { grid-template-columns: minmax(0,1fr); }
+.reference-ui .legacy-page :is(.page-heading,.student-page-heading) h1 { font-size: 22px; }
+.reference-ui .legacy-page .page-heading { margin-bottom: 16px; }
+.reference-ui .legacy-page .table-scroll { overflow-x: auto; }
+.reference-ui .reference-toast { position: absolute; left: 16px; right: 16px; bottom: 76px; z-index: 60; background: #111827; color: #fff; border-radius: 12px; padding: 12px 16px; font-size: 13px; display: flex; gap: 8px; align-items: center; }
+.reference-ui .reference-toast span { flex: 1; }
+@media (min-width: 640px) { .reference-ui .reference-frame { height: 820px; } }
+@media (min-width: 1024px) { .reference-ui .reference-mobile-overview { display: none; } }
+@media (max-width: 1023px) { .reference-ui .reference-desktop-copy, .reference-ui .reference-user-notifications { display: none; } }
+@media (max-width: 1023px) {
+  .reference-ui .booking-room-summary { display: block; padding: 0; }
+  .reference-ui .booking-room-summary > :first-child { width: 100%; height: 128px; border-radius: 0; }
+}
+@media (min-width: 1024px) { .reference-ui .reference-mobile-copy { display: none; } }
+@media (max-width: 359px) {
+  .reference-ui .search-date-fields input[type="time"] { width: 80px; padding-inline: 4px; }
+  .reference-ui .search-date-fields input[type="date"] { padding-inline: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .reference-ui *, .reference-ui ::before, .reference-ui ::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

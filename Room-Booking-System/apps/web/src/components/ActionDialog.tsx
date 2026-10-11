@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import type { Command, Room } from "../../../../packages/contracts/src/index";
 import { useDemo } from "../app/DemoProvider";
+import { RoomCover } from "./RoomCover";
 import {
   addDays,
   dateOf,
@@ -36,6 +37,12 @@ const titles: Record<DialogAction["kind"], string> = {
   closure: "ปิดห้องชั่วคราว",
   inspect: "บันทึกผลตรวจห้อง",
   building: "ข้อมูลอาคาร",
+  holiday: "กำหนดวันหยุดมหาวิทยาลัย",
+  "holiday-delete": "ยืนยันลบวันหยุด",
+  "room-active": "เปลี่ยนการใช้งานห้อง",
+  "building-active": "เปลี่ยนการใช้งานอาคาร",
+  "room-delete": "ยืนยันลบห้อง",
+  "building-delete": "ยืนยันลบอาคาร",
   equipment: "อุปกรณ์ส่วนกลาง",
   penalty: "พิจารณาบทลงโทษ",
   clock: "ทดลองเวลาและงานอัตโนมัติ",
@@ -48,7 +55,7 @@ export function ActionDialog({
   action: DialogAction;
   close: () => void;
 }) {
-  const { state, user, run, reset, mode } = useDemo();
+  const { state, user, run, reset, mode, canTest } = useDemo();
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -63,8 +70,18 @@ export function ActionDialog({
         : action.id),
   );
   const building = state.buildings.find((b) => b.id === action.id);
+  const [inventory, setInventory] = useState(room?.inventory ?? []);
+  const [hoursEnabled, setHoursEnabled] = useState(!!room?.hours);
   const equipment = state.equipment.find((e) => e.id === action.id);
   const today = dateOf(state.now);
+  const [holidayDate, setHolidayDate] = useState(
+    action.date ?? addDays(today, 1),
+  );
+  const holidayBookings = state.bookings.filter(
+    (b) =>
+      ["PENDING", "APPROVED", "CHECKED_IN"].includes(b.status) &&
+      dateOf(b.start) === holidayDate,
+  );
   const [closureStart, setClosureStart] = useState(
     stamp(addDays(today, 1), "09:00"),
   );
@@ -85,6 +102,14 @@ export function ActionDialog({
   }
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (busy) return;
+    if (
+      ["clock", "reset"].includes(action.kind) &&
+      (mode !== "demo" || !canTest)
+    ) {
+      setError("เครื่องมือนี้ใช้ได้เฉพาะในพื้นที่ทดสอบของผู้ดูแล");
+      return;
+    }
     setError("");
     setBusy(true);
     const data = new FormData(e.currentTarget);
@@ -100,6 +125,9 @@ export function ActionDialog({
             purpose: text(data, "purpose"),
             attendees: number(data, "attendees"),
             participants: data.getAll("participants").map(Number),
+            participantEmails: text(data, "participantEmails")
+              .split(/[\s,;]+/)
+              .filter(Boolean),
             equipment: state.equipment
               .map((e) => ({
                 id: e.id,
@@ -134,6 +162,17 @@ export function ActionDialog({
               reason: text(data, "reason"),
               amenities: data.getAll("amenities").map(String),
               scene: room?.scene ?? state.rooms.length % 6,
+              active: room?.active,
+              imageUrl: text(data, "imageUrl"),
+              inventory,
+              hours: hoursEnabled
+                ? {
+                    start: text(data, "hoursStart"),
+                    end: text(data, "hoursEnd"),
+                    weekdays: data.getAll("weekdays").map(Number),
+                    leadMinutes: number(data, "leadMinutes"),
+                  }
+                : undefined,
             },
           };
           break;
@@ -152,6 +191,10 @@ export function ActionDialog({
             roomId: room!.id,
             condition: text(data, "condition"),
             note: text(data, "note"),
+            items: room?.inventory?.map((i) => ({
+              id: i.id,
+              damaged: number(data, `damaged-${i.id}`),
+            })),
           };
           break;
         case "building":
@@ -161,6 +204,36 @@ export function ActionDialog({
             name: text(data, "name"),
             floors: number(data, "floors"),
           };
+          break;
+        case "holiday":
+          c = {
+            type: "HOLIDAY_SAVE",
+            date: holidayDate,
+            previousDate: action.date,
+          };
+          break;
+        case "room-active":
+          c = {
+            type: "ROOM_ACTIVE",
+            roomId: action.id!,
+            active: action.active!,
+          };
+          break;
+        case "building-active":
+          c = {
+            type: "BUILDING_ACTIVE",
+            buildingId: action.id!,
+            active: action.active!,
+          };
+          break;
+        case "room-delete":
+          c = { type: "ROOM_DELETE", roomId: action.id! };
+          break;
+        case "building-delete":
+          c = { type: "BUILDING_DELETE", buildingId: action.id! };
+          break;
+        case "holiday-delete":
+          c = { type: "HOLIDAY_DELETE", date: action.date! };
           break;
         case "equipment":
           c = {
@@ -209,7 +282,11 @@ export function ActionDialog({
     content = (
       <>
         <div className="detail-scene">
-          <RoomScene scene={room.scene} />
+          <RoomScene
+            scene={room.scene}
+            imageUrl={room.imageUrl}
+            label={room.name}
+          />
         </div>
         <div className="detail-title">
           <div>
@@ -239,6 +316,14 @@ export function ActionDialog({
             <strong>{booking.attendees} คน</strong>
           </div>
         </div>
+        {booking.participantEmails?.length ? (
+          <div className="detail-equipment">
+            <h4>อีเมลผู้ร่วมใช้งาน</h4>
+            {booking.participantEmails.map((email) => (
+              <p key={email}>{email}</p>
+            ))}
+          </div>
+        ) : null}
         {booking.equipment.length ? (
           <div className="detail-equipment">
             <h4>อุปกรณ์ที่ขอยืม</h4>
@@ -323,6 +408,7 @@ export function ActionDialog({
       <form onSubmit={submit}>
         {action.kind === "book" && room ? (
           <>
+            <RoomCover room={room} />
             <div className="booking-room-summary">
               <span className="booking-room-icon">
                 <DoorOpen size={24} />
@@ -410,7 +496,7 @@ export function ActionDialog({
                 ))}
               </fieldset>
             </details>
-            {mode === 'demo' ? <details className="booking-options">
+            <details className="booking-options">
               <summary>
                 <Users size={17} />
                 เพิ่มรายชื่อผู้เข้าร่วม <span>ไม่บังคับ</span>
@@ -418,21 +504,38 @@ export function ActionDialog({
               <fieldset>
                 <legend className="sr-only">ผู้เข้าร่วมเพิ่มเติม</legend>
                 <div className="participant-choices">
-                  {state.users
-                    .filter((u) => u.id !== user.id && u.role === "USER")
-                    .map((u) => (
-                      <label className="checkbox-label" key={u.id}>
-                        <input
-                          name="participants"
-                          value={u.id}
-                          type="checkbox"
-                        />
-                        {u.name}
-                      </label>
-                    ))}
+                  {mode === "demo" ? (
+                    state.users
+                      .filter((u) => u.id !== user.id && u.role === "USER")
+                      .map((u) => (
+                        <label className="checkbox-label" key={u.id}>
+                          <input
+                            name="participants"
+                            value={u.id}
+                            type="checkbox"
+                          />
+                          {u.name}
+                        </label>
+                      ))
+                  ) : (
+                    <label>
+                      อีเมลผู้ร่วมใช้งาน
+                      <textarea
+                        name="participantEmails"
+                        aria-label="อีเมลผู้ร่วมใช้งาน"
+                        rows={3}
+                        maxLength={10000}
+                        placeholder="หนึ่งอีเมลต่อบรรทัด"
+                      />
+                      <small>
+                        ระบุอีเมลโดยตรง ไม่เผยรายชื่อบัญชีทั้งหมด
+                        และไม่ส่งคำเชิญอัตโนมัติ
+                      </small>
+                    </label>
+                  )}
                 </div>
               </fieldset>
-            </details> : null}
+            </details>
           </>
         ) : null}
         {action.kind === "cancel" && booking && room ? (
@@ -491,13 +594,18 @@ export function ActionDialog({
                 อาคาร
                 <select
                   name="buildingId"
-                  defaultValue={room?.buildingId ?? state.buildings[0].id}
+                  defaultValue={
+                    room?.buildingId ??
+                    state.buildings.find((b) => b.active !== false)?.id
+                  }
                 >
-                  {state.buildings.map((b) => (
-                    <option key={b.id} value={b.id}>
-                      {b.name}
-                    </option>
-                  ))}
+                  {state.buildings
+                    .filter((b) => b.active !== false)
+                    .map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name}
+                      </option>
+                    ))}
                 </select>
               </label>
               <label>
@@ -567,6 +675,174 @@ export function ActionDialog({
               เหตุผลการปิด (หากมี)
               <input name="reason" defaultValue={room?.reason} />
             </label>
+            <label>
+              ลิงก์รูปห้อง (HTTPS)
+              <input
+                name="imageUrl"
+                type="url"
+                maxLength={2000}
+                defaultValue={room?.imageUrl}
+                placeholder="https://..."
+              />
+            </label>
+            <fieldset>
+              <legend>จำนวนและสภาพอุปกรณ์ประจำห้อง</legend>
+              {inventory.map((item) => (
+                <div className="asset-editor" key={item.id}>
+                  <label>
+                    ชื่ออุปกรณ์
+                    <input
+                      value={item.name}
+                      required
+                      maxLength={120}
+                      onChange={(e) =>
+                        setInventory((rows) =>
+                          rows.map((i) =>
+                            i.id === item.id
+                              ? { ...i, name: e.target.value }
+                              : i,
+                          ),
+                        )
+                      }
+                    />
+                  </label>
+                  <label>
+                    จำนวนทั้งหมด
+                    <input
+                      type="number"
+                      min={1}
+                      max={10000}
+                      value={item.total}
+                      required
+                      onChange={(e) =>
+                        setInventory((rows) =>
+                          rows.map((i) =>
+                            i.id === item.id
+                              ? { ...i, total: Number(e.target.value) }
+                              : i,
+                          ),
+                        )
+                      }
+                    />
+                  </label>
+                  <label>
+                    ชำรุด
+                    <input
+                      type="number"
+                      min={0}
+                      max={item.total}
+                      value={item.damaged}
+                      required
+                      onChange={(e) =>
+                        setInventory((rows) =>
+                          rows.map((i) =>
+                            i.id === item.id
+                              ? { ...i, damaged: Number(e.target.value) }
+                              : i,
+                          ),
+                        )
+                      }
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    className="btn ghost"
+                    onClick={() =>
+                      setInventory((rows) =>
+                        rows.filter((i) => i.id !== item.id),
+                      )
+                    }
+                  >
+                    นำออก
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="btn ghost"
+                disabled={inventory.length >= 50}
+                onClick={() =>
+                  setInventory((rows) => [
+                    ...rows,
+                    {
+                      id: Math.max(0, ...rows.map((i) => i.id)) + 1,
+                      name: "",
+                      total: 1,
+                      damaged: 0,
+                    },
+                  ])
+                }
+              >
+                เพิ่มรายการอุปกรณ์
+              </button>
+            </fieldset>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={hoursEnabled}
+                onChange={(e) => setHoursEnabled(e.target.checked)}
+              />
+              กำหนดเวลาทำการและระยะจองล่วงหน้าของห้อง
+            </label>
+            {hoursEnabled ? (
+              <fieldset>
+                <legend>เวลาให้บริการ</legend>
+                <div className="form-grid">
+                  <label>
+                    เปิด
+                    <input
+                      name="hoursStart"
+                      type="time"
+                      required
+                      defaultValue={room?.hours?.start ?? "08:00"}
+                    />
+                  </label>
+                  <label>
+                    ปิด
+                    <input
+                      name="hoursEnd"
+                      type="time"
+                      required
+                      defaultValue={room?.hours?.end ?? "20:00"}
+                    />
+                  </label>
+                  <label>
+                    จองก่อนเริ่มอย่างน้อย (นาที)
+                    <input
+                      name="leadMinutes"
+                      type="number"
+                      min={0}
+                      max={1440}
+                      required
+                      defaultValue={room?.hours?.leadMinutes ?? 0}
+                    />
+                  </label>
+                </div>
+                <div className="participant-choices">
+                  {[
+                    "อาทิตย์",
+                    "จันทร์",
+                    "อังคาร",
+                    "พุธ",
+                    "พฤหัสบดี",
+                    "ศุกร์",
+                    "เสาร์",
+                  ].map((day, i) => (
+                    <label className="checkbox-label" key={day}>
+                      <input
+                        name="weekdays"
+                        type="checkbox"
+                        value={i}
+                        defaultChecked={
+                          room?.hours?.weekdays.includes(i) ?? (i > 0 && i < 6)
+                        }
+                      />
+                      {day}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            ) : null}
           </>
         ) : null}
         {action.kind === "closure" ? (
@@ -616,6 +892,19 @@ export function ActionDialog({
         ) : null}
         {action.kind === "inspect" ? (
           <>
+            {room?.inventory?.map((item) => (
+              <label key={item.id}>
+                {item.name} — จำนวนชำรุด จาก {item.total} ชิ้น
+                <input
+                  name={`damaged-${item.id}`}
+                  type="number"
+                  min={0}
+                  max={item.total}
+                  defaultValue={item.damaged}
+                  required
+                />
+              </label>
+            ))}
             <h3>{room?.name}</h3>
             <label>
               ความพร้อม
@@ -658,6 +947,49 @@ export function ActionDialog({
               />
             </label>
           </>
+        ) : null}
+        {[
+          "room-active",
+          "building-active",
+          "room-delete",
+          "building-delete",
+        ].includes(action.kind) ? (
+          <p>
+            {action.kind.endsWith("delete")
+              ? "ลบข้อมูลนี้ได้เมื่อไม่มีประวัติหรือข้อมูลที่เชื่อมโยงอยู่ หากมีประวัติให้ใช้เลิกใช้งานแทน"
+              : action.active
+                ? "เปิดใช้งานพื้นที่นี้เพื่อรับการจองตามเงื่อนไขปกติ"
+                : "เลิกใช้งานพื้นที่นี้และซ่อนจากการค้นหา ประวัติเดิมยังอ่านได้ หากมีการจองค้างอยู่ต้องจัดการก่อน"}
+          </p>
+        ) : null}
+        {action.kind === "holiday" ? (
+          <>
+            <label>
+              วันที่หยุด
+              <input
+                name="holidayDate"
+                type="date"
+                value={holidayDate}
+                onChange={(e) => setHolidayDate(e.target.value)}
+                required
+              />
+            </label>
+            <p className="subtle">
+              ทุกห้องจะไม่เปิดรับการจองในวันที่กำหนด ตามเวลาประเทศไทย
+            </p>
+            {holidayBookings.length > 0 && holidayDate !== action.date ? (
+              <p className="form-error" role="alert">
+                มีการจองที่ยังดำเนินการอยู่ {holidayBookings.length} รายการ
+                กรุณาจัดการการจองก่อนเพิ่มวันหยุด
+              </p>
+            ) : null}
+          </>
+        ) : null}
+        {action.kind === "holiday-delete" ? (
+          <p>
+            ลบวันหยุด {thaiDate(`${action.date}T12:00:00+07:00`)} ใช่หรือไม่?
+            ทุกห้องจะกลับมาเปิดรับการจองในวันนี้ตามเงื่อนไขปกติ
+          </p>
         ) : null}
         {action.kind === "equipment" ? (
           <>
@@ -736,7 +1068,7 @@ export function ActionDialog({
             </div>
           </>
         ) : null}
-        {action.kind === "clock" ? (
+        {action.kind === "clock" && mode === "demo" && canTest ? (
           <>
             <p>
               เวลาในต้นแบบแยกจากเวลาจริง เพื่อทดลองเช็คอิน สิ้นสุดรอบ
@@ -757,7 +1089,7 @@ export function ActionDialog({
               และจำลองส่งรายการที่อยู่ในคิว ไม่มีอีเมลจริงถูกส่ง
             </div>
             <p className="subtle">
-              ข้อเสนอเรื่องหมดอายุคำขอรออนุมัติยังไม่ถูกเปิดใช้
+              คำขอที่ยังไม่อนุมัติจะหมดอายุเมื่อถึงเวลาเริ่มใช้งาน
             </p>
           </>
         ) : null}
@@ -786,11 +1118,16 @@ export function ActionDialog({
                 ? "ส่งคำขอจอง"
                 : action.kind === "cancel"
                   ? "ยืนยันยกเลิก"
-                  : action.kind === "clock"
-                    ? "ใช้เวลาและประมวลผล"
-                    : action.kind === "reset"
-                      ? "เริ่มใหม่"
-                      : "ยืนยันบันทึก"}
+                  : action.kind === "room-delete" ||
+                      action.kind === "building-delete"
+                    ? "ยืนยันลบ"
+                    : action.kind === "holiday-delete"
+                      ? "ลบวันหยุด"
+                      : action.kind === "clock"
+                        ? "ใช้เวลาและประมวลผล"
+                        : action.kind === "reset"
+                          ? "เริ่มใหม่"
+                          : "ยืนยันบันทึก"}
           </button>
         </div>
       </form>

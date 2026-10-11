@@ -1,0 +1,45 @@
+
+> kku-room-booking-prototype@0.1.0 test:sql-security
+> tsx --tsconfig apps/backend/tsconfig.json --test tests/backend/database.test.ts tests/backend/sql-security.test.ts tests/backend/oracle-queries.test.ts
+
+✔ Supabase migration parses in PostgreSQL: overlap constraints and browser isolation (1968.9495ms)
+✔ Postgres adapter persists transactions, server sessions and outbox; errors roll back (1949.0562ms)
+✔ Oracle integration passes hostile purpose text as a bind and keeps SQL fixed (1.2924ms)
+✔ PostgreSQL binds hostile values and keys on insert, update, read and delete (2418.1137ms)
+✔ PostgreSQL runtime can use the adapter, but cannot own, truncate or change schema; browsers cannot read private data (1264.1173ms)
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [NestFactory] Starting Nest application...
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [InstanceLoader] ApiModule dependencies initialized +6ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RoutesResolver] ApiController {/api}: +9ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/config, GET} route +2ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/openapi.json, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/public/catalog, GET} route +1ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/health/live, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/internal/jobs, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/health/ready, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/admin/operations, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/admin/test-tools, GET} route +1ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/admin/readiness, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/session, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/state, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/commands, POST} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/auth/development, POST} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/auth/google, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/auth/google/callback, GET} route +0ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [RouterExplorer] Mapped {/api/admin/access, POST} route +1ms
+[Nest] 78620  - 12/10/2569 02:06:12     LOG [NestApplication] Nest application successfully started +0ms
+✔ database constraints reject missing JSON fields, impossible stock, mismatched times and reopened terminal bookings (1211.9995ms)
+✔ identifier allowlist rejects identifiers even if TypeScript is bypassed (0.5348ms)
+✔ SQLite prepared statements retain hostile values without changing other rows (2.3904ms)
+{"requestId":"798bc659-beff-4fd3-bc90-cf7573f2ad5e","method":"POST","path":"/api/commands","status":400,"durationMs":19}
+{"requestId":"3f48429a-424e-4a71-ae98-39044640313c","method":"POST","path":"/api/commands","status":400,"durationMs":2}
+{"requestId":"b737ce8a-741f-44c3-86f4-ea8adf81496f","method":"POST","path":"/api/commands","status":400,"durationMs":1}
+✔ HTTP rejects SQL strings in numeric IDs and extra SQL fields before any writes (85.0537ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6540.2993

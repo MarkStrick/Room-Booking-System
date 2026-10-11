@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowUpRight,
   Building2,
@@ -26,6 +26,12 @@ export interface DialogAction {
     | "closure"
     | "inspect"
     | "building"
+    | "holiday"
+    | "holiday-delete"
+    | "room-active"
+    | "building-active"
+    | "room-delete"
+    | "building-delete"
     | "equipment"
     | "penalty"
     | "clock"
@@ -35,6 +41,7 @@ export interface DialogAction {
   start?: string;
   end?: string;
   attendees?: number;
+  active?: boolean;
 }
 export type OpenDialog = (action: DialogAction) => void;
 export function PageHeading({
@@ -104,8 +111,29 @@ export function Metric({
     </div>
   );
 }
-export function RoomScene({ scene, label }: { scene: number; label?: string }) {
+export function RoomScene({
+  scene,
+  label,
+  imageUrl,
+}: {
+  scene: number;
+  label?: string;
+  imageUrl?: string;
+}) {
   const uid = useId().replace(/:/g, "");
+  const [imageFailed, setImageFailed] = useState(false);
+  useEffect(() => setImageFailed(false), [imageUrl]);
+  if (imageUrl && !imageFailed)
+    return (
+      <img
+        className="room-scene room-photo"
+        src={imageUrl}
+        alt={label ?? "รูปห้อง"}
+        loading="lazy"
+        referrerPolicy="no-referrer"
+        onError={() => setImageFailed(true)}
+      />
+    );
   const colors = [
     ["#eadccc", "#ead2bd", "#c18760", "#657c67"],
     ["#d9ddd4", "#e9e2d8", "#927e65", "#7c8d7e"],
@@ -247,7 +275,7 @@ export function BookingTable({
   }
   if (!bookings.length) return <Empty title="ไม่พบการจองตามเงื่อนไข" />;
   return (
-    <div className="table-scroll">
+    <div className={`table-scroll ${mode === "staff" ? "approval-table" : ""}`}>
       <table>
         <thead>
           <tr>
@@ -263,7 +291,7 @@ export function BookingTable({
             const r = state.rooms.find((r) => r.id === b.roomId)!;
             return (
               <tr key={b.id}>
-                <td>
+                <td data-label="การจอง / ห้อง">
                   <button
                     className="text-button ref"
                     onClick={() => open({ kind: "detail", id: b.id })}
@@ -275,20 +303,25 @@ export function BookingTable({
                   <small>
                     {r.code} • {b.attendees} คน
                   </small>
+                  {mode === "staff" ? (
+                    <p className="approval-purpose">{b.purpose}</p>
+                  ) : null}
                 </td>
-                <td>
+                <td data-label="วันและเวลา">
                   <strong>{thaiDate(b.start, true)}</strong>
                   <small className="time-text">
                     {time(b.start)}–{time(b.end)} น.
                   </small>
                 </td>
                 {mode !== "own" ? (
-                  <td>{state.users.find((u) => u.id === b.userId)?.name}</td>
+                  <td data-label="ผู้จอง">
+                    {state.users.find((u) => u.id === b.userId)?.name}
+                  </td>
                 ) : null}
-                <td>
+                <td data-label="สถานะ">
                   <Status status={b.status} />
                 </td>
-                <td>
+                <td data-label="การดำเนินการ">
                   <div className="table-actions">
                     {mode === "staff" && b.status === "PENDING" ? (
                       <>
@@ -305,6 +338,17 @@ export function BookingTable({
                           ไม่อนุมัติ
                         </button>
                       </>
+                    ) : null}
+                    {mode === "staff" &&
+                    ["APPROVED", "CHECKED_IN", "COMPLETED"].includes(
+                      b.status,
+                    ) ? (
+                      <button
+                        className="btn ghost small"
+                        onClick={() => open({ kind: "inspect", id: r.id })}
+                      >
+                        ตรวจสภาพห้อง
+                      </button>
                     ) : null}
                     {mode === "own" &&
                     b.userId === user.id &&

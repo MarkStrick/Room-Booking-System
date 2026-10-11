@@ -7,6 +7,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useDemo } from "../app/DemoProvider";
+import { RoomCover } from "../components/RoomCover";
+import { EquipmentHandovers } from "./OperationsControls";
 import {
   canManage,
   dateOf,
@@ -20,7 +22,6 @@ import {
   Metric,
   PageHeading,
   RoomLocation,
-  RoomScene,
   type OpenDialog,
 } from "../components/ui";
 
@@ -41,23 +42,38 @@ export function ManageRooms({ open }: { open: OpenDialog }) {
           </button>
         ) : null}
       </PageHeading>
+      <p className="info-strip">
+        ยังไม่ตรวจวันนี้{" "}
+        {
+          rooms.filter(
+            (r) =>
+              r.active !== false &&
+              !state.inspections.some(
+                (i) => i.roomId === r.id && dateOf(i.at) === dateOf(state.now),
+              ),
+          ).length
+        }{" "}
+        ห้อง
+      </p>
       <div className="admin-room-grid">
         {rooms.map((r) => {
           const inspection = state.inspections.find((i) => i.roomId === r.id);
           return (
             <article className="admin-room panel" key={r.id}>
-              <RoomScene scene={r.scene} />
+              <RoomCover room={r} />
               <div className="admin-room-body">
                 <div className="row-between">
                   <span className="eyebrow">{r.code}</span>
                   <span
                     className={`badge ${r.status === "AVAILABLE" ? "green" : "warm"}`}
                   >
-                    {r.status === "AVAILABLE"
-                      ? "พร้อมใช้งาน"
-                      : r.status === "MAINTENANCE"
-                        ? "ปิดปรับปรุง"
-                        : "ปิดให้บริการ"}
+                    {r.active === false
+                      ? "เลิกใช้งาน"
+                      : r.status === "AVAILABLE"
+                        ? "พร้อมใช้งาน"
+                        : r.status === "MAINTENANCE"
+                          ? "ปิดปรับปรุง"
+                          : "ปิดให้บริการ"}
                   </span>
                 </div>
                 <h3>{r.name}</h3>
@@ -91,6 +107,24 @@ export function ManageRooms({ open }: { open: OpenDialog }) {
                         onClick={() => open({ kind: "closure", id: r.id })}
                       >
                         ปิดชั่วคราว
+                      </button>
+                      <button
+                        className="btn ghost small"
+                        onClick={() =>
+                          open({
+                            kind: "room-active",
+                            id: r.id,
+                            active: r.active === false,
+                          })
+                        }
+                      >
+                        {r.active === false ? "เปิดใช้งาน" : "เลิกใช้งาน"}
+                      </button>
+                      <button
+                        className="text-button danger"
+                        onClick={() => open({ kind: "room-delete", id: r.id })}
+                      >
+                        ลบห้อง
                       </button>
                     </>
                   ) : null}
@@ -185,6 +219,7 @@ export function ManageRooms({ open }: { open: OpenDialog }) {
           <Empty title="เริ่มบันทึกผลตรวจห้องในวันนี้" />
         )}
       </section>
+      <EquipmentHandovers />
     </>
   );
 }
@@ -234,17 +269,65 @@ export function Locations({ open }: { open: OpenDialog }) {
             >
               แก้ไขข้อมูลอาคาร
             </button>
+            <div className="holiday-actions">
+              <button
+                className="btn ghost"
+                onClick={() =>
+                  open({
+                    kind: "building-active",
+                    id: b.id,
+                    active: b.active === false,
+                  })
+                }
+              >
+                {b.active === false ? "เปิดใช้งาน" : "เลิกใช้งาน"}
+              </button>
+              <button
+                className="btn ghost"
+                onClick={() => open({ kind: "building-delete", id: b.id })}
+              >
+                ลบอาคาร
+              </button>
+            </div>
+            {b.active === false ? (
+              <p className="badge warm">อาคารเลิกใช้งาน</p>
+            ) : null}
           </article>
         ))}
       </div>
-      <section className="panel spaced">
+      <section className="panel spaced holiday-panel">
         <div className="section-heading">
-          <h2>วันหยุดมหาวิทยาลัยในชุดสาธิต</h2>
+          <h2>วันหยุดมหาวิทยาลัย</h2>
+          <button className="btn" onClick={() => open({ kind: "holiday" })}>
+            <Plus size={17} />
+            เพิ่มวันหยุด
+          </button>
         </div>
-        {state.holidays.map((d) => (
-          <div className="list-row" key={d}>
+        {state.holidays.length === 0 ? (
+          <p className="subtle">
+            ยังไม่มีวันหยุด เพิ่มวันที่มหาวิทยาลัยไม่เปิดให้จองห้องได้ที่นี่
+          </p>
+        ) : null}
+        {[...state.holidays].sort().map((d) => (
+          <div className="list-row holiday-row" key={d}>
             <strong>{thaiDate(`${d}T12:00:00+07:00`)}</strong>
             <span className="badge warm">ไม่เปิดรับการจอง</span>
+            <div className="holiday-actions">
+              <button
+                className="btn ghost"
+                aria-label={`แก้ไขวันหยุด ${thaiDate(`${d}T12:00:00+07:00`)}`}
+                onClick={() => open({ kind: "holiday", date: d })}
+              >
+                แก้ไข
+              </button>
+              <button
+                className="btn ghost"
+                aria-label={`ลบวันหยุด ${thaiDate(`${d}T12:00:00+07:00`)}`}
+                onClick={() => open({ kind: "holiday-delete", date: d })}
+              >
+                ลบ
+              </button>
+            </div>
           </div>
         ))}
       </section>
@@ -337,13 +420,14 @@ export function Equipment({ open }: { open: OpenDialog }) {
         <Package size={18} />
         อุปกรณ์ประจำห้องแสดงในรายละเอียดห้อง และไม่ถูกหักจากกองกลางนี้
       </div>
+      <EquipmentHandovers />
     </>
   );
 }
 export function Penalties({ open }: { open: OpenDialog }) {
   const { state } = useDemo();
   const candidates = state.users.filter(
-    (u) => u.role === "USER" && violationCount(state, u.id) >= 3,
+    (u) => violationCount(state, u.id) >= 3,
   );
   return (
     <>
@@ -362,7 +446,7 @@ export function Penalties({ open }: { open: OpenDialog }) {
         <Metric
           label="ระงับสิทธิ์อยู่"
           value={state.users.filter((u) => suspended(state, u.id)).length}
-          note="ตามวันที่ปัจจุบันของการสาธิต"
+          note="ตามวันที่ปัจจุบันของระบบ"
           icon={<ClockIcon />}
         />
         <Metric

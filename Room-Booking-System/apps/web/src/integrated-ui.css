@@ -1,0 +1,1673 @@
+/* booking_room_kku layouts and Sarabun type adapted to KKU Space's palette.
+   Shared by the live API UI, public catalog, and admin sandbox. */
+.integrated-shell {
+  --ui-surface: #fff;
+  --ui-background: #f8f7f4;
+}
+.integrated-shell .workspace {
+  min-width: 0;
+}
+.integrated-shell .workspace main {
+  max-width: 1440px;
+  padding: 28px 32px;
+  margin-inline: auto;
+}
+.integrated-shell .topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  height: auto;
+  min-height: 112px;
+  padding: 0;
+  gap: 0;
+  background: var(--ui-surface);
+  position: relative;
+  z-index: 20;
+}
+.workspace-brand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 0;
+  padding: 16px 32px;
+}
+.workspace-brand .brand {
+  flex-shrink: 0;
+}
+.workspace-brand .university-brand img {
+  width: 28px;
+}
+.workspace-brand-description {
+  border-left: 1px solid var(--line);
+  padding-left: 20px;
+  font-size: 13px;
+  color: var(--student-secondary);
+}
+.integrated-shell .topbar-actions {
+  padding: 12px 32px 12px 0;
+  gap: 12px;
+}
+.integrated-shell .breadcrumb {
+  grid-column: 1 / -1;
+  min-height: 44px;
+  padding: 7px 32px;
+  border-top: 1px solid var(--line);
+  background: var(--ui-background);
+  color: var(--student-secondary);
+  font-size: 13px;
+  gap: 10px;
+}
+.integrated-shell .breadcrumb strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.integrated-shell .nav-item {
+  min-height: 48px;
+  font-size: 14px;
+}
+.integrated-shell .nav-item.active {
+  box-shadow: none;
+}
+.integrated-shell .nav-group-title {
+  color: var(--student-secondary);
+  font-size: 12px;
+}
+.integrated-shell .icon-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.account-menu {
+  position: relative;
+}
+.account-trigger {
+  border: 0;
+  background: transparent;
+  padding: 4px;
+  min-height: 44px;
+  border-radius: 12px;
+  text-align: left;
+}
+.account-trigger:hover {
+  background: var(--ui-background);
+}
+.integrated-shell .header-user strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+.integrated-shell .header-user small {
+  color: var(--student-secondary);
+  font-size: 12px;
+}
+.account-options {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: min(288px, calc(100vw - 32px));
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: 0 12px 32px #302c2926;
+  padding: 16px;
+  z-index: 35;
+}
+.account-options > strong,
+.account-options > small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.account-options > small {
+  color: var(--student-secondary);
+  margin: 4px 0 12px;
+  font-size: 13px;
+}
+.account-options a,
+.account-options button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+}
+.account-options a:hover {
+  background: var(--ui-background);
+}
+.account-options button {
+  color: var(--primary-dark);
+  background: var(--primary-soft);
+  margin-top: 4px;
+}
+.notification-count {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  min-width: 17px;
+  padding: 2px 4px;
+  border-radius: 20px;
+  background: var(--primary);
+  color: white;
+  font-size: 10px;
+  line-height: 1.3;
+}
+.mobile-bottom-nav {
+  display: none;
+}
+.desktop-workspace-title,
+.desktop-filter-heading,
+.desktop-search-note,
+.room-view-toggle {
+  display: none;
+}
+.rooms-results-tools {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.integrated-shell .student-page-heading h1,
+.integrated-shell .page-heading h1 {
+  font-family: "Sarabun", "Noto Sans Thai", "Inter", system-ui, sans-serif;
+  font-weight: 700;
+}
+.integrated-shell .page-heading .eyebrow {
+  display: none;
+}
+.integrated-shell .page-heading p {
+  color: var(--student-secondary);
+  font-size: 15px;
+  line-height: 1.8;
+}
+.daily-overview {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.daily-overview h2 {
+  font-size: 20px;
+}
+.daily-overview p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--student-secondary);
+  margin-top: 8px;
+}
+.daily-availability {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 14px;
+  color: #fff;
+  background: var(--primary);
+}
+.daily-availability > svg {
+  color: #f6dfb4;
+  flex-shrink: 0;
+}
+.daily-availability strong {
+  display: block;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.daily-availability span {
+  display: block;
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 4px;
+  color: #fff0e8;
+}
+.rooms-primary-search {
+  padding: 20px 24px 0;
+}
+.rooms-primary-search .room-name-input {
+  position: relative;
+}
+.rooms-primary-search .room-name-input > svg {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.rooms-primary-search input {
+  background: var(--ui-background, #f8f7f4);
+  min-height: 48px;
+  border-radius: 10px;
+}
+.integrated-shell .student-room-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.student-room-card {
+  padding: 20px;
+  overflow: hidden;
+}
+.room-cover {
+  position: relative;
+  height: 156px;
+  background: #f1e9e0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.student-room-card > .room-cover {
+  margin: -20px -20px 18px;
+}
+.room-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.room-cover-placeholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: #77634f;
+}
+.room-cover-placeholder span {
+  font-size: 12px;
+}
+.room-cover-code,
+.room-cover-capacity {
+  position: absolute;
+  bottom: 12px;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.room-cover-code {
+  left: 16px;
+}
+.room-cover-capacity {
+  right: 16px;
+}
+.room-cover.has-photo .room-cover-code,
+.room-cover.has-photo .room-cover-capacity {
+  background: #302c29;
+  color: #fff;
+}
+.student-room-card .student-room-top {
+  margin-bottom: 12px;
+}
+.student-room-amenities {
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.student-room-amenities li {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-size: 12px;
+}
+.student-room-amenities li::before {
+  display: none;
+}
+.room-opening-hours {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--student-secondary);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.student-room-action {
+  padding-top: 16px;
+  gap: 10px;
+}
+.student-room-action .btn {
+  width: 100%;
+}
+.student-room-action small {
+  width: 100%;
+  text-align: center;
+}
+.student-booking-modal > .modal-inner > form > .room-cover {
+  border-radius: 12px;
+  margin-bottom: 20px;
+  height: 180px;
+}
+.student-booking-modal .modal-header h2 {
+  font-family:
+    "Sarabun", "Noto Sans Thai", "Inter", system-ui, sans-serif;
+  font-weight: 400;
+}
+.booking-status-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -4px 0 22px;
+}
+.booking-status-tabs button,
+.chat-quick-questions button {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--white);
+  padding: 8px 14px;
+  font-size: 14px;
+  color: var(--student-secondary);
+  min-height: 44px;
+}
+.booking-status-tabs button.selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.student-booking-purpose {
+  background: var(--ui-background);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.integrated-shell .approval-workspace .metrics-grid {
+  gap: 12px;
+}
+.approval-workspace .metric {
+  padding: 18px;
+  background: #fff;
+  box-shadow: none;
+}
+.approval-workspace .metric:first-child {
+  background: #faf2e1;
+}
+.approval-workspace .metric:nth-child(2) {
+  background: #eff6ef;
+}
+.approval-workspace .metric-top {
+  font-size: 14px;
+  color: var(--ink);
+}
+.approval-workspace .metric small {
+  font-size: 12px;
+  color: var(--student-secondary);
+  line-height: 1.7;
+}
+.approval-workspace .filter-tabs {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.approval-workspace .filter-tab {
+  min-height: 44px;
+  padding: 9px 14px;
+  border-radius: 24px;
+  font-size: 13px;
+  border: 1px solid var(--line);
+  background: var(--ui-background);
+}
+.approval-workspace .filter-tab.selected {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: none;
+}
+.approval-workspace .panel-toolbar {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.approval-workspace .inline-search {
+  min-width: min(280px, 100%);
+}
+.approval-table td {
+  font-size: 14px;
+}
+.approval-table td:first-child {
+  min-width: 210px;
+}
+.approval-table .approval-purpose {
+  color: var(--student-secondary);
+  font-size: 13px;
+  margin-top: 10px;
+  max-width: 34ch;
+  overflow-wrap: anywhere;
+}
+.approval-table .btn {
+  min-height: 44px;
+  font-size: 13px;
+}
+.integrated-shell .chat-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.integrated-shell .chat-header {
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+}
+.integrated-shell .chat-icon {
+  background: #fff;
+  color: var(--primary);
+}
+.integrated-shell .chat-header strong {
+  font-size: 16px;
+}
+.integrated-shell .chat-header small {
+  color: #fff0e8;
+  font-size: 12px;
+}
+.integrated-shell .chat-messages {
+  flex: 1;
+  background: var(--ui-background);
+  min-height: 300px;
+}
+.integrated-shell .bubble {
+  font-size: 15px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.integrated-shell .bubble.bot {
+  background: #fff;
+  color: var(--ink);
+}
+.integrated-shell .bubble small {
+  color: var(--student-secondary);
+  font-size: 11px;
+}
+.chat-quick-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 16px 0;
+}
+.chat-quick-questions button {
+  font-size: 12px;
+  padding: 7px 12px;
+  color: var(--primary-dark);
+  background: var(--primary-soft);
+}
+.integrated-shell .chat-form {
+  margin-top: auto;
+}
+.integrated-shell .chat-form input {
+  min-width: 0;
+  font-size: 16px;
+}
+.integrated-shell .faq-panel details p {
+  font-size: 14px;
+  color: var(--student-secondary);
+}
+.integrated-shell .faq-panel summary {
+  font-size: 15px;
+  min-height: 48px;
+}
+.integrated-shell .faq-panel .text-button {
+  font-size: 13px;
+  min-height: 44px;
+}
+.integrated-shell .tutorial strong {
+  font-size: 15px;
+}
+.integrated-shell .tutorial small {
+  color: var(--student-secondary);
+  font-size: 13px;
+}
+.integrated-shell .footer {
+  color: var(--student-secondary);
+  font-size: 12px;
+}
+.integrated-shell .admin-card-actions {
+  flex-wrap: wrap;
+}
+.integrated-shell .admin-card-actions button {
+  min-height: 44px;
+}
+.integrated-shell .admin-room .room-cover {
+  height: 156px;
+}
+.session-page {
+  background: #f8f7f4;
+  padding: 48px 24px;
+}
+.session-content {
+  max-width: 520px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px;
+  box-shadow: 0 12px 40px #302c2910;
+}
+.session-content .brand {
+  margin-bottom: 28px;
+}
+.session-content > .btn.ghost {
+  width: 100%;
+  margin-top: 16px;
+}
+.integrated-shell ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.integrated-shell ::-webkit-scrollbar-thumb {
+  background: #c9c0b6;
+  border-radius: 8px;
+}
+.integrated-shell ::-webkit-scrollbar-track {
+  background: #f8f7f4;
+}
+@media (min-width: 1500px) {
+  .integrated-shell .student-room-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .workspace-brand-description {
+    display: none;
+  }
+  .integrated-shell .workspace main {
+    padding: 24px;
+  }
+  .workspace-brand {
+    padding-left: 24px;
+  }
+  .integrated-shell .topbar-actions {
+    padding-right: 24px;
+  }
+  .integrated-shell .breadcrumb {
+    padding-inline: 24px;
+  }
+  .daily-overview {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .integrated-shell .account-name {
+    display: none;
+  }
+  .integrated-shell .help-grid {
+    grid-template-columns: 1fr;
+  }
+  .integrated-shell .rooms-extra-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 701px) and (max-width: 950px) {
+  .integrated-shell .student-room-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 700px) {
+  .integrated-shell .workspace main {
+    padding: 22px 16px calc(96px + env(safe-area-inset-bottom));
+  }
+  .integrated-shell .topbar {
+    position: sticky;
+    top: 0;
+    min-height: 104px;
+  }
+  .workspace-brand {
+    padding: 12px 16px;
+    gap: 0;
+  }
+  .workspace-brand .university-brand img {
+    width: 30px;
+  }
+  .workspace-brand .brand > span > strong {
+    font-size: 19px;
+  }
+  .workspace-brand .brand small {
+    font-size: 9px;
+    max-width: 140px;
+  }
+  .workspace-brand-description,
+  .integrated-shell .account-name,
+  .integrated-shell .clock-button {
+    display: none;
+  }
+  .integrated-shell .topbar-actions {
+    padding: 8px 12px 8px 0;
+    gap: 4px;
+  }
+  .integrated-shell .topbar-actions .avatar {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+  .integrated-shell .breadcrumb {
+    padding: 0 12px;
+    gap: 7px;
+    font-size: 12px;
+  }
+  .integrated-shell .breadcrumb > span {
+    display: none;
+  }
+  .integrated-shell .breadcrumb > svg:first-of-type {
+    display: none;
+  }
+  .integrated-shell .breadcrumb strong {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    inset-inline: 0;
+    z-index: 25;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    background: #fff;
+    border-top: 1px solid var(--line);
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  }
+  .mobile-bottom-nav a,
+  .mobile-bottom-nav button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 54px;
+    border: 0;
+    background: transparent;
+    color: var(--student-secondary);
+    font-size: 12px;
+    border-radius: 10px;
+  }
+  .mobile-bottom-nav .active {
+    color: var(--primary);
+    background: var(--primary-soft);
+    font-weight: 600;
+  }
+  .integrated-shell .student-page-heading {
+    margin-bottom: 20px;
+  }
+  .daily-overview {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .daily-overview h2 {
+    font-size: 18px;
+  }
+  .daily-overview p {
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  .daily-availability {
+    padding: 16px;
+    gap: 12px;
+  }
+  .daily-availability strong {
+    font-size: 15px;
+  }
+  .daily-availability span {
+    font-size: 12px;
+  }
+  .rooms-primary-search {
+    padding: 16px 16px 0;
+  }
+  .rooms-primary-search input {
+    font-size: 16px;
+  }
+  .rooms-main-fields {
+    padding-top: 16px;
+  }
+  .rooms-main-fields > label:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .rooms-main-fields > label:last-child {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .rooms-main-fields > label:first-child input {
+    padding-inline: 8px;
+  }
+  .rooms-main-fields input,
+  .rooms-extra-fields select {
+    font-size: 16px;
+    min-width: 0;
+  }
+  .integrated-shell .student-room-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .integrated-shell .student-room-card {
+    padding: 18px;
+  }
+  .student-room-card > .room-cover {
+    margin: -18px -18px 16px;
+    height: 164px;
+  }
+  .student-room-card .student-room-top {
+    gap: 8px;
+  }
+  .student-availability {
+    font-size: 12px;
+  }
+  .integrated-shell .student-booking-card-header {
+    flex-direction: row;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .student-booking-card-header > div {
+    min-width: 0;
+  }
+  .student-booking-card-header h2 {
+    font-size: 18px;
+  }
+  .student-booking-card-header .badge {
+    flex-shrink: 0;
+    font-size: 11px;
+  }
+  .booking-status-tabs {
+    gap: 6px;
+  }
+  .booking-status-tabs button {
+    font-size: 12px;
+    padding-inline: 12px;
+  }
+  .approval-workspace .metrics-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .approval-workspace .metric {
+    padding: 12px 8px;
+    min-width: 0;
+    text-align: center;
+  }
+  .approval-workspace .metric-top {
+    font-size: 12px;
+    display: block;
+  }
+  .approval-workspace .metric-icon {
+    display: none;
+  }
+  .approval-workspace .metric-value {
+    font-size: 28px;
+  }
+  .approval-workspace .metric small {
+    font-size: 11px;
+  }
+  .approval-workspace .panel-toolbar {
+    padding: 16px;
+  }
+  .approval-workspace .filter-tab {
+    font-size: 12px;
+    padding-inline: 12px;
+  }
+  .approval-workspace .inline-search {
+    width: 100%;
+  }
+  .approval-workspace .inline-search input {
+    font-size: 16px;
+  }
+  .approval-workspace > .panel {
+    background: transparent;
+    border: 0;
+  }
+  .approval-table {
+    overflow: visible;
+  }
+  .approval-table table,
+  .approval-table tbody {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+  .approval-table thead {
+    display: none;
+  }
+  .approval-table tr {
+    display: block;
+    border: 1px solid var(--student-border);
+    border-radius: 14px;
+    background: #fff;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .approval-table td {
+    display: block;
+    border: 0;
+    padding: 8px 0;
+    font-size: 14px;
+  }
+  .approval-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    color: var(--student-secondary);
+    margin-bottom: 6px;
+  }
+  .approval-table td:first-child {
+    min-width: 0;
+    padding-top: 0;
+  }
+  .approval-table .table-title {
+    font-size: 18px;
+  }
+  .approval-table .table-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .approval-table .approval-purpose {
+    max-width: none;
+  }
+  .integrated-shell .help-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  .help-workspace {
+    display: flex;
+    flex-direction: column;
+  }
+  .help-workspace > .page-heading {
+    order: -3;
+  }
+  .help-workspace > .help-grid {
+    order: -2;
+  }
+  .help-workspace > .tutorial {
+    order: -1;
+    margin-top: 24px;
+  }
+  .integrated-shell .chat-panel {
+    order: -1;
+  }
+  .integrated-shell .chat-messages {
+    min-height: 260px;
+    max-height: 45dvh;
+    padding: 18px 16px;
+  }
+  .integrated-shell .bubble {
+    max-width: 92%;
+  }
+  .chat-quick-questions {
+    gap: 6px;
+  }
+  .integrated-shell .page-heading h1 {
+    font-size: 25px;
+  }
+  .integrated-shell .toast {
+    bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+  .student-booking-modal {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    margin: 0;
+  }
+  .student-booking-modal .modal-inner {
+    padding: 20px 18px calc(20px + env(safe-area-inset-bottom));
+  }
+  .student-booking-modal .modal-header {
+    position: sticky;
+    top: -20px;
+    z-index: 2;
+    background: #fff;
+    padding: 16px 0;
+    margin-bottom: 16px;
+  }
+  .student-booking-modal .modal-actions {
+    background: #fff;
+  }
+  .student-booking-modal input,
+  .student-booking-modal textarea {
+    font-size: 16px;
+  }
+  .session-page {
+    padding: 24px 16px;
+  }
+  .session-content {
+    padding: 24px 20px;
+  }
+}
+/* Desktop is a workspace with a persistent filter rail, not a scaled phone. */
+@media (max-width: 360px) {
+  .rooms-main-fields > label:first-child,
+  .rooms-main-fields > label:last-child {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+}
+@media (min-width: 1101px) {
+  .integrated-shell .workspace main {
+    padding: 36px;
+  }
+  .integrated-shell .topbar {
+    min-height: 80px;
+    display: flex;
+  }
+  .integrated-shell .workspace-brand > .brand,
+  .integrated-shell .workspace-brand-description,
+  .integrated-shell .topbar > .breadcrumb {
+    display: none;
+  }
+  .desktop-workspace-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .desktop-workspace-title > svg {
+    color: var(--primary);
+  }
+  .desktop-workspace-title small {
+    display: block;
+    color: var(--student-secondary);
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  .desktop-workspace-title strong {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .integrated-shell .student-page-heading h1,
+  .integrated-shell .page-heading h1 {
+    font-size: 36px;
+  }
+  .integrated-shell .sidebar {
+    padding-top: 24px;
+  }
+  .integrated-shell .sidebar .nav-item {
+    min-height: 46px;
+  }
+  .daily-overview {
+    padding: 18px 0 22px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 28px;
+    grid-template-columns: 1fr 1.1fr;
+  }
+  .daily-overview h2 {
+    font-size: 18px;
+  }
+  .daily-availability {
+    background: transparent;
+    color: var(--ink);
+    padding: 0 0 0 24px;
+    border-left: 1px solid var(--line);
+    border-radius: 0;
+  }
+  .daily-availability > svg {
+    color: var(--primary);
+  }
+  .daily-availability span {
+    color: var(--student-secondary);
+  }
+  .desktop-search-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 28px;
+    align-items: start;
+  }
+  .rooms-filter-rail {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: 24px;
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+  }
+  .rooms-catalog {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .desktop-filter-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 20px 0;
+    color: var(--primary);
+  }
+  .desktop-filter-heading h2 {
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .rooms-filter-rail .rooms-primary-search {
+    padding: 18px 20px 0;
+  }
+  .rooms-filter-rail .rooms-primary-search input {
+    font-size: 14px;
+  }
+  .rooms-filter-rail .rooms-main-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 20px;
+    gap: 16px 12px;
+  }
+  .rooms-filter-rail .rooms-main-fields > label:first-child,
+  .rooms-filter-rail .rooms-main-fields > label:last-child {
+    grid-column: 1 / -1;
+  }
+  .rooms-filter-rail .rooms-main-fields label {
+    font-size: 13px;
+  }
+  .rooms-filter-rail .rooms-main-fields input {
+    font-size: 14px;
+    min-width: 0;
+    padding-inline: 10px;
+  }
+  .rooms-filter-rail .rooms-main-fields .people-input input {
+    padding-left: 38px;
+  }
+  .rooms-filter-rail .rooms-search-meta {
+    padding: 0 20px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .rooms-filter-rail .rooms-search-meta p {
+    text-align: left;
+    font-size: 12px;
+  }
+  .rooms-filter-rail .quick-days {
+    flex-wrap: wrap;
+  }
+  .rooms-filter-rail .rooms-extra-filters > summary {
+    padding: 16px 20px;
+  }
+  .rooms-filter-rail .optional-copy {
+    display: none;
+  }
+  .rooms-filter-rail .rooms-extra-fields {
+    grid-template-columns: 1fr;
+    padding: 0 20px 20px;
+    gap: 14px;
+  }
+  .rooms-filter-rail .rooms-extra-filters > .text-button {
+    margin-left: 20px;
+  }
+  .desktop-search-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 20px 4px 0;
+    color: var(--student-secondary);
+  }
+  .desktop-search-note > svg {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--primary);
+  }
+  .desktop-search-note strong {
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .desktop-search-note p {
+    font-size: 12px;
+    line-height: 1.9;
+    margin-top: 6px;
+  }
+  .desktop-search-note a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-size: 13px;
+    color: var(--primary);
+  }
+  .rooms-catalog .rooms-results-heading {
+    margin: 0 0 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .rooms-catalog .rooms-results-heading h2 {
+    font-size: 22px;
+  }
+  .rooms-catalog .rooms-results-heading p {
+    font-size: 13px;
+  }
+  .rooms-results-tools {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .room-view-toggle {
+    display: flex;
+    gap: 4px;
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+  }
+  .room-view-toggle button {
+    display: grid;
+    place-items: center;
+    min-width: 40px;
+    min-height: 38px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--student-secondary);
+  }
+  .room-view-toggle button[aria-pressed="true"] {
+    background: var(--primary-soft);
+    color: var(--primary);
+  }
+  .rooms-catalog .student-room-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .rooms-catalog .student-room-card h3 {
+    font-size: 19px;
+  }
+  .rooms-catalog .student-room-card .room-location {
+    font-size: 13px;
+  }
+  .rooms-catalog .student-room-facts {
+    font-size: 13px;
+    gap: 8px 12px;
+  }
+  .rooms-catalog .room-cover {
+    height: 132px;
+  }
+  .rooms-catalog .student-room-action small {
+    font-size: 12px;
+  }
+  .rooms-catalog .student-room-grid.room-list-view {
+    grid-template-columns: 1fr;
+  }
+  .room-list-view .student-room-card {
+    display: grid;
+    grid-template-columns: 152px minmax(0, 1fr);
+    gap: 10px 20px;
+    padding: 18px;
+  }
+  .room-list-view .student-room-card > * {
+    grid-column: 2;
+  }
+  .room-list-view .student-room-card > .room-cover {
+    grid-column: 1;
+    grid-row: 1 / span 8;
+    align-self: stretch;
+    height: auto;
+    min-height: 200px;
+    margin: 0;
+    border-radius: 10px;
+  }
+  .room-list-view .student-room-top,
+  .room-list-view .student-room-facts,
+  .room-list-view .student-room-amenities {
+    margin: 0;
+  }
+  .room-list-view .student-room-top {
+    justify-content: flex-end;
+  }
+  .room-list-view .room-kind-icon {
+    display: none;
+  }
+  .room-list-view .student-room-action {
+    padding-top: 12px;
+  }
+  .room-list-view .student-room-action .btn {
+    width: auto;
+  }
+  .room-list-view .student-room-action small {
+    width: auto;
+    text-align: left;
+  }
+  .student-booking-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .student-booking-card {
+    min-width: 0;
+  }
+  .student-booking-time {
+    flex-wrap: wrap;
+  }
+  .student-booking-actions {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .integrated-shell .help-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    align-items: start;
+  }
+  .integrated-shell .chat-messages {
+    min-height: 360px;
+    max-height: 520px;
+  }
+  .approval-workspace .panel-toolbar {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    align-items: start;
+  }
+  .approval-workspace .metrics-grid {
+    margin-bottom: 24px;
+  }
+  .approval-workspace .metric {
+    padding: 20px 24px;
+  }
+}
+@media (min-width: 1700px) {
+  .rooms-catalog .student-room-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .integrated-shell *,
+  .student-booking-modal * {
+    scroll-behavior: auto;
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Reference composition: compact search on mobile; a wider workspace on desktop. */
+.integrated-shell .student-page-heading h1,
+.integrated-shell .page-heading h1,
+.student-booking-modal h2,
+.session-content h1 {
+  font-family: "Sarabun", "Noto Sans Thai", "Inter", system-ui, sans-serif;
+  font-weight: 700;
+}
+.rooms-intro {
+  margin-bottom: 28px;
+}
+.rooms-intro .student-page-heading {
+  margin-bottom: 18px;
+}
+.rooms-intro .student-page-heading p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--student-secondary);
+  font-size: 14px;
+}
+.heading-period {
+  color: var(--primary);
+}
+.rooms-intro .daily-overview {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.rooms-intro .daily-availability {
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  gap: 14px;
+}
+.rooms-intro .daily-availability > svg {
+  color: #f6dfb4;
+}
+.daily-message {
+  min-width: 0;
+  flex: 1;
+}
+.rooms-intro .daily-message span {
+  color: #fff0e8;
+  font-size: 12px;
+  margin: 0 0 3px;
+}
+.rooms-intro .daily-message strong {
+  font-size: 15px;
+  line-height: 1.6;
+}
+.daily-room-count {
+  flex-shrink: 0;
+  text-align: center;
+  border-left: 1px solid #ffffff40;
+  padding-left: 16px;
+}
+.daily-room-count strong {
+  font-size: 30px;
+  line-height: 1.2;
+}
+.rooms-intro .daily-room-count span {
+  font-size: 11px;
+  color: #fff0e8;
+  margin-top: 3px;
+}
+.mobile-filter-toggle,
+.room-cover-title {
+  display: none;
+}
+.room-cover-title {
+  position: absolute;
+  left: 16px;
+  right: 74px;
+  bottom: 14px;
+  color: var(--ink);
+  flex-direction: column;
+  gap: 6px;
+}
+.room-cover-title h3 {
+  line-height: 1.5;
+}
+.room-cover-title .room-location {
+  color: #655d55;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.room-cover.has-photo:has(.room-cover-title)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 25%, #171512c9);
+  pointer-events: none;
+}
+.room-cover.has-photo .room-cover-title {
+  color: #fff;
+}
+.room-cover.has-photo .room-cover-title .room-location {
+  color: #fff0e8;
+}
+.room-cover-title,
+.room-cover-code,
+.room-cover-capacity {
+  z-index: 1;
+}
+.room-cover-placeholder {
+  padding-bottom: 42px;
+}
+.session-login {
+  background: var(--primary);
+}
+.session-login .session-content {
+  max-width: 960px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 20px 56px #5b1f1833;
+}
+.session-hero {
+  padding: 48px 36px;
+  background: var(--primary-dark);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.session-hero .brand {
+  background: #fff;
+  color: var(--ink);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  align-self: flex-start;
+}
+.session-hero h1 {
+  font-size: 30px;
+  margin-bottom: 0;
+}
+.session-hero p {
+  color: #fff0e8;
+  font-size: 15px;
+  line-height: 1.9;
+  max-width: 32ch;
+}
+.session-form-panel {
+  padding: 36px;
+  min-width: 0;
+}
+.session-form-panel .password-login {
+  margin-top: 0;
+}
+.session-form-panel > .btn.ghost {
+  width: 100%;
+  margin-top: 20px;
+  font-size: 14px;
+}
+@media (min-width: 1101px) {
+  .rooms-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 36px;
+  }
+  .rooms-intro .student-page-heading {
+    margin: 0;
+  }
+  .rooms-intro .student-page-heading h1 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 700px) {
+  .integrated-shell .workspace main {
+    padding-top: 20px;
+  }
+  .rooms-intro {
+    margin-bottom: 18px;
+  }
+  .rooms-intro .student-page-heading h1 {
+    font-size: 26px;
+    line-height: 1.5;
+  }
+  .rooms-intro .student-page-heading p {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  .rooms-intro .daily-availability {
+    padding: 14px;
+    gap: 10px;
+  }
+  .rooms-intro .daily-message strong {
+    font-size: 13px;
+  }
+  .daily-room-count {
+    padding-left: 10px;
+  }
+  .daily-room-count strong {
+    font-size: 26px;
+  }
+  .rooms-primary-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+  }
+  .rooms-primary-search .room-name-input {
+    flex: 1;
+    min-width: 0;
+  }
+  .rooms-primary-search input {
+    background: #fff;
+  }
+  .mobile-filter-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--student-border);
+    background: #fff;
+    color: var(--student-secondary);
+    border-radius: 10px;
+  }
+  .mobile-filter-toggle[aria-expanded="true"] {
+    color: var(--primary);
+    background: var(--primary-soft);
+  }
+  .mobile-filter-toggle > span {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 8px;
+    padding: 1px 4px;
+    font-size: 10px;
+  }
+  .rooms-controls {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .rooms-main-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 12px 0 0;
+    gap: 10px;
+  }
+  .rooms-main-fields > label:first-child {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .rooms-main-fields > label:last-child {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .rooms-main-fields label {
+    font-size: 12px;
+  }
+  .rooms-controls:not(.filters-expanded) .rooms-main-fields > label {
+    font-size: 0;
+  }
+  .rooms-controls:not(.filters-expanded) .rooms-main-fields input {
+    margin-top: 0;
+  }
+  .rooms-controls:not(.filters-expanded) .room-capacity-field,
+  .rooms-controls:not(.filters-expanded) .quick-days,
+  .rooms-controls:not(.filters-expanded) .selection-hint,
+  .rooms-extra-filters > summary {
+    display: none;
+  }
+  .rooms-search-meta {
+    padding: 0;
+    margin-top: 10px;
+    gap: 10px;
+  }
+  .rooms-controls.filters-expanded .rooms-search-meta {
+    margin-top: 16px;
+  }
+  .rooms-extra-filters {
+    border: 0;
+  }
+  .rooms-extra-filters[open] {
+    margin-top: 16px;
+  }
+  .rooms-extra-fields {
+    padding: 0;
+    gap: 14px;
+  }
+  .rooms-extra-filters > .text-button {
+    margin-left: 0;
+  }
+  .rooms-results-heading {
+    margin-top: 20px;
+    gap: 12px;
+    flex-direction: row;
+    align-items: center;
+  }
+  .rooms-results-heading h2 {
+    font-size: 17px;
+  }
+  .rooms-results-heading p {
+    font-size: 11px;
+  }
+  .rooms-results-tools {
+    gap: 0;
+    flex-shrink: 0;
+    width: auto;
+  }
+  .availability-toggle {
+    font-size: 12px;
+  }
+  .rooms-catalog .student-room-card {
+    position: relative;
+    padding: 14px;
+  }
+  .rooms-catalog .student-room-card > .room-cover {
+    margin: -14px -14px 12px;
+    height: 164px;
+  }
+  .rooms-catalog .room-cover-title {
+    display: flex;
+  }
+  .rooms-catalog .room-cover-title h3 {
+    font-size: 16px;
+  }
+  .rooms-catalog .room-cover-code {
+    bottom: auto;
+    top: 12px;
+    left: 14px;
+    font-size: 11px;
+  }
+  .rooms-catalog .room-cover-capacity {
+    font-size: 11px;
+    right: 14px;
+    bottom: 14px;
+  }
+  .rooms-catalog .student-room-card > h3,
+  .rooms-catalog .student-room-card > .room-location,
+  .rooms-catalog .student-room-facts,
+  .rooms-catalog .room-kind-icon {
+    display: none;
+  }
+  .rooms-catalog .student-room-top {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    margin: 0;
+  }
+  .rooms-catalog .student-availability {
+    font-size: 10px;
+    padding: 4px 7px;
+    background: #fff;
+  }
+  .rooms-catalog .student-room-amenities {
+    margin-top: 0;
+    gap: 6px;
+  }
+  .rooms-catalog .student-room-amenities li {
+    border: 0;
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  .rooms-catalog .student-room-action {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+  .rooms-catalog .student-room-action .btn {
+    min-height: 44px;
+    font-size: 14px;
+  }
+  .rooms-catalog .student-room-action small {
+    font-size: 11px;
+  }
+  .session-login {
+    padding: 0;
+    display: block;
+  }
+  .session-login .session-content {
+    display: block;
+    max-width: none;
+    border-radius: 0;
+    min-height: 100dvh;
+    background: var(--primary);
+    box-shadow: none;
+  }
+  .session-hero {
+    padding: 36px 24px 30px;
+    background: var(--primary);
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+  .session-hero .brand {
+    align-self: center;
+    padding: 14px 20px;
+    margin-bottom: 16px;
+  }
+  .session-hero h1 {
+    font-size: 24px;
+  }
+  .session-hero p {
+    font-size: 13px;
+  }
+  .session-form-panel {
+    padding: 28px 24px calc(28px + env(safe-area-inset-bottom));
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+  }
+}

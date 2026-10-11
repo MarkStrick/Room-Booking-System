@@ -1,5 +1,7 @@
 # เข้าสู่ระบบด้วยรหัสผ่าน — 9 ตุลาคม 2569
 
+> เอกสารประวัติ: ตั้งแต่ 12 ตุลาคม 2569 ช่องทางรหัสผ่านทั้งหมดถูกปิด หน้าเว็บใช้ Google เท่านั้น ดู [คู่มือปัจจุบัน](MOBILE_UI_GOOGLE_LOGIN.md) ตาราง credentials/token เดิมคงไว้เพื่อรักษาข้อมูล ไม่ต้องลบหรือย้อน migration
+
 ผู้ใช้สมัครและตั้งรหัสผ่านเองได้ ยืนยันอีเมลก่อนใช้งาน แล้วเข้าสู่ระบบด้วยอีเมล/รหัสผ่าน Google Login เปิดให้ใช้อีเมลทุกโดเมนตามคำขอล่าสุด ค่าสำหรับทั้งสองช่องทางใช้ `ALLOW_PUBLIC_GOOGLE=1` ซึ่งเป็นค่าปกติ ผู้ใช้ทั่วไปได้รับบทบาทผู้จอง ส่วนผู้ดูแลเริ่มต้นใช้อีเมลใน `BOOTSTRAP_ADMIN_EMAILS` ที่ตั้งฝั่งเซิร์ฟเวอร์และต้องยืนยันอีเมลก่อน ไม่รับ role จากแบบฟอร์มสมัคร
 
 ## ค่าที่ต้องตั้งก่อนเปิดจริง
@@ -8,7 +10,7 @@
 2. ตั้ง `DATABASE_URL` ฝั่งเซิร์ฟเวอร์ตามคู่มือ `PRODUCTION_SETUP.md` ไม่มีการส่ง database password หรือ service credentials ไป frontend
 3. ตั้ง SMTP และ `MAIL_FROM` สำหรับส่งยืนยันอีเมลและลิงก์ตั้งรหัสผ่านใหม่ การสมัคร/ขอลิงก์จะปิดจนกว่าจะตั้งผู้ส่งอีเมล ไม่เปิดบัญชีให้ข้ามการยืนยันใน production
 4. ถ้าต้องการ Google Login ให้ตั้ง `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` และ callback `${APP_ORIGIN}/api/auth/google/callback` ไม่บังคับ Google credentials สำหรับระบบรหัสผ่าน แต่ยังต้องตั้ง Google OAuth consent ให้รองรับผู้ใช้ภายนอกของแอปจริง
-5. ตั้ง `APP_ORIGIN` เป็น HTTPS ของเว็บจริง แล้ว build และรีสตาร์ต API/worker หลังรัน migration การทดสอบในเครื่องใช้ SQLite เท่านั้น ยังไม่ได้ส่ง migration นี้ไป Supabase cloud
+5. ตั้ง `APP_ORIGIN` เป็น HTTPS ของเว็บจริง แล้ว build และรีสตาร์ต API/worker หลังรัน migration ตรวจวันที่ 10 ต.ค. ว่า password schema ติดตั้งใน Supabase cloud แล้วตาม migration history ของบริการ แต่การเชื่อม direct จากเครื่องนี้ติด IPv6 และ SMTP ยังไม่ได้ตั้ง จึงยังไม่ยืนยัน login/อีเมลจริงครบวงจร ดู [ผลตรวจล่าสุด](AUDIT_FIX_VERIFICATION.md)
 
 ## การเก็บและตรวจรหัสผ่าน
 

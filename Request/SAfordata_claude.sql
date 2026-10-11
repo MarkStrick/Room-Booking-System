@@ -1,5 +1,5 @@
 -- =====================================================================
--- SAfordata_fixes.sql
+-- SAfordata_claude.sql -- revised 12 October 2026
 -- สคริปต์ ALTER แก้จุดเสี่ยงของ SAfordata.ddl (ระบบจองห้อง / ยืมอุปกรณ์)
 -- เป้าหมาย: Oracle 12.1.0.2 ขึ้นไป (ต้องใช้ IS JSON และ DEFAULT ON NULL)
 -- รันด้วย SQL Developer "Run Script" (F5) หรือ SQL*Plus ด้วย schema เจ้าของตาราง
@@ -42,6 +42,75 @@
 
 SET DEFINE OFF
 SET SERVEROUTPUT ON
+WHENEVER SQLERROR EXIT SQL.SQLCODE ROLLBACK
+
+-- One-time migration from SAfordata.ddl, in a maintenance window.
+-- Oracle DDL commits implicitly. Back up first; do not rerun after a partial DDL.
+-- Legacy loans have no issued/returned evidence: refuse to invent physical stock.
+DECLARE v_count NUMBER;
+BEGIN
+ SELECT COUNT(*) INTO v_count FROM booking_equipment;
+ IF v_count>0 THEN
+  RAISE_APPLICATION_ERROR(-20090,'Reconcile and migrate legacy loans with physical issued/returned quantities before this migration');
+ END IF;
+ SELECT COUNT(*) INTO v_count FROM room WHERE capacity IS NULL OR capacity<=0 OR floor_floor_id IS NULL OR room_type_room_type_id IS NULL;
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Repair missing room capacity/floor/type before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM equipment WHERE remaining_qty IS NULL OR remaining_qty<0;
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Reconcile equipment quantities before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM users WHERE account_status IS NULL OR role_level IS NULL OR account_status NOT IN('ACTIVE','SUSPENDED','INACTIVE') OR role_level NOT IN('STUDENT','TEACHER','STAFF','ADMIN');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize legacy user status/role before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM room WHERE room_status IS NULL OR is_deleted IS NULL OR room_status NOT IN('AVAILABLE','MAINTENANCE','CLOSED');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize room status before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM equipment WHERE equipment_status IS NULL OR is_deleted IS NULL OR equipment_status NOT IN('AVAILABLE','IN_USE','MAINTENANCE','BROKEN');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize equipment status before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM booking WHERE end_time-start_time NOT BETWEEN INTERVAL '30' MINUTE AND INTERVAL '4' HOUR OR TRUNC(booking_date)<>TRUNC(start_time);
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Repair legacy booking duration/date before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM booking_log WHERE action_type IS NULL OR action_time IS NULL OR booking_booking_id IS NULL OR violation_flag NOT IN('YES','NO');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Repair legacy audit records before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM report WHERE report_type IS NULL OR report_type NOT IN('DAILY','WEEKLY','MONTHLY','YEARLY');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize report types before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM staff WHERE users_user_id IS NULL OR staff_status IS NULL OR staff_status NOT IN('ACTIVE','INACTIVE');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize staff accounts before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM penalty WHERE penalty_type IS NULL OR penalty_type NOT IN('WARNING','SUSPENSION') OR penalty_status IS NULL OR penalty_status NOT IN('ACTIVE','EXPIRED','REVOKED');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize penalty types/status before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM notification WHERE noti_type IS NULL OR noti_type NOT IN('BOOKING_CREATED','BOOKING_APPROVED','BOOKING_REJECTED','BOOKING_CANCELLED','REMINDER','PENALTY');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Map notification event types; EMAIL is a channel before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM booking_participant WHERE participation_status IS NULL OR participation_status NOT IN('INVITED','ACCEPTED','DECLINED','ATTENDED');
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize participant statuses before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM room_equipment WHERE quantity IS NULL OR quantity<=0;
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Repair room inventory before migration'); END IF;
+ SELECT COUNT(*) INTO v_count FROM(SELECT LOWER(TRIM(email)) FROM users WHERE is_deleted=0 GROUP BY LOWER(TRIM(email)) HAVING COUNT(*)>1);
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Duplicate active email addresses'); END IF;
+ SELECT COUNT(*) INTO v_count FROM users WHERE TRIM(email) IS NULL OR email<>TRIM(email);
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize legacy email whitespace'); END IF;
+ SELECT COUNT(*) INTO v_count FROM(SELECT holiday_date FROM holiday GROUP BY holiday_date HAVING COUNT(*)>1);
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Duplicate holidays'); END IF;
+ SELECT COUNT(*) INTO v_count FROM holiday WHERE holiday_date<>TRUNC(holiday_date);
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Normalize holiday dates'); END IF;
+ SELECT COUNT(*) INTO v_count FROM(SELECT floor_floor_id,LOWER(TRIM(room_name)) FROM room GROUP BY floor_floor_id,LOWER(TRIM(room_name)) HAVING COUNT(*)>1);
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Duplicate room names within a floor'); END IF;
+ SELECT COUNT(*) INTO v_count FROM(SELECT building_building_id,LOWER(TRIM(floor_number)) FROM floor GROUP BY building_building_id,LOWER(TRIM(floor_number)) HAVING COUNT(*)>1);
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Duplicate floor numbers within a building'); END IF;
+ SELECT COUNT(*) INTO v_count FROM booking a JOIN booking b ON a.booking_id<b.booking_id AND a.room_room_id=b.room_room_id
+  WHERE NVL(a.booking_status,'PENDING') IN('PENDING','APPROVED','CHECKED_IN') AND NVL(b.booking_status,'PENDING') IN('PENDING','APPROVED','CHECKED_IN') AND a.start_time<b.end_time AND a.end_time>b.start_time;
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20090,'Repair legacy overlapping bookings'); END IF;
+END;
+/
+
+-- Record STARTED before the first ALTER; a failed Oracle DDL requires forward repair.
+DECLARE v_count NUMBER;
+BEGIN
+ SELECT COUNT(*) INTO v_count FROM user_tables WHERE table_name='KKU_SCHEMA_MIGRATION';
+ IF v_count=0 THEN EXECUTE IMMEDIATE 'CREATE TABLE kku_schema_migration(name VARCHAR2(100) PRIMARY KEY,status VARCHAR2(10) NOT NULL,applied_at TIMESTAMP)'; END IF;
+END;
+/
+DECLARE v_count NUMBER;
+BEGIN
+ SELECT COUNT(*) INTO v_count FROM kku_schema_migration WHERE name='business_security_20261012';
+ IF v_count>0 THEN RAISE_APPLICATION_ERROR(-20092,'Migration already applied or started; do not rerun DDL'); END IF;
+ INSERT INTO kku_schema_migration(name,status) VALUES('business_security_20261012','STARTED');
+END;
+/
 
 -- =====================================================================
 -- 0. PRE-CHECK  (รันทีละคำสั่งก่อน ถ้ามีแถวคืนมา ต้องแก้ข้อมูลก่อนรัน Section ที่ระบุ)
@@ -57,7 +126,7 @@ SET SERVEROUTPUT ON
 --   SELECT DISTINCT penalty_status FROM penalty;
 --   SELECT DISTINCT participation_status FROM booking_participant;
 --   SELECT DISTINCT noti_type FROM notification;
---   (CHECK ที่เพิ่มใช้ NOVALIDATE จึงไม่ตรวจแถวเดิม แต่แถวใหม่ต้องตรงตามค่าที่กำหนด)
+--   CHECK ใหม่ใช้ ENABLE VALIDATE เพื่อบังคับตรวจข้อมูลเดิมด้วย
 -- Section 3:
 --   SELECT LOWER(email), COUNT(*) FROM users WHERE is_deleted = 0
 --    GROUP BY LOWER(email) HAVING COUNT(*) > 1;
@@ -69,10 +138,16 @@ SET SERVEROUTPUT ON
 -- =====================================================================
 -- 1. PK อัตโนมัติ  [ข้อ 3]
 --    สร้าง <table>_seq เริ่มที่ MAX(pk)+1 แล้วตั้งเป็น DEFAULT ON NULL
---    ใช้ได้ทั้ง INSERT ที่ไม่ส่ง id และที่ส่ง NULL มา (รันซ้ำได้)
+--    ใช้ได้ทั้ง INSERT ที่ไม่ส่ง id และที่ส่ง NULL มา; ไม่ DROP sequence เดิม
 -- =====================================================================
 DECLARE
   v_next NUMBER;
+  v_current NUMBER;
+  v_exists NUMBER;
+  v_table VARCHAR2(128);
+  v_column VARCHAR2(128);
+  v_seq VARCHAR2(128);
+  v_delta VARCHAR2(40);
 BEGIN
   FOR r IN (
     SELECT 'AFFILIATION' t, 'AFFILIATION_ID' c FROM dual UNION ALL
@@ -90,16 +165,24 @@ BEGIN
     SELECT 'STAFF',         'STAFF_ID'         FROM dual UNION ALL
     SELECT 'USERS',         'USER_ID'          FROM dual
   ) LOOP
-    EXECUTE IMMEDIATE 'SELECT NVL(MAX(' || r.c || '),0) + 1 FROM ' || r.t INTO v_next;
-    BEGIN
-      EXECUTE IMMEDIATE 'DROP SEQUENCE ' || r.t || '_SEQ';
-    EXCEPTION WHEN OTHERS THEN
-      IF SQLCODE != -2289 THEN RAISE; END IF;   -- -2289 = sequence ไม่มีอยู่
-    END;
-    EXECUTE IMMEDIATE 'CREATE SEQUENCE ' || r.t || '_SEQ START WITH ' || v_next ||
-                      ' INCREMENT BY 1 CACHE 20';
-    EXECUTE IMMEDIATE 'ALTER TABLE ' || r.t || ' MODIFY (' || r.c ||
-                      ' DEFAULT ON NULL ' || r.t || '_SEQ.NEXTVAL)';
+    -- All identifiers originate from the literal allowlist above, then are asserted.
+    v_table := DBMS_ASSERT.SIMPLE_SQL_NAME(r.t);
+    v_column := DBMS_ASSERT.SIMPLE_SQL_NAME(r.c);
+    v_seq := DBMS_ASSERT.SIMPLE_SQL_NAME(r.t || '_SEQ');
+    EXECUTE IMMEDIATE 'SELECT NVL(MAX(' || v_column || '),0) + 1 FROM ' || v_table INTO v_next;
+    SELECT COUNT(*) INTO v_exists FROM user_sequences WHERE sequence_name=v_seq;
+    IF v_exists=0 THEN
+      EXECUTE IMMEDIATE 'CREATE SEQUENCE ' || v_seq || ' START WITH ' || TO_CHAR(v_next,'FM99999999999999999990') || ' INCREMENT BY 1 CACHE 20';
+    ELSE
+      EXECUTE IMMEDIATE 'SELECT ' || v_seq || '.NEXTVAL FROM dual' INTO v_current;
+      IF v_current<v_next THEN
+        v_delta:=TO_CHAR(v_next-v_current,'FM99999999999999999990');
+        EXECUTE IMMEDIATE 'ALTER SEQUENCE ' || v_seq || ' INCREMENT BY ' || v_delta;
+        EXECUTE IMMEDIATE 'SELECT ' || v_seq || '.NEXTVAL FROM dual' INTO v_current;
+        EXECUTE IMMEDIATE 'ALTER SEQUENCE ' || v_seq || ' INCREMENT BY 1';
+      END IF;
+    END IF;
+    EXECUTE IMMEDIATE 'ALTER TABLE ' || v_table || ' MODIFY (' || v_column || ' DEFAULT ON NULL ' || v_seq || '.NEXTVAL)';
     DBMS_OUTPUT.PUT_LINE(r.t || '_SEQ start with ' || v_next);
   END LOOP;
 END;
@@ -121,30 +204,30 @@ ALTER TABLE booking ADD CONSTRAINT ck_booking_status
 
 -- ---- booking: booking_date ต้องตรงกับวันของ start_time [ข้อ 8] ----
 ALTER TABLE booking ADD CONSTRAINT ck_booking_date_match
-  CHECK (TRUNC(booking_date) = TRUNC(start_time)) ENABLE NOVALIDATE;
+  CHECK (TRUNC(booking_date) = TRUNC(start_time)) ENABLE VALIDATE;
 
 -- ---- CHECK ของคอลัมน์สถานะที่ยังเป็น VARCHAR อิสระ [ข้อ 6] ----
 ALTER TABLE room ADD CONSTRAINT ck_room_status
-  CHECK (room_status IN ('AVAILABLE','MAINTENANCE','CLOSED')) ENABLE NOVALIDATE;
+  CHECK (room_status IN ('AVAILABLE','MAINTENANCE','CLOSED')) ENABLE VALIDATE;
 
 ALTER TABLE equipment ADD CONSTRAINT ck_equipment_status
-  CHECK (equipment_status IN ('AVAILABLE','IN_USE','MAINTENANCE','BROKEN')) ENABLE NOVALIDATE;
+  CHECK (equipment_status IN ('AVAILABLE','IN_USE','MAINTENANCE','BROKEN')) ENABLE VALIDATE;
 
 ALTER TABLE users ADD CONSTRAINT ck_users_account_status
-  CHECK (account_status IN ('ACTIVE','SUSPENDED','INACTIVE')) ENABLE NOVALIDATE;
+  CHECK (account_status IN ('ACTIVE','SUSPENDED','INACTIVE')) ENABLE VALIDATE;
 
 ALTER TABLE users ADD CONSTRAINT ck_users_role_level
-  CHECK (role_level IN ('STUDENT','TEACHER','STAFF','ADMIN')) ENABLE NOVALIDATE;
+  CHECK (role_level IN ('STUDENT','TEACHER','STAFF','ADMIN')) ENABLE VALIDATE;
 
 ALTER TABLE penalty ADD CONSTRAINT ck_penalty_status
-  CHECK (penalty_status IN ('ACTIVE','EXPIRED','REVOKED')) ENABLE NOVALIDATE;
+  CHECK (penalty_status IN ('ACTIVE','EXPIRED','REVOKED')) ENABLE VALIDATE;
 
 ALTER TABLE booking_participant ADD CONSTRAINT ck_bpart_status
-  CHECK (participation_status IN ('INVITED','ACCEPTED','DECLINED','ATTENDED')) ENABLE NOVALIDATE;
+  CHECK (participation_status IN ('INVITED','ACCEPTED','DECLINED','ATTENDED')) ENABLE VALIDATE;
 
 ALTER TABLE notification ADD CONSTRAINT ck_noti_type
   CHECK (noti_type IN ('BOOKING_CREATED','BOOKING_APPROVED','BOOKING_REJECTED',
-                       'BOOKING_CANCELLED','REMINDER','PENALTY')) ENABLE NOVALIDATE;
+                       'BOOKING_CANCELLED','REMINDER','PENALTY')) ENABLE VALIDATE;
 
 -- ---- ค่า boolean แบบ NUMBER(1) ต้องเป็น 0/1 เท่านั้น [ข้อ 11] ----
 ALTER TABLE users     ADD CONSTRAINT ck_users_is_deleted     CHECK (is_deleted IN (0,1));
@@ -158,9 +241,13 @@ ALTER TABLE booking_equipment MODIFY (borrowed_qty NOT NULL);
 ALTER TABLE booking_log MODIFY (
   action_type         NOT NULL,
   action_time         DEFAULT SYSTIMESTAMP NOT NULL,
-  booking_booking_id  NOT NULL,
-  users_user_id       NOT NULL
+  booking_booking_id  NOT NULL
 );
+ALTER TABLE booking_log ADD (actor_type VARCHAR2(10) DEFAULT 'USER' NOT NULL, affected_user_id NUMBER(10));
+UPDATE booking_log SET actor_type='UNKNOWN' WHERE users_user_id IS NULL;
+UPDATE booking_log l SET affected_user_id=(SELECT b.users_user_id FROM booking b WHERE b.booking_id=l.booking_booking_id);
+ALTER TABLE booking_log ADD CONSTRAINT blog_actor_ck CHECK ((actor_type IN('SYSTEM','UNKNOWN') AND users_user_id IS NULL) OR (actor_type='USER' AND users_user_id IS NOT NULL));
+ALTER TABLE booking_log ADD CONSTRAINT blog_affected_fk FOREIGN KEY(affected_user_id) REFERENCES users(user_id);
 
 ALTER TABLE booking_log ADD (violation_flag_new NUMBER(1) DEFAULT 0 NOT NULL);
 UPDATE booking_log SET violation_flag_new = CASE violation_flag WHEN 'YES' THEN 1 ELSE 0 END;
@@ -172,12 +259,12 @@ ALTER TABLE booking_log ADD CONSTRAINT booking_log_violation_ck CHECK (violation
 -- ---- report: report_type ห้าม NULL + CHECK, ชื่อคอลัมน์ให้ตรงกับตารางอื่น [ข้อ 7, 11] ----
 ALTER TABLE report MODIFY (report_type NOT NULL);
 ALTER TABLE report ADD CONSTRAINT ck_report_type
-  CHECK (report_type IN ('DAILY','WEEKLY','MONTHLY','YEARLY')) ENABLE NOVALIDATE;
+  CHECK (report_type IN ('DAILY','WEEKLY','MONTHLY','YEARLY')) ENABLE VALIDATE;
 ALTER TABLE report RENAME COLUMN user_userid TO users_user_id;
 
 -- ---- notification: params_json ต้องเป็น JSON ที่ valid [ข้อ 11] ----
 ALTER TABLE notification ADD CONSTRAINT ck_noti_params_json
-  CHECK (params_json IS JSON) ENABLE NOVALIDATE;
+  CHECK (params_json IS JSON) ENABLE VALIDATE;
 
 -- ---- equipment.created_by_user_id ยังไม่มี FK [ข้อ 11] ----
 ALTER TABLE equipment ADD CONSTRAINT equipment_created_by_fk
@@ -185,7 +272,7 @@ ALTER TABLE equipment ADD CONSTRAINT equipment_created_by_fk
 
 -- ---- holiday: วันที่ต้องไม่ซ้ำ และไม่มีเวลาติดมา [ข้อ 10] ----
 ALTER TABLE holiday ADD CONSTRAINT ck_holiday_date_trunc
-  CHECK (holiday_date = TRUNC(holiday_date)) ENABLE NOVALIDATE;
+  CHECK (holiday_date = TRUNC(holiday_date)) ENABLE VALIDATE;
 ALTER TABLE holiday ADD CONSTRAINT holiday_date_un UNIQUE (holiday_date);
 
 
@@ -195,7 +282,8 @@ ALTER TABLE holiday ADD CONSTRAINT holiday_date_un UNIQUE (holiday_date);
 -- =====================================================================
 ALTER TABLE users DROP CONSTRAINT users_email_un;
 CREATE UNIQUE INDEX uq_users_email_active
-  ON users (CASE WHEN is_deleted = 0 THEN LOWER(email) END);
+  ON users (CASE WHEN is_deleted = 0 THEN LOWER(TRIM(email)) END);
+ALTER TABLE users ADD CONSTRAINT users_email_trim_ck CHECK(TRIM(email) IS NOT NULL AND email=TRIM(email));
 
 
 -- =====================================================================
@@ -231,7 +319,7 @@ CREATE INDEX idx_users_affiliation ON users              (affiliation_affiliatio
 --    - ตัด/คืนสต็อกด้วย UPDATE ครั้งเดียวใน trigger: row lock ทำให้ไม่ชนกัน
 --      และ equipment_qty_ck กันไม่ให้ติดลบ
 --    สต็อกถูกถือไว้เมื่อ booking เป็น PENDING / APPROVED / CHECKED_IN
---    และคืนเมื่อเป็น REJECTED / CANCELLED / COMPLETED / NO_SHOW
+--    ปิดรอบคืนเฉพาะจำนวนที่ยังไม่จ่าย; ของจ่ายแล้วคืนเมื่อบันทึกรับคืนจริง
 -- =====================================================================
 ALTER TABLE equipment ADD (
   total_qty  NUMBER(5),
@@ -240,7 +328,7 @@ ALTER TABLE equipment ADD (
 
 UPDATE equipment SET remaining_qty = 0 WHERE remaining_qty IS NULL;
 UPDATE equipment SET total_qty = remaining_qty WHERE total_qty IS NULL;
--- หมายเหตุ: ข้างบนสมมติว่าของที่ยังไม่ถูกยืมคือจำนวนทั้งหมด ถ้ามีของถูกยืมค้างอยู่ให้ปรับ total_qty เอง
+-- Preflight requires no legacy loans and reconciled physical quantities. No loan data is guessed.
 
 ALTER TABLE equipment MODIFY (total_qty NOT NULL, remaining_qty DEFAULT 0 NOT NULL);
 
@@ -249,173 +337,13 @@ ALTER TABLE equipment ADD CONSTRAINT ck_equipment_remaining CHECK (remaining_qty
 ALTER TABLE equipment ADD CONSTRAINT ck_equipment_usage
   CHECK (usage_type IN ('FIXED','BORROWABLE','BOTH'));
 
--- ตัด/คืนสต็อกเมื่อเพิ่ม แก้ หรือลบรายการอุปกรณ์ใน booking
-CREATE OR REPLACE TRIGGER trg_be_stock
-AFTER INSERT OR DELETE OR UPDATE OF borrowed_qty ON booking_equipment
-FOR EACH ROW
-DECLARE
-  v_bid    booking.booking_id%TYPE;
-  v_eid    equipment.equipment_id%TYPE;
-  v_delta  NUMBER;
-  v_status booking.booking_status%TYPE;
-BEGIN
-  IF INSERTING THEN
-    v_bid := :NEW.booking_booking_id;  v_eid := :NEW.equipment_equipment_id;
-    v_delta := -:NEW.borrowed_qty;
-  ELSIF DELETING THEN
-    v_bid := :OLD.booking_booking_id;  v_eid := :OLD.equipment_equipment_id;
-    v_delta := :OLD.borrowed_qty;
-  ELSE
-    v_bid := :NEW.booking_booking_id;  v_eid := :NEW.equipment_equipment_id;
-    v_delta := :OLD.borrowed_qty - :NEW.borrowed_qty;
-  END IF;
+-- Updated business rules, stock movements, outbox and access role.
+@@SAfordata_business_security.sql
 
-  SELECT booking_status INTO v_status FROM booking WHERE booking_id = v_bid;
+UPDATE kku_schema_migration SET status='APPLIED',applied_at=SYSTIMESTAMP WHERE name='business_security_20261012';
+COMMIT;
 
-  -- booking ที่ปิดไปแล้ว สต็อกถูกคืนไปแล้ว ไม่ต้องปรับซ้ำ
-  IF v_status IN ('PENDING','APPROVED','CHECKED_IN') AND v_delta <> 0 THEN
-    UPDATE equipment SET remaining_qty = remaining_qty + v_delta
-     WHERE equipment_id = v_eid;
-  END IF;
-EXCEPTION
-  WHEN OTHERS THEN
-    IF SQLCODE = -2290 THEN   -- equipment_qty_ck: remaining_qty < 0
-      RAISE_APPLICATION_ERROR(-20005, 'สต็อกอุปกรณ์ไม่เพียงพอ (equipment_id=' || v_eid || ')');
-    END IF;
-    RAISE;
-END;
-/
-
--- คืนสต็อกอัตโนมัติเมื่อ booking ถูกปิด
-CREATE OR REPLACE TRIGGER trg_booking_release_stock
-AFTER UPDATE OF booking_status ON booking
-FOR EACH ROW
-WHEN (OLD.booking_status IN ('PENDING','APPROVED','CHECKED_IN')
-  AND NEW.booking_status IN ('REJECTED','CANCELLED','COMPLETED','NO_SHOW'))
-BEGIN
-  FOR r IN (SELECT equipment_equipment_id eid, borrowed_qty qty
-              FROM booking_equipment
-             WHERE booking_booking_id = :NEW.booking_id) LOOP
-    UPDATE equipment SET remaining_qty = remaining_qty + r.qty
-     WHERE equipment_id = r.eid;
-  END LOOP;
-END;
-/
-
-
--- =====================================================================
--- 6. กันจองซ้อนเวลา + business rule  [ข้อ 1, 10]
--- =====================================================================
-
--- 6.1 กันจองห้องเดียวกันซ้อนเวลา
---     BEFORE EACH ROW : ล็อกแถวห้อง (serialize การจองต่อห้อง) กัน race condition
---     AFTER STATEMENT : ค่อยตรวจ overlap (ตรวจใน row trigger ไม่ได้ เพราะติด ORA-04091)
---     สถานะที่ถือว่าครองช่วงเวลา: PENDING, APPROVED, CHECKED_IN
-CREATE OR REPLACE TRIGGER trg_booking_no_overlap
-FOR INSERT OR UPDATE OF room_room_id, start_time, end_time, booking_status ON booking
-COMPOUND TRIGGER
-
-  TYPE t_slot  IS RECORD (booking_id NUMBER(10), room_id NUMBER(10),
-                          start_time TIMESTAMP, end_time TIMESTAMP);
-  TYPE t_slots IS TABLE OF t_slot INDEX BY PLS_INTEGER;
-  g_slots t_slots;
-
-  BEFORE EACH ROW IS
-    v_lock NUMBER;
-  BEGIN
-    IF :NEW.booking_status IN ('PENDING','APPROVED','CHECKED_IN') THEN
-      SELECT room_id INTO v_lock
-        FROM room
-       WHERE room_id = :NEW.room_room_id
-         FOR UPDATE;
-    END IF;
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN NULL;   -- ห้องไม่มีอยู่ ให้ FK แจ้ง error เอง
-  END BEFORE EACH ROW;
-
-  AFTER EACH ROW IS
-    n PLS_INTEGER;
-  BEGIN
-    IF :NEW.booking_status IN ('PENDING','APPROVED','CHECKED_IN') THEN
-      n := g_slots.COUNT + 1;
-      g_slots(n).booking_id := :NEW.booking_id;
-      g_slots(n).room_id    := :NEW.room_room_id;
-      g_slots(n).start_time := :NEW.start_time;
-      g_slots(n).end_time   := :NEW.end_time;
-    END IF;
-  END AFTER EACH ROW;
-
-  AFTER STATEMENT IS
-    v_cnt NUMBER;
-  BEGIN
-    FOR i IN 1 .. g_slots.COUNT LOOP
-      SELECT COUNT(*) INTO v_cnt
-        FROM booking b
-       WHERE b.room_room_id = g_slots(i).room_id
-         AND b.booking_id  <> g_slots(i).booking_id
-         AND b.booking_status IN ('PENDING','APPROVED','CHECKED_IN')
-         AND b.start_time < g_slots(i).end_time
-         AND b.end_time   > g_slots(i).start_time;
-      IF v_cnt > 0 THEN
-        RAISE_APPLICATION_ERROR(-20001,
-          'ห้องนี้ถูกจองแล้วในช่วงเวลาที่เลือก (room_id=' || g_slots(i).room_id || ')');
-      END IF;
-    END LOOP;
-    g_slots.DELETE;
-  END AFTER STATEMENT;
-
-END trg_booking_no_overlap;
-/
-
--- 6.2 กฎวันหยุด / penalty / เจ้าหน้าที่ประจำห้อง
---     วันหยุดและ penalty ตรวจตอนสร้างหรือเปลี่ยนวัน/ผู้จอง เท่านั้น
---     (กันไม่ให้ penalty ที่เพิ่งออกมาขวางการอนุมัติ booking เดิม)
-CREATE OR REPLACE TRIGGER trg_booking_rules
-BEFORE INSERT OR UPDATE OF booking_date, users_user_id, room_room_id,
-                           booking_status, staff_staff_id ON booking
-FOR EACH ROW
-DECLARE
-  v_cnt NUMBER;
-BEGIN
-  IF :NEW.booking_status IN ('PENDING','APPROVED','CHECKED_IN')
-     AND (INSERTING
-          OR :NEW.booking_date  <> :OLD.booking_date
-          OR :NEW.users_user_id <> :OLD.users_user_id) THEN
-
-    SELECT COUNT(*) INTO v_cnt
-      FROM holiday
-     WHERE holiday_date = TRUNC(:NEW.booking_date);
-    IF v_cnt > 0 THEN
-      RAISE_APPLICATION_ERROR(-20002, 'ไม่สามารถจองในวันหยุดได้');
-    END IF;
-
-    SELECT COUNT(*) INTO v_cnt
-      FROM penalty
-     WHERE users_user_id = :NEW.users_user_id
-       AND penalty_status = 'ACTIVE'
-       AND (start_date IS NULL OR start_date <= TRUNC(:NEW.booking_date))
-       AND (end_date   IS NULL OR end_date   >= TRUNC(:NEW.booking_date));
-    IF v_cnt > 0 THEN
-      RAISE_APPLICATION_ERROR(-20003, 'ผู้ใช้ติด penalty ที่ยังมีผลบังคับ ไม่สามารถจองได้');
-    END IF;
-  END IF;
-
-  IF :NEW.staff_staff_id IS NOT NULL
-     AND :NEW.booking_status IN ('APPROVED','REJECTED') THEN
-    SELECT COUNT(*) INTO v_cnt
-      FROM room_assignment
-     WHERE staff_staff_id = :NEW.staff_staff_id
-       AND room_room_id   = :NEW.room_room_id;
-    IF v_cnt = 0 THEN
-      RAISE_APPLICATION_ERROR(-20004, 'เจ้าหน้าที่ไม่ได้รับมอบหมายให้ดูแลห้องนี้');
-    END IF;
-  END IF;
-END;
-/
-
-
--- =====================================================================
--- 7. ตรวจผลลัพธ์ (ควรไม่มีแถวคืนมาทั้งสองคำสั่ง)
--- =====================================================================
 SELECT object_name, object_type, status FROM user_objects WHERE status <> 'VALID';
 SELECT name, type, line, text FROM user_errors ORDER BY name, sequence;
+SELECT table_name, constraint_name, status, validated FROM user_constraints
+ WHERE status <> 'ENABLED' OR validated <> 'VALIDATED';

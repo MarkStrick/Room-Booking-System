@@ -10,29 +10,23 @@ import {
   time,
 } from "../lib/domain";
 import { Empty, Metric, PageHeading } from "../components/ui";
+import { reportData, encodeCsv } from "../../../../packages/core/src/reporting";
 export function Reports() {
   const { state, user, showToast } = useDemo();
-  const [from, setFrom] = useState("2026-10-01");
-  const [to, setTo] = useState("2026-10-23");
+  const [from, setFrom] = useState(() => dateOf(state.now).slice(0, 7) + "-01");
+  const [to, setTo] = useState(() => dateOf(state.now));
   const [building, setBuilding] = useState("");
   const rooms = state.rooms.filter(
     (r) =>
       canManage(state, user, r.id) &&
       (!building || r.buildingId === Number(building)),
   );
-  const rows = state.bookings.filter(
-    (b) =>
-      rooms.some((r) => r.id === b.roomId) &&
-      dateOf(b.start) >= from &&
-      dateOf(b.start) <= to,
-  );
+  const report = reportData(state, rooms, from, to);
+  const rows = report.rows;
   const used = rows.filter((b) =>
     ["CHECKED_IN", "COMPLETED"].includes(b.status),
   );
-  const hours = used.reduce(
-    (n, b) => n + (ms(b.end) - ms(b.checkedInAt ?? b.start)) / 3600000,
-    0,
-  );
+  const hours = report.hours;
   const noShows = rows.filter((b) => b.status === "NO_SHOW").length;
   const due = rows.filter(
     (b) =>
@@ -42,11 +36,6 @@ export function Reports() {
       ms(b.start) < ms(state.now),
   ).length;
   function exportCsv() {
-    const safe = (v: unknown) => {
-      let s = String(v ?? "");
-      if (/^[=+@-]/.test(s)) s = `'${s}`;
-      return `"${s.replace(/"/g, '""')}"`;
-    };
     const data = [
       [
         "รหัส",
@@ -69,10 +58,9 @@ export function Reports() {
         b.attendees,
       ]),
     ];
-    const blob = new Blob(
-      ["\uFEFF" + data.map((r) => r.map(safe).join(",")).join("\r\n")],
-      { type: "text/csv;charset=utf-8;" },
-    );
+    const blob = new Blob([encodeCsv(data)], {
+      type: "text/csv;charset=utf-8;",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -90,7 +78,7 @@ export function Reports() {
       >
         <button
           className="btn"
-          disabled={!rows.length || from > to}
+          disabled={!rows.length || !report.valid}
           onClick={exportCsv}
         >
           <Download size={17} />
@@ -152,9 +140,9 @@ export function Reports() {
           icon={<Users size={20} />}
         />
         <Metric
-          label="ชั่วโมงใช้โดยประมาณ"
+          label="ชั่วโมงที่เข้าใช้แล้ว"
           value={hours.toFixed(1)}
-          note="นับจากเช็คอินถึงสิ้นสุดรอบ"
+          note="ถึงเวลาปัจจุบัน ไม่เกินเวลาจบรอบ"
           icon={<Timer size={20} />}
         />
         <Metric
@@ -237,9 +225,115 @@ export function Reports() {
       </div>
       <div className="info-strip">
         <Timer size={18} />
-        ชั่วโมงใช้เป็นค่าประมาณจากเวลาเช็คอินถึงเวลาสิ้นสุด
-        ไม่ใช่เวลาที่วัดจากการออกห้องจริง
+        ชั่วโมงนับจากเช็คอินถึงเวลาปัจจุบันหรือสิ้นสุดรอบตามเวลาใดถึงก่อน
+        ไม่ใช่เวลาที่วัดจากการออกห้องจริง อัตราใช้ห้องเทียบเวลาทำการที่ตั้งไว้
+        หักวันหยุดและช่วงปิดห้อง
       </div>
+      {!report.valid ? (
+        <p className="form-error" role="alert">
+          กรุณาเลือกช่วงวันที่ไม่เกิน 366 วัน และวันสิ้นสุดไม่ก่อนวันเริ่ม
+        </p>
+      ) : null}
+      <section className="panel spaced">
+        <div className="section-heading">
+          <h2>อัตราการใช้ห้อง</h2>
+          <span>
+            SLA ตัดสินทันเวลา {report.slaOnTime}/{report.slaTotal} รายการ
+          </span>
+        </div>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>ห้อง</th>
+                <th>เวลาทำการที่ผ่านไป (ชม.)</th>
+                <th>ใช้ในเวลาทำการ (ชม.)</th>
+                <th>อัตราใช้</th>
+              </tr>
+            </thead>
+            <tbody>
+              {report.utilization.map((x) => (
+                <tr key={x.room.id}>
+                  <td>{x.room.name}</td>
+                  <td>{x.openHours?.toFixed(1) ?? "ยังไม่ตั้งเวลาทำการ"}</td>
+                  <td>{x.usedHours?.toFixed(1) ?? "—"}</td>
+                  <td>{x.rate === null ? "—" : x.rate.toFixed(1) + "%"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section className="panel spaced">
+        <div className="section-heading">
+          <h2>สภาพอุปกรณ์ประจำห้อง</h2>
+          <button
+            className="btn ghost"
+            disabled={!report.valid || !report.assets.length}
+            onClick={() => {
+              const data = [
+                [
+                  "ห้อง",
+                  "อุปกรณ์",
+                  "จำนวน",
+                  "ชำรุด",
+                  "ตรวจล่าสุด",
+                  "แหล่งข้อมูล",
+                ],
+                ...report.assets.map((a) => [
+                  a.room.name,
+                  a.name,
+                  a.total,
+                  a.damaged,
+                  a.inspectedAt ?? "",
+                  a.source,
+                ]),
+              ];
+              const url = URL.createObjectURL(
+                new Blob([encodeCsv(data)], { type: "text/csv;charset=utf-8" }),
+              );
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = `kku-assets-${from}-${to}.csv`;
+              link.click();
+              setTimeout(() => URL.revokeObjectURL(url), 1000);
+            }}
+          >
+            ส่งออกอุปกรณ์ CSV
+          </button>
+        </div>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>ห้อง</th>
+                <th>อุปกรณ์</th>
+                <th>ทั้งหมด</th>
+                <th>ชำรุด</th>
+                <th>ผลตรวจล่าสุด ณ วันสิ้นสุด</th>
+              </tr>
+            </thead>
+            <tbody>
+              {report.assets.map((a) => (
+                <tr key={`${a.room.id}-${a.id}`}>
+                  <td>{a.room.name}</td>
+                  <td>{a.name}</td>
+                  <td>{a.total}</td>
+                  <td>{a.damaged}</td>
+                  <td>
+                    {a.inspectedAt
+                      ? thaiDate(a.inspectedAt, true)
+                      : "ยังไม่มีผลตรวจ"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {!report.assets.length ? (
+          <Empty title="ยังไม่มีข้อมูลอุปกรณ์ประจำห้อง" />
+        ) : null}
+      </section>
     </>
   );
 }

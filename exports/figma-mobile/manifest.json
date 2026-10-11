@@ -1,0 +1,49 @@
+{
+  "totalScreens": 168,
+  "fileUrl": "https://www.figma.com/design/2zUdJtNaFn2Z1I2aqpuVQU",
+  "screensPerDevice": 56,
+  "exportedAt": "2026-10-10",
+  "devices": [
+    {
+      "name": "Mobile",
+      "width": 360,
+      "viewportHeight": 800,
+      "nodeId": "7:2"
+    },
+    {
+      "name": "iPhone 13",
+      "width": 390,
+      "viewportHeight": 844,
+      "nodeId": "8:2"
+    },
+    {
+      "name": "iPhone 17 Pro Max",
+      "width": 440,
+      "viewportHeight": 956,
+      "captures": [
+        {
+          "screens": "1–14",
+          "nodeId": "14:2"
+        },
+        {
+          "screens": "15–28",
+          "nodeId": "15:2"
+        },
+        {
+          "screens": "29–35",
+          "nodeId": "19:2"
+        },
+        {
+          "screens": "36–49",
+          "nodeId": "23:2"
+        },
+        {
+          "screens": "50–56",
+          "nodeId": "22:2"
+        }
+      ]
+    }
+  ],
+  "status": "complete",
+  "distinctScreens": 168
+}

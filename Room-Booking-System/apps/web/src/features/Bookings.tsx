@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StudentBookings } from "./StudentBookings";
 import { CalendarCheck, Clock3, DoorOpen, Search } from "lucide-react";
 import { useDemo } from "../app/DemoProvider";
-import { canManage, ms, statusLabels } from "../lib/domain";
+import { canManage, ms, statusLabels, thaiDate, time } from "../lib/domain";
 import {
   BookingTable,
   Metric,
@@ -38,7 +38,7 @@ export function Bookings({
       b.status === "PENDING" && ms(state.now) > ms(b.createdAt) + 4 * 3600000,
   ).length;
   return (
-    <>
+    <div className="approval-workspace">
       <PageHeading
         eyebrow={staff ? "APPROVAL WORKSPACE" : "MY BOOKINGS"}
         title={staff ? "พิจารณาคำขอจอง" : "การจองของฉัน"}
@@ -112,6 +112,7 @@ export function Bookings({
             ].map((s) => (
               <button
                 key={s}
+                aria-pressed={status === s}
                 className={status === s ? "filter-tab selected" : "filter-tab"}
                 onClick={() => setStatus(s)}
               >
@@ -138,9 +139,11 @@ export function Bookings({
         />
         <div className="table-foot">
           ทั้งหมด {filtered.length} รายการ{" "}
-          <span>อัปเดตตามข้อมูลสาธิตปัจจุบัน</span>
+          <span>
+            อัปเดตล่าสุด {thaiDate(state.now, true)} {time(state.now)} น.
+          </span>
         </div>
       </section>
-    </>
+    </div>
   );
 }

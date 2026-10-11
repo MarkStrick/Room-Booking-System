@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2100" height="1460" viewBox="0 0 2100 1460">
+<rect width="100%" height="100%" fill="#F7F9FC"/>
+<text x="70" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="38" font-weight="700" fill="#20354D">KKU SPACE / Google identity &amp; runtime</text>
+<text x="70" y="123" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="400" fill="#63738A">Google OAuth -&gt; identities -&gt; users -&gt; sessions | custom server auth | 2026-10-12</text>
+<text x="70" y="161" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#63738A">SOLID: FK   |   DASHED: JSON / APPLICATION   |   PURPLE: EMBEDDED   |   GRAY: LEGACY</text>
+<polyline points="820,317.5 796,317.5 796,336.0 490,336.0" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="500.5309907426845,330.24689353674955 490,336.0 500.5309907426845,341.75310646325045" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="1220,317.5 1244,317.5 1244,345.5 1570,345.5" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1559.4690092573155,351.25310646325045 1570,345.5 1559.4690092573155,339.74689353674955" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="1020.0,385 1020.0,576 1030.0,576 1030.0,600" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1024.2468935367497,589.4690092573155 1030.0,600 1035.7531064632503,589.4690092573155" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="1220,317.5 1546,317.5 1546,695.5 1570,695.5" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1559.4690092573155,701.2531064632504 1570,695.5 1559.4690092573155,689.7468935367496" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="1780.0,791 1780.0,1000" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1774.2468935367497,989.4690092573155 1780.0,1000 1785.7531064632503,989.4690092573155" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="820,317.5 796,317.5 796,1109.5 490,1109.5" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="500.5309907426845,1103.7468935367497 490,1109.5 500.5309907426845,1115.2531064632503" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="1020.0,385 1020.0,409 1250,409 1250,976 1030.0,976 1030.0,1000" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1024.2468935367497,989.4690092573155 1030.0,1000 1035.7531064632503,989.4690092573155" fill="none" stroke="#6B849C" stroke-width="2"/>
+<rect x="823" y="255" width="400" height="135" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="820" y="250" width="400" height="135" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="820" y="250" width="400" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="838" y="281" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">users</text>
+<text x="838" y="315" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">APPLICATION ACCOUNT</text>
+<text x="838" y="347" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="838" y="375" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">email / role / active</text>
+<rect x="73" y="255" width="420" height="172" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="250" width="420" height="172" fill="#EBF8F5" stroke="#126A67" stroke-width="1"/>
+<rect x="70" y="250" width="420" height="45" fill="#126A67" stroke="none" stroke-width="1"/>
+<text x="88" y="281" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">identities</text>
+<text x="88" y="315" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#126A67">GOOGLE IDENTITY</text>
+<text x="88" y="347" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">subject: string -&gt; key</text>
+<text x="88" y="375" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number</text>
+<text x="88" y="406" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">Google subject maps to application user.</text>
+<rect x="1573" y="255" width="420" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1570" y="250" width="420" height="191" fill="#EBF8F5" stroke="#126A67" stroke-width="1"/>
+<rect x="1570" y="250" width="420" height="45" fill="#126A67" stroke="none" stroke-width="1"/>
+<text x="1588" y="281" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">sessions</text>
+<text x="1588" y="315" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#126A67">SERVER SESSION</text>
+<text x="1588" y="347" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">hash: string</text>
+<text x="1588" y="375" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number</text>
+<text x="1588" y="403" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">csrf: string</text>
+<text x="1588" y="431" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">expiresAt: string</text>
+<rect x="73" y="605" width="420" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="600" width="420" height="219" fill="#EBF8F5" stroke="#126A67" stroke-width="1"/>
+<rect x="70" y="600" width="420" height="45" fill="#126A67" stroke="none" stroke-width="1"/>
+<text x="88" y="631" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">flows</text>
+<text x="88" y="665" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#126A67">PRE-LOGIN OAUTH FLOW</text>
+<text x="88" y="697" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">hash: string</text>
+<text x="88" y="725" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">verifier: string</text>
+<text x="88" y="753" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">state: string</text>
+<text x="88" y="781" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">nonce: string</text>
+<text x="88" y="809" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">expiresAt: string</text>
+<rect x="823" y="605" width="420" height="228" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="820" y="600" width="420" height="228" fill="#FFF7E8" stroke="#8C591C" stroke-width="1"/>
+<rect x="820" y="600" width="420" height="45" fill="#8C591C" stroke="none" stroke-width="1"/>
+<text x="838" y="631" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">attempts</text>
+<text x="838" y="665" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#8C591C">IDEMPOTENCY + RATE COUNTERS</text>
+<text x="838" y="697" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">key / actorId / hash</text>
+<text x="838" y="725" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">bookingId? / at</text>
+<text x="838" y="753" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">rejection?: {code, message}</text>
+<text x="838" y="781" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">rateCount? / rateUntil?</text>
+<text x="838" y="812" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">actorId = 0 for unauthenticated rate limits.</text>
+<rect x="1573" y="605" width="420" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1570" y="600" width="420" height="191" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="1570" y="600" width="420" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="1588" y="631" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">notices</text>
+<text x="1588" y="665" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">USER NOTIFICATION</text>
+<text x="1588" y="697" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="1588" y="725" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number</text>
+<text x="1588" y="753" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">bookingId?: number</text>
+<text x="1588" y="781" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">status / subject / content</text>
+<rect x="1573" y="1005" width="420" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1570" y="1000" width="420" height="191" fill="#FFF7E8" stroke="#8C591C" stroke-width="1"/>
+<rect x="1570" y="1000" width="420" height="45" fill="#8C591C" stroke="none" stroke-width="1"/>
+<text x="1588" y="1031" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">outbox</text>
+<text x="1588" y="1065" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#8C591C">DELIVERY JOB</text>
+<text x="1588" y="1097" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">noticeId: number -&gt; key</text>
+<text x="1588" y="1125" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">status / attempts / nextAt</text>
+<text x="1588" y="1153" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">leaseUntil? / leaseToken?</text>
+<text x="1588" y="1181" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">sentAt? / error?</text>
+<rect x="73" y="1005" width="420" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="1000" width="420" height="219" fill="#F1F3F6" stroke="#626C79" stroke-width="1"/>
+<rect x="70" y="1000" width="420" height="45" fill="#626C79" stroke="none" stroke-width="1"/>
+<text x="88" y="1031" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">credentials</text>
+<text x="88" y="1065" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#626C79">LEGACY / INACTIVE LOGIN</text>
+<text x="88" y="1097" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number</text>
+<text x="88" y="1125" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">passwordHash: string (Argon2id)</text>
+<text x="88" y="1153" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">updatedAt: string</text>
+<text x="88" y="1181" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">failedAttempts: number</text>
+<text x="88" y="1209" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">lockedUntil?: string</text>
+<rect x="823" y="1005" width="420" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="820" y="1000" width="420" height="219" fill="#F1F3F6" stroke="#626C79" stroke-width="1"/>
+<rect x="820" y="1000" width="420" height="45" fill="#626C79" stroke="none" stroke-width="1"/>
+<text x="838" y="1031" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">password_tokens</text>
+<text x="838" y="1065" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#626C79">LEGACY / INACTIVE LOGIN</text>
+<text x="838" y="1097" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">tokenHash: string -&gt; key</text>
+<text x="838" y="1125" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">kind: register | reset</text>
+<text x="838" y="1153" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">email / userId?</text>
+<text x="838" y="1181" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">name? / passwordHash?</text>
+<text x="838" y="1209" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">expiresAt: string</text>
+<rect x="640.7" y="321.0" width="127.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="650.7" y="341.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / userId</text>
+<rect x="1408.7" y="330.5" width="127.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1418.7" y="350.5" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / userId</text>
+<rect x="1027.0" y="503.70000000000005" width="151.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1037.0" y="523.7" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">0..1 : 0..* / actorId</text>
+<rect x="1553.0" y="491.5" width="127.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1563.0" y="511.5" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / userId</text>
+<rect x="1787.0" y="922.3" width="145.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1797.0" y="942.3" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..1 / noticeId</text>
+<rect x="803.0" y="856.9" width="175.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="813.0" y="876.9" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..1 / key = userId</text>
+<rect x="1257.0" y="790.9" width="151.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1267.0" y="810.9" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">0..1 : 0..* / userId?</text>
+<text x="70" y="1355" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">Dashed = application reference in JSONB; solid = enforced FK. Supabase Auth tables are not used by this app.</text>
+<text x="70" y="1386" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">flows are pre-login OAuth state / nonce / PKCE records. attempts also stores actorId = 0 rate counters.</text>
+<text x="70" y="1417" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">Gray = retained legacy password tables. Their presence does not mean self-registration is enabled.</text>
+<text x="1920" y="1443" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">03 / 05</text>
+</svg>

@@ -1,27 +1,17 @@
 import { randomUUID } from 'node:crypto';
 import type { Data } from '../infrastructure/store';
+import { advanceLifecycle } from '../../../../packages/core/src/lifecycle';
 import { ms } from '../../../../packages/core/src/domain';
 const nextId=(rows:{id:number}[])=>Math.max(0,...rows.map(r=>r.id))+1;
 export function runTimers(data:Data,now:string) {
- const s=data.state;
- for(const b of s.bookings) {
-  if(b.status==='APPROVED'&&(ms(now)>ms(b.start)+1800000||ms(now)>=ms(b.end))) {
-   b.status='NO_SHOW';
-   if(!s.violations.some(v=>v.bookingId===b.id&&v.type==='NO_SHOW'))s.violations.push({id:nextId(s.violations),userId:b.userId,bookingId:b.id,type:'NO_SHOW',at:now});
-   s.audit.unshift({id:nextId(s.audit),actorId:null,bookingId:b.id,at:now,text:`ไม่ได้เช็คอิน ${b.ref}`});
-   const id=nextId(s.notices);
-   s.notices.unshift({id,userId:b.userId,bookingId:b.id,subject:'พ้นกำหนดเช็คอิน',content:`${b.ref} บันทึกว่าไม่ได้เข้าใช้`,status:'QUEUED',createdAt:now,attempts:0});
-   data.outbox.push({noticeId:id,status:'QUEUED',attempts:0,nextAt:now});
-  }else if(b.status==='CHECKED_IN'&&ms(now)>=ms(b.end)) {
-   b.status='COMPLETED';s.audit.unshift({id:nextId(s.audit),actorId:null,bookingId:b.id,at:now,text:`สิ้นสุดรอบ ${b.ref}`});
-  }else continue;
-  b.equipment.forEach(item=>{const e=s.equipment.find(e=>e.id===item.id);if(e)e.remaining=Math.min(e.total,e.remaining+item.qty);});
- }
+ const oldIds=new Set(data.state.notices.map(n=>n.id));
+ advanceLifecycle(data.state,now);
+ data.state.notices.filter(n=>!oldIds.has(n.id)).forEach(n=>data.outbox.push({noticeId:n.id,status:'QUEUED',attempts:0,nextAt:now}));
  data.sessions=data.sessions.filter(s=>s.expiresAt>now);
  data.flows=data.flows.filter(f=>f.expiresAt>now);
  data.passwordTokens=data.passwordTokens.filter(t=>t.expiresAt>now);
  data.attempts=data.attempts.filter(a=>ms(a.at)>ms(now)-7*86400000);
- // No pending timeout or minimum lead time is added without a policy decision.
+
 }
 export function claimMail(data:Data,now:string) {
  const row=data.outbox.find(o=>(o.status==='QUEUED'&&o.nextAt<=now)||(o.status==='SENDING'&&(o.leaseUntil??'')<=now));

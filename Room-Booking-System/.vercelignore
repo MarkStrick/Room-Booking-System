@@ -1,0 +1,7 @@
+.env*
+var/
+preview/
+docs/verification/
+apps/web/figma-*.html
+tests/
+.git/

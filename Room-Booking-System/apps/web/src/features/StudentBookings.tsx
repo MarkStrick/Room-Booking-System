@@ -14,6 +14,7 @@ import { RoomLocation, Status, type OpenDialog } from "../components/ui";
 export function StudentBookings({ open }: { open: OpenDialog }) {
   const { state, user, run } = useDemo();
   const [tab, setTab] = useState("current");
+  const [status, setStatus] = useState("ALL");
   const [busyId, setBusyId] = useState<number | null>(null);
   const [error, setError] = useState("");
   const own = state.bookings.filter((b) => b.userId === user.id);
@@ -24,10 +25,14 @@ export function StudentBookings({ open }: { open: OpenDialog }) {
         tab === "all" ||
         (tab === "current"
           ? activeStatuses.includes(b.status)
-          : !activeStatuses.includes(b.status)),
+          : !activeStatuses.includes(b.status) &&
+            ms(b.createdAt) >= ms(state.now) - 7 * 86400000),
     )
+    .filter((b) => status === "ALL" || b.status === status)
     .sort((a, b) =>
-      tab === "current" ? ms(a.start) - ms(b.start) : ms(b.start) - ms(a.start),
+      tab === "current"
+        ? ms(a.start) - ms(b.start)
+        : ms(b.createdAt) - ms(a.createdAt),
     );
   async function checkIn(id: number) {
     setBusyId(id);
@@ -61,7 +66,7 @@ export function StudentBookings({ open }: { open: OpenDialog }) {
       <div className="student-booking-tabs" aria-label="กรองรายการจอง">
         {[
           ["current", "รายการปัจจุบัน"],
-          ["history", "ประวัติการจอง"],
+          ["history", "ประวัติ 7 วัน"],
           ["all", "ทั้งหมด"],
         ].map(([key, label]) => (
           <button
@@ -72,6 +77,26 @@ export function StudentBookings({ open }: { open: OpenDialog }) {
           >
             {label}
             {key === "current" ? <span>{current.length}</span> : null}
+          </button>
+        ))}
+      </div>
+      <div className="booking-status-tabs" aria-label="กรองสถานะการจอง">
+        {(
+          [
+            ["ALL", "ทุกสถานะ"],
+            ["PENDING", "รออนุมัติ"],
+            ["APPROVED", "อนุมัติแล้ว"],
+            ["REJECTED", "ไม่อนุมัติ"],
+            ["CANCELLED", "ยกเลิก"],
+          ] as const
+        ).map(([value, label]) => (
+          <button
+            key={value}
+            className={status === value ? "selected" : ""}
+            aria-pressed={status === value}
+            onClick={() => setStatus(value)}
+          >
+            {label}
           </button>
         ))}
       </div>

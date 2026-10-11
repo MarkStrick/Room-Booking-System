@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   Bell,
   BookOpen,
@@ -12,7 +12,11 @@ import {
 import { useDemo } from "../app/DemoProvider";
 import { faqs, roleLabels, suspended, thaiDate, time } from "../lib/domain";
 import { Empty, PageHeading } from "../components/ui";
-import { PasswordSettings } from '../components/PasswordSettings';
+import {
+  HelpSettings,
+  WorkerStatus,
+  AdminReadiness,
+} from "./OperationsControls";
 export function Help() {
   const { state, user, run } = useDemo();
   const [question, setQuestion] = useState("");
@@ -32,8 +36,18 @@ export function Help() {
     }
   }
   const messages = state.messages.filter((m) => m.userId === user.id);
+  const quickQuestions = [
+    "จองล่วงหน้าได้กี่วัน",
+    "เช็คอินเมื่อไหร่",
+    "ยกเลิกการจองอย่างไร",
+  ];
+  const chatRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (chatRef.current)
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [messages.length]);
   return (
-    <>
+    <div className="help-workspace">
       <PageHeading
         eyebrow="A LITTLE HELP GOES A LONG WAY"
         title="คำแนะนำและความช่วยเหลือ"
@@ -66,18 +80,23 @@ export function Help() {
               คำถามที่พบบ่อย
             </h2>
           </div>
-          {faqs.map((f) => (
-            <details key={f.q}>
-              <summary>
-                {f.q}
-                <span>+</span>
-              </summary>
-              <p>{f.a}</p>
-              <button className="text-button" onClick={() => setQuestion(f.q)}>
-                ถามในหน้าต่างช่วยเหลือ
-              </button>
-            </details>
-          ))}
+          {(state.settings?.faqs.length ? state.settings.faqs : faqs).map(
+            (f) => (
+              <details key={f.q}>
+                <summary>
+                  {f.q}
+                  <span>+</span>
+                </summary>
+                <p>{f.a}</p>
+                <button
+                  className="text-button"
+                  onClick={() => setQuestion(f.q)}
+                >
+                  ถามในหน้าต่างช่วยเหลือ
+                </button>
+              </details>
+            ),
+          )}
         </section>
         <section className="panel chat-panel">
           <div className="chat-header">
@@ -90,7 +109,13 @@ export function Help() {
             </div>
             <span className="online-dot" />
           </div>
-          <div className="chat-messages">
+          <div
+            ref={chatRef}
+            className="chat-messages"
+            role="log"
+            aria-label="บทสนทนากับผู้ช่วย"
+            aria-live="polite"
+          >
             <div className="bubble bot">
               สวัสดีค่ะ มีเรื่องการจองห้องที่อยากสอบถามไหมคะ? ลองถามว่า
               “จองล่วงหน้าได้กี่วัน” หรือ “เช็คอินเมื่อไหร่”
@@ -105,6 +130,18 @@ export function Help() {
               </div>
             ))}
           </div>
+          <div className="chat-quick-questions" aria-label="คำถามแนะนำ">
+            {quickQuestions.map((text) => (
+              <button
+                key={text}
+                type="button"
+                disabled={busy}
+                onClick={() => setQuestion(text)}
+              >
+                {text}
+              </button>
+            ))}
+          </div>
           {error ? <p className="form-error">{error}</p> : null}
           <form className="chat-form" onSubmit={send}>
             <input
@@ -117,7 +154,7 @@ export function Help() {
             />
             <button
               className="btn icon-only"
-              disabled={busy}
+              disabled={busy || !question.trim()}
               aria-label="ส่งคำถาม"
             >
               <Send size={19} />
@@ -125,7 +162,58 @@ export function Help() {
           </form>
         </section>
       </div>
-    </>
+      <section className="panel spaced">
+        <div className="section-heading">
+          <h2>ติดต่อผู้ดูแล</h2>
+        </div>
+        <div className="operations-note">
+          {state.settings?.contactEmail ? (
+            <p>
+              <a href={`mailto:${state.settings.contactEmail}`}>
+                {state.settings.contactEmail}
+              </a>
+            </p>
+          ) : null}
+          {state.settings?.contactPhone ? (
+            <p>
+              <a
+                href={`tel:${state.settings.contactPhone.replace(/[^0-9+]/g, "")}`}
+              >
+                {state.settings.contactPhone}
+              </a>
+            </p>
+          ) : null}
+          <p>
+            หากต้องการทราบสถานะ พิมพ์รหัสการจองของคุณ เช่น BK-2569-0001
+            ในช่องช่วยเหลือ
+          </p>
+          <button
+            className="btn ghost"
+            disabled={busy || !question.trim()}
+            onClick={async () => {
+              setBusy(true);
+              setError("");
+              try {
+                await run(
+                  { type: "SUPPORT_REQUEST", question },
+                  "ส่งคำถามให้ผู้ดูแลแล้ว",
+                );
+                setQuestion("");
+              } catch (e) {
+                setError((e as Error).message);
+              } finally {
+                setBusy(false);
+              }
+            }}
+          >
+            ส่งคำถามที่พิมพ์ให้ผู้ดูแล
+          </button>
+        </div>
+      </section>
+      {user.role === "ADMIN" ? <HelpSettings /> : null}
+      {user.role === "ADMIN" ? <WorkerStatus /> : null}
+      {user.role === "ADMIN" ? <AdminReadiness /> : null}
+    </div>
   );
 }
 export function Profile() {
@@ -177,7 +265,9 @@ export function Profile() {
             </div>
           </div>
           <small className="subtle">
-            {mode === 'demo' ? 'บัญชีสาธิต • ไม่ใช่การเข้าสู่ระบบ Google จริง' : 'ข้อมูลบัญชีที่ยืนยันจากระบบเข้าสู่ระบบ'}
+            {mode === "demo"
+              ? "บัญชีสาธิต • ไม่ใช่การเข้าสู่ระบบ Google จริง"
+              : "ข้อมูลบัญชีที่ยืนยันจากระบบเข้าสู่ระบบ"}
           </small>
         </section>
         <section className="panel profile-form">
@@ -226,7 +316,6 @@ export function Profile() {
           </form>
         </section>
       </div>
-      {mode==='server'?<PasswordSettings/>:null}
       {state.penalties.filter((p) => p.userId === user.id).length ? (
         <section className="panel spaced">
           <div className="section-heading">
@@ -312,7 +401,9 @@ export function Notifications() {
                     className={`badge ${n.status === "SENT" ? "green" : n.status === "FAILED" ? "red" : "warm"}`}
                   >
                     {n.status === "SENT"
-                      ? (mode === 'demo' ? "ส่งแล้ว (จำลอง)" : 'ส่งให้บริการอีเมลแล้ว')
+                      ? mode === "demo"
+                        ? "ส่งแล้ว (จำลอง)"
+                        : "ส่งให้บริการอีเมลแล้ว"
                       : n.status === "FAILED"
                         ? "ส่งไม่สำเร็จ"
                         : "รอส่ง"}
@@ -326,7 +417,19 @@ export function Notifications() {
                       ลองส่งอีกครั้ง
                     </button>
                   ) : null}
-                  {mode === 'server' && n.userId===user.id && !n.readAt ? <button className="text-button" onClick={()=>void run({type:'READ_NOTICE',noticeId:n.id},'อ่านการแจ้งเตือนแล้ว').catch(e=>showToast((e as Error).message))}>ทำเครื่องหมายว่าอ่านแล้ว</button> : null}
+                  {mode === "server" && n.userId === user.id && !n.readAt ? (
+                    <button
+                      className="text-button"
+                      onClick={() =>
+                        void run(
+                          { type: "READ_NOTICE", noticeId: n.id },
+                          "อ่านการแจ้งเตือนแล้ว",
+                        ).catch((e) => showToast((e as Error).message))
+                      }
+                    >
+                      ทำเครื่องหมายว่าอ่านแล้ว
+                    </button>
+                  ) : null}
                 </div>
               </div>
             </article>
@@ -337,7 +440,9 @@ export function Notifications() {
       </section>
       <div className="info-strip">
         <Mail size={18} />
-        {mode === 'demo' ? 'การแจ้งเตือนในต้นแบบเป็นข้อมูลสาธิต ไม่มีการส่งอีเมลจริง' : 'สถานะอีเมลแสดงผลการส่งไปยังผู้ให้บริการ แยกจากการอ่านการแจ้งเตือนในเว็บ'}
+        {mode === "demo"
+          ? "การแจ้งเตือนในต้นแบบเป็นข้อมูลสาธิต ไม่มีการส่งอีเมลจริง"
+          : "สถานะอีเมลแสดงผลการส่งไปยังผู้ให้บริการ แยกจากการอ่านการแจ้งเตือนในเว็บ"}
       </div>
     </>
   );

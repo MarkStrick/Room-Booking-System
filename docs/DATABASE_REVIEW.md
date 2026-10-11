@@ -1,5 +1,9 @@
 # ข้อเสนอปรับฐานข้อมูลระบบจองห้อง
 
+> อัปเดต 12 ต.ค. 2569: แก้สคริปต์ Oracle เดิมและเพิ่ม business/security SQL ตามข้อเสนอแล้ว แต่ยังไม่ได้รันบน Oracle จริง ส่วน PostgreSQL/Supabase ติดตั้ง hardening migration และตรวจสิทธิ์/SQL injection แล้ว ดู [ผลแก้และข้อจำกัด](../Room-Booking-System/docs/SQL_SECURITY.md) เนื้อหาด้านล่างเป็นผล review ย้อนหลังวันที่ 8 ต.ค.
+
+> เอกสารนี้เป็นข้อเสนอฐานข้อมูล Oracle เดิมวันที่ 8 ต.ค. 2569 ไม่ใช่ schema ของระบบปัจจุบัน ดู [สถาปัตยกรรมปัจจุบัน](../Room-Booking-System/docs/CURRENT_ARCHITECTURE.md) และ migrations ใน Room-Booking-System/supabase สำหรับ React/NestJS/Supabase ที่พัฒนาแล้ว
+
 วันที่ตรวจ 8 ตุลาคม 2569
 
 ## 1 ผลการตรวจและขอบเขต

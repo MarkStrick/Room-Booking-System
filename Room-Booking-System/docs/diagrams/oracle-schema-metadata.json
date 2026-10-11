@@ -1,0 +1,1784 @@
+{
+  "tables": {
+    "affiliation": [
+      {
+        "name": "affiliation_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "affiliation_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "affiliation_name",
+        "type": "VARCHAR2(255)",
+        "nullable": false,
+        "declaration": "affiliation_name VARCHAR2(255) NOT NULL"
+      }
+    ],
+    "booking": [
+      {
+        "name": "booking_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "booking_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "booking_date",
+        "type": "DATE",
+        "nullable": false,
+        "declaration": "booking_date DATE NOT NULL"
+      },
+      {
+        "name": "start_time",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "start_time TIMESTAMP NOT NULL"
+      },
+      {
+        "name": "end_time",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "end_time TIMESTAMP NOT NULL"
+      },
+      {
+        "name": "purpose",
+        "type": "VARCHAR2(500)",
+        "nullable": true,
+        "declaration": "purpose VARCHAR2(500)"
+      },
+      {
+        "name": "booking_status",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "booking_status VARCHAR2(50)"
+      },
+      {
+        "name": "actual_checkin_time",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "declaration": "actual_checkin_time TIMESTAMP"
+      },
+      {
+        "name": "users_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "users_user_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "room_room_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "room_room_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "staff_staff_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "staff_staff_id NUMBER(10)"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": false,
+        "declaration": "created_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp NOT NULL"
+      },
+      {
+        "name": "updated_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "updated_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp"
+      },
+      {
+        "name": "approved_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "approved_at TIMESTAMP WITH LOCAL TIME ZONE"
+      },
+      {
+        "name": "reject_reason",
+        "type": "VARCHAR2(500)",
+        "nullable": true,
+        "declaration": "reject_reason VARCHAR2(500)"
+      },
+      {
+        "name": "expected_attendees",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "expected_attendees NUMBER(5) DEFAULT 1 NOT NULL"
+      },
+      {
+        "name": "approval_deadline",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "declaration": "approval_deadline TIMESTAMP"
+      },
+      {
+        "name": "cancel_reason",
+        "type": "VARCHAR2(500)",
+        "nullable": true,
+        "declaration": "cancel_reason VARCHAR2(500)"
+      },
+      {
+        "name": "version",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "version NUMBER(10) DEFAULT 1 NOT NULL"
+      },
+      {
+        "name": "decided_actor_user_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "decided_actor_user_id NUMBER(10)"
+      }
+    ],
+    "booking_equipment": [
+      {
+        "name": "booking_booking_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "booking_booking_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "equipment_equipment_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "equipment_equipment_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "borrowed_qty",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "borrowed_qty NUMBER(5)"
+      },
+      {
+        "name": "issued_qty",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "issued_qty NUMBER(5) DEFAULT 0 NOT NULL"
+      },
+      {
+        "name": "returned_qty",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "returned_qty NUMBER(5) DEFAULT 0 NOT NULL"
+      },
+      {
+        "name": "released_qty",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "released_qty NUMBER(5) DEFAULT 0 NOT NULL"
+      }
+    ],
+    "booking_log": [
+      {
+        "name": "booking_log_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "booking_log_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "action_type",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "action_type VARCHAR2(100)"
+      },
+      {
+        "name": "action_time",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "action_time TIMESTAMP"
+      },
+      {
+        "name": "booking_booking_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "booking_booking_id NUMBER(10)"
+      },
+      {
+        "name": "users_user_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "users_user_id NUMBER(10)"
+      },
+      {
+        "name": "actor_type",
+        "type": "VARCHAR2(10)",
+        "nullable": false,
+        "declaration": "actor_type VARCHAR2(10) DEFAULT 'USER' NOT NULL"
+      },
+      {
+        "name": "affected_user_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "affected_user_id NUMBER(10)"
+      },
+      {
+        "name": "violation_flag",
+        "type": "NUMBER(1)",
+        "nullable": false,
+        "declaration": "violation_flag_new NUMBER(1) DEFAULT 0 NOT NULL"
+      }
+    ],
+    "booking_participant": [
+      {
+        "name": "booking_booking_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "booking_booking_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "users_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "users_user_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "participation_status",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "participation_status VARCHAR2(50)"
+      }
+    ],
+    "building": [
+      {
+        "name": "building_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "building_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "building_name",
+        "type": "VARCHAR2(255)",
+        "nullable": false,
+        "declaration": "building_name VARCHAR2(255) NOT NULL"
+      },
+      {
+        "name": "address",
+        "type": "VARCHAR2(255)",
+        "nullable": true,
+        "declaration": "address VARCHAR2(255)"
+      }
+    ],
+    "equipment": [
+      {
+        "name": "equipment_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "equipment_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "equipment_name",
+        "type": "VARCHAR2(255)",
+        "nullable": false,
+        "declaration": "equipment_name VARCHAR2(255) NOT NULL"
+      },
+      {
+        "name": "equipment_type",
+        "type": "VARCHAR2(100)",
+        "nullable": true,
+        "declaration": "equipment_type VARCHAR2(100)"
+      },
+      {
+        "name": "equipment_status",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "equipment_status VARCHAR2(50)"
+      },
+      {
+        "name": "remaining_qty",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "remaining_qty NUMBER(5)"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "created_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp"
+      },
+      {
+        "name": "updated_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "updated_at TIMESTAMP WITH LOCAL TIME ZONE"
+      },
+      {
+        "name": "created_by_user_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "created_by_user_id NUMBER(10)"
+      },
+      {
+        "name": "is_deleted",
+        "type": "NUMBER(1)",
+        "nullable": false,
+        "declaration": "is_deleted NUMBER(1) DEFAULT 0"
+      },
+      {
+        "name": "deleted_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "deleted_at TIMESTAMP WITH LOCAL TIME ZONE"
+      },
+      {
+        "name": "total_qty",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "total_qty NUMBER(5)"
+      },
+      {
+        "name": "usage_type",
+        "type": "VARCHAR2(20)",
+        "nullable": false,
+        "declaration": "usage_type VARCHAR2(20) DEFAULT 'BORROWABLE' NOT NULL"
+      }
+    ],
+    "floor": [
+      {
+        "name": "floor_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "floor_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "floor_number",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "floor_number VARCHAR2(50) NOT NULL"
+      },
+      {
+        "name": "building_building_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "building_building_id NUMBER(10) NOT NULL"
+      }
+    ],
+    "holiday": [
+      {
+        "name": "holiday_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "holiday_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "holiday_date",
+        "type": "DATE",
+        "nullable": false,
+        "declaration": "holiday_date DATE NOT NULL"
+      },
+      {
+        "name": "description",
+        "type": "VARCHAR2(255)",
+        "nullable": true,
+        "declaration": "description VARCHAR2(255)"
+      }
+    ],
+    "notification": [
+      {
+        "name": "notification_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "notification_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "noti_type",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "noti_type VARCHAR2(50)"
+      },
+      {
+        "name": "content",
+        "type": "VARCHAR2(1000)",
+        "nullable": true,
+        "declaration": "content VARCHAR2(1000)"
+      },
+      {
+        "name": "recipient_email",
+        "type": "VARCHAR2(100)",
+        "nullable": true,
+        "declaration": "recipient_email VARCHAR2(100)"
+      },
+      {
+        "name": "send_time",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "declaration": "send_time TIMESTAMP"
+      },
+      {
+        "name": "booking_booking_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "booking_booking_id NUMBER(10)"
+      },
+      {
+        "name": "users_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "users_user_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "template_code",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "template_code VARCHAR2(50) NOT NULL"
+      },
+      {
+        "name": "params_json",
+        "type": "VARCHAR2(1000)",
+        "nullable": true,
+        "declaration": "params_json VARCHAR2(1000)"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": false,
+        "declaration": "created_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp NOT NULL"
+      },
+      {
+        "name": "channel",
+        "type": "VARCHAR2(10)",
+        "nullable": false,
+        "declaration": "channel VARCHAR2(10) DEFAULT 'EMAIL' NOT NULL"
+      },
+      {
+        "name": "delivery_status",
+        "type": "VARCHAR2(10)",
+        "nullable": false,
+        "declaration": "delivery_status VARCHAR2(10) DEFAULT 'QUEUED' NOT NULL"
+      },
+      {
+        "name": "attempts",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "attempts NUMBER(5) DEFAULT 0 NOT NULL"
+      },
+      {
+        "name": "next_attempt_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "next_attempt_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      },
+      {
+        "name": "lease_until",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "declaration": "lease_until TIMESTAMP"
+      },
+      {
+        "name": "lease_token",
+        "type": "VARCHAR2(64)",
+        "nullable": true,
+        "declaration": "lease_token VARCHAR2(64)"
+      },
+      {
+        "name": "last_error",
+        "type": "VARCHAR2(500)",
+        "nullable": true,
+        "declaration": "last_error VARCHAR2(500)"
+      },
+      {
+        "name": "source_event_key",
+        "type": "VARCHAR2(150)",
+        "nullable": true,
+        "declaration": "source_event_key VARCHAR2(150)"
+      }
+    ],
+    "penalty": [
+      {
+        "name": "penalty_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "penalty_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "penalty_type",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "penalty_type VARCHAR2(100)"
+      },
+      {
+        "name": "start_date",
+        "type": "DATE",
+        "nullable": true,
+        "declaration": "start_date DATE"
+      },
+      {
+        "name": "end_date",
+        "type": "DATE",
+        "nullable": true,
+        "declaration": "end_date DATE"
+      },
+      {
+        "name": "reason",
+        "type": "VARCHAR2(500)",
+        "nullable": true,
+        "declaration": "reason VARCHAR2(500)"
+      },
+      {
+        "name": "penalty_status",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "penalty_status VARCHAR2(50)"
+      },
+      {
+        "name": "users_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "users_user_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "staff_staff_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "staff_staff_id NUMBER(10)"
+      },
+      {
+        "name": "booking_booking_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "booking_booking_id NUMBER(10)"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": false,
+        "declaration": "created_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp NOT NULL"
+      },
+      {
+        "name": "updated_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "updated_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp"
+      },
+      {
+        "name": "decided_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "decided_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      },
+      {
+        "name": "count_from_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "count_from_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      },
+      {
+        "name": "decided_by",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "decided_by NUMBER(10)"
+      }
+    ],
+    "report": [
+      {
+        "name": "report_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "report_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "report_type",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "report_type VARCHAR2(100)"
+      },
+      {
+        "name": "report_date",
+        "type": "DATE",
+        "nullable": false,
+        "declaration": "report_date DATE NOT NULL"
+      },
+      {
+        "name": "total_bookings",
+        "type": "NUMBER(6)",
+        "nullable": false,
+        "declaration": "total_bookings NUMBER(6) NOT NULL"
+      },
+      {
+        "name": "users_user_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "user_userid NUMBER(10)"
+      },
+      {
+        "name": "total_hours",
+        "type": "NUMBER(8, 2)",
+        "nullable": false,
+        "declaration": "total_hours NUMBER(8, 2) NOT NULL"
+      },
+      {
+        "name": "canceled_count",
+        "type": "NUMBER(6)",
+        "nullable": true,
+        "declaration": "canceled_count NUMBER(6)"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": false,
+        "declaration": "created_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp NOT NULL"
+      }
+    ],
+    "room": [
+      {
+        "name": "room_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "room_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "room_name",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "room_name VARCHAR2(100) NOT NULL"
+      },
+      {
+        "name": "capacity",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "capacity NUMBER(5)"
+      },
+      {
+        "name": "room_status",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "room_status VARCHAR2(50)"
+      },
+      {
+        "name": "image_url",
+        "type": "VARCHAR2(500)",
+        "nullable": true,
+        "declaration": "image_url VARCHAR2(500)"
+      },
+      {
+        "name": "floor_floor_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "floor_floor_id NUMBER(10)"
+      },
+      {
+        "name": "room_type_room_type_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "room_type_room_type_id NUMBER(10)"
+      },
+      {
+        "name": "is_deleted",
+        "type": "NUMBER(1)",
+        "nullable": false,
+        "declaration": "is_deleted NUMBER(1) DEFAULT 0"
+      },
+      {
+        "name": "deleted_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "deleted_at TIMESTAMP WITH LOCAL TIME ZONE"
+      }
+    ],
+    "room_assignment": [
+      {
+        "name": "staff_staff_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "staff_staff_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "room_room_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "room_room_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "start_date",
+        "type": "DATE",
+        "nullable": true,
+        "declaration": "start_date DATE"
+      },
+      {
+        "name": "work_shift",
+        "type": "VARCHAR2(50)",
+        "nullable": true,
+        "declaration": "work_shift VARCHAR2(50)"
+      },
+      {
+        "name": "end_date",
+        "type": "DATE",
+        "nullable": true,
+        "declaration": "end_date DATE"
+      },
+      {
+        "name": "assignment_status",
+        "type": "VARCHAR2(10)",
+        "nullable": false,
+        "declaration": "assignment_status VARCHAR2(10) DEFAULT 'ACTIVE' NOT NULL"
+      }
+    ],
+    "room_equipment": [
+      {
+        "name": "room_room_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "room_room_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "equipment_equipment_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "equipment_equipment_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "quantity",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "quantity NUMBER(5)"
+      },
+      {
+        "name": "equip_status",
+        "type": "VARCHAR2(50)",
+        "nullable": true,
+        "declaration": "equip_status VARCHAR2(50)"
+      }
+    ],
+    "room_type": [
+      {
+        "name": "room_type_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "room_type_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "type_name",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "type_name VARCHAR2(100) NOT NULL"
+      },
+      {
+        "name": "description",
+        "type": "VARCHAR2(500)",
+        "nullable": true,
+        "declaration": "description VARCHAR2(500)"
+      }
+    ],
+    "staff": [
+      {
+        "name": "staff_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "staff_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "job_title",
+        "type": "VARCHAR2(100)",
+        "nullable": true,
+        "declaration": "job_title VARCHAR2(100)"
+      },
+      {
+        "name": "start_date",
+        "type": "DATE",
+        "nullable": true,
+        "declaration": "start_date DATE"
+      },
+      {
+        "name": "staff_status",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "staff_status VARCHAR2(50)"
+      },
+      {
+        "name": "users_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "users_user_id NUMBER(10)"
+      }
+    ],
+    "users": [
+      {
+        "name": "user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "user_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "full_name",
+        "type": "VARCHAR2(255)",
+        "nullable": false,
+        "declaration": "full_name VARCHAR2(255) NOT NULL"
+      },
+      {
+        "name": "email",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "email VARCHAR2(100) NOT NULL"
+      },
+      {
+        "name": "phone",
+        "type": "VARCHAR2(20)",
+        "nullable": true,
+        "declaration": "phone VARCHAR2(20)"
+      },
+      {
+        "name": "role_level",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "role_level VARCHAR2(50)"
+      },
+      {
+        "name": "account_status",
+        "type": "VARCHAR2(50)",
+        "nullable": false,
+        "declaration": "account_status VARCHAR2(50)"
+      },
+      {
+        "name": "affiliation_affiliation_id",
+        "type": "NUMBER(10)",
+        "nullable": true,
+        "declaration": "affiliation_affiliation_id NUMBER(10)"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "created_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp"
+      },
+      {
+        "name": "updated_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "updated_at TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp"
+      },
+      {
+        "name": "is_deleted",
+        "type": "NUMBER(1)",
+        "nullable": false,
+        "declaration": "is_deleted NUMBER(1) DEFAULT 0 NOT NULL"
+      },
+      {
+        "name": "deleted_at",
+        "type": "TIMESTAMP WITH LOCAL TIME ZONE",
+        "nullable": true,
+        "declaration": "deleted_at TIMESTAMP WITH LOCAL TIME ZONE"
+      }
+    ],
+    "kku_schema_migration": [
+      {
+        "name": "name",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "name VARCHAR2(100) PRIMARY KEY"
+      },
+      {
+        "name": "status",
+        "type": "VARCHAR2(10)",
+        "nullable": false,
+        "declaration": "status VARCHAR2(10) NOT NULL"
+      },
+      {
+        "name": "applied_at",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "declaration": "applied_at TIMESTAMP"
+      }
+    ],
+    "kku_app_lock": [
+      {
+        "name": "id",
+        "type": "NUMBER(1)",
+        "nullable": false,
+        "declaration": "id NUMBER(1) PRIMARY KEY CHECK(id=1)"
+      }
+    ],
+    "room_closure": [
+      {
+        "name": "closure_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "closure_id NUMBER(10) GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY"
+      },
+      {
+        "name": "room_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "room_id NUMBER(10) NOT NULL REFERENCES room(room_id)"
+      },
+      {
+        "name": "start_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "start_at TIMESTAMP NOT NULL"
+      },
+      {
+        "name": "end_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "end_at TIMESTAMP NOT NULL"
+      },
+      {
+        "name": "reason",
+        "type": "VARCHAR2(500)",
+        "nullable": false,
+        "declaration": "reason VARCHAR2(500) NOT NULL"
+      },
+      {
+        "name": "actor_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "actor_user_id NUMBER(10) NOT NULL REFERENCES users(user_id)"
+      }
+    ],
+    "booking_violation": [
+      {
+        "name": "violation_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "violation_id NUMBER(10) GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY"
+      },
+      {
+        "name": "booking_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "booking_id NUMBER(10) NOT NULL REFERENCES booking(booking_id)"
+      },
+      {
+        "name": "affected_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "affected_user_id NUMBER(10) NOT NULL REFERENCES users(user_id)"
+      },
+      {
+        "name": "violation_type",
+        "type": "VARCHAR2(20)",
+        "nullable": false,
+        "declaration": "violation_type VARCHAR2(20) NOT NULL CHECK(violation_type IN('NO_SHOW','LATE_CANCEL'))"
+      },
+      {
+        "name": "occurred_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "occurred_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      },
+      {
+        "name": "source_event_key",
+        "type": "VARCHAR2(150)",
+        "nullable": false,
+        "declaration": "source_event_key VARCHAR2(150) NOT NULL UNIQUE"
+      }
+    ],
+    "command_attempt": [
+      {
+        "name": "actor_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "actor_user_id NUMBER(10) NOT NULL REFERENCES users(user_id)"
+      },
+      {
+        "name": "request_key",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "request_key VARCHAR2(100) NOT NULL"
+      },
+      {
+        "name": "request_hash",
+        "type": "VARCHAR2(64)",
+        "nullable": false,
+        "declaration": "request_hash VARCHAR2(64) NOT NULL"
+      },
+      {
+        "name": "result_json",
+        "type": "CLOB",
+        "nullable": true,
+        "declaration": "result_json CLOB CHECK(result_json IS JSON)"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "created_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      }
+    ],
+    "login_identity": [
+      {
+        "name": "provider",
+        "type": "VARCHAR2(20)",
+        "nullable": false,
+        "declaration": "provider VARCHAR2(20) NOT NULL"
+      },
+      {
+        "name": "subject",
+        "type": "VARCHAR2(255)",
+        "nullable": false,
+        "declaration": "subject VARCHAR2(255) NOT NULL"
+      },
+      {
+        "name": "user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "user_id NUMBER(10) NOT NULL REFERENCES users(user_id)"
+      }
+    ],
+    "login_credential": [
+      {
+        "name": "user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "user_id NUMBER(10) PRIMARY KEY REFERENCES users(user_id)"
+      },
+      {
+        "name": "password_hash",
+        "type": "VARCHAR2(512)",
+        "nullable": false,
+        "declaration": "password_hash VARCHAR2(512) NOT NULL"
+      },
+      {
+        "name": "failed_attempts",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "failed_attempts NUMBER(5) DEFAULT 0 NOT NULL"
+      },
+      {
+        "name": "locked_until",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "declaration": "locked_until TIMESTAMP"
+      },
+      {
+        "name": "updated_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "updated_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      }
+    ],
+    "login_session": [
+      {
+        "name": "token_hash",
+        "type": "VARCHAR2(64)",
+        "nullable": false,
+        "declaration": "token_hash VARCHAR2(64) PRIMARY KEY"
+      },
+      {
+        "name": "user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "user_id NUMBER(10) NOT NULL REFERENCES users(user_id)"
+      },
+      {
+        "name": "csrf_hash",
+        "type": "VARCHAR2(64)",
+        "nullable": false,
+        "declaration": "csrf_hash VARCHAR2(64) NOT NULL"
+      },
+      {
+        "name": "expires_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "expires_at TIMESTAMP NOT NULL"
+      }
+    ],
+    "room_inspection": [
+      {
+        "name": "inspection_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "inspection_id NUMBER(10) GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY"
+      },
+      {
+        "name": "room_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "room_id NUMBER(10) NOT NULL REFERENCES room(room_id)"
+      },
+      {
+        "name": "actor_user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "actor_user_id NUMBER(10) NOT NULL REFERENCES users(user_id)"
+      },
+      {
+        "name": "inspected_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "inspected_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      },
+      {
+        "name": "condition",
+        "type": "VARCHAR2(100)",
+        "nullable": false,
+        "declaration": "condition VARCHAR2(100) NOT NULL"
+      },
+      {
+        "name": "note",
+        "type": "VARCHAR2(1000)",
+        "nullable": true,
+        "declaration": "note VARCHAR2(1000)"
+      },
+      {
+        "name": "items_json",
+        "type": "CLOB",
+        "nullable": true,
+        "declaration": "items_json CLOB CHECK(items_json IS JSON)"
+      }
+    ],
+    "help_faq": [
+      {
+        "name": "faq_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "faq_id NUMBER(10) GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY"
+      },
+      {
+        "name": "question",
+        "type": "VARCHAR2(300)",
+        "nullable": false,
+        "declaration": "question VARCHAR2(300) NOT NULL"
+      },
+      {
+        "name": "answer",
+        "type": "VARCHAR2(2000)",
+        "nullable": false,
+        "declaration": "answer VARCHAR2(2000) NOT NULL"
+      },
+      {
+        "name": "is_active",
+        "type": "NUMBER(1)",
+        "nullable": false,
+        "declaration": "is_active NUMBER(1) DEFAULT 1 NOT NULL CHECK(is_active IN(0,1))"
+      }
+    ],
+    "help_message": [
+      {
+        "name": "message_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "message_id NUMBER(10) GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY"
+      },
+      {
+        "name": "user_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "user_id NUMBER(10) NOT NULL REFERENCES users(user_id)"
+      },
+      {
+        "name": "question",
+        "type": "VARCHAR2(1000)",
+        "nullable": false,
+        "declaration": "question VARCHAR2(1000) NOT NULL"
+      },
+      {
+        "name": "answer",
+        "type": "VARCHAR2(2000)",
+        "nullable": true,
+        "declaration": "answer VARCHAR2(2000)"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "created_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      }
+    ],
+    "stock_movement": [
+      {
+        "name": "movement_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "movement_id NUMBER(10) GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY"
+      },
+      {
+        "name": "booking_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "booking_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "equipment_id",
+        "type": "NUMBER(10)",
+        "nullable": false,
+        "declaration": "equipment_id NUMBER(10) NOT NULL"
+      },
+      {
+        "name": "movement_type",
+        "type": "VARCHAR2(10)",
+        "nullable": false,
+        "declaration": "movement_type VARCHAR2(10) NOT NULL"
+      },
+      {
+        "name": "quantity",
+        "type": "NUMBER(5)",
+        "nullable": false,
+        "declaration": "quantity NUMBER(5) NOT NULL CHECK(quantity>0)"
+      },
+      {
+        "name": "source_event_key",
+        "type": "VARCHAR2(150)",
+        "nullable": false,
+        "declaration": "source_event_key VARCHAR2(150) NOT NULL UNIQUE"
+      },
+      {
+        "name": "occurred_at",
+        "type": "TIMESTAMP",
+        "nullable": false,
+        "declaration": "occurred_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL"
+      }
+    ]
+  },
+  "fks": [
+    {
+      "child": "booking_equipment",
+      "columns": [
+        "booking_booking_id"
+      ],
+      "parent": "booking",
+      "references": [
+        "booking_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking_equipment",
+      "columns": [
+        "equipment_equipment_id"
+      ],
+      "parent": "equipment",
+      "references": [
+        "equipment_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking_log",
+      "columns": [
+        "booking_booking_id"
+      ],
+      "parent": "booking",
+      "references": [
+        "booking_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking_log",
+      "columns": [
+        "users_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "booking_participant",
+      "columns": [
+        "booking_booking_id"
+      ],
+      "parent": "booking",
+      "references": [
+        "booking_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking_participant",
+      "columns": [
+        "users_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking",
+      "columns": [
+        "room_room_id"
+      ],
+      "parent": "room",
+      "references": [
+        "room_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking",
+      "columns": [
+        "staff_staff_id"
+      ],
+      "parent": "staff",
+      "references": [
+        "staff_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "booking",
+      "columns": [
+        "users_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "floor",
+      "columns": [
+        "building_building_id"
+      ],
+      "parent": "building",
+      "references": [
+        "building_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "notification",
+      "columns": [
+        "booking_booking_id"
+      ],
+      "parent": "booking",
+      "references": [
+        "booking_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "notification",
+      "columns": [
+        "users_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "penalty",
+      "columns": [
+        "booking_booking_id"
+      ],
+      "parent": "booking",
+      "references": [
+        "booking_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "penalty",
+      "columns": [
+        "staff_staff_id"
+      ],
+      "parent": "staff",
+      "references": [
+        "staff_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "penalty",
+      "columns": [
+        "users_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "report",
+      "columns": [
+        "users_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "room_assignment",
+      "columns": [
+        "room_room_id"
+      ],
+      "parent": "room",
+      "references": [
+        "room_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "room_assignment",
+      "columns": [
+        "staff_staff_id"
+      ],
+      "parent": "staff",
+      "references": [
+        "staff_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "room_equipment",
+      "columns": [
+        "equipment_equipment_id"
+      ],
+      "parent": "equipment",
+      "references": [
+        "equipment_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "room_equipment",
+      "columns": [
+        "room_room_id"
+      ],
+      "parent": "room",
+      "references": [
+        "room_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "room",
+      "columns": [
+        "floor_floor_id"
+      ],
+      "parent": "floor",
+      "references": [
+        "floor_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "room",
+      "columns": [
+        "room_type_room_type_id"
+      ],
+      "parent": "room_type",
+      "references": [
+        "room_type_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "staff",
+      "columns": [
+        "users_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "users",
+      "columns": [
+        "affiliation_affiliation_id"
+      ],
+      "parent": "affiliation",
+      "references": [
+        "affiliation_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "booking_log",
+      "columns": [
+        "affected_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "equipment",
+      "columns": [
+        "created_by_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "room_closure",
+      "columns": [
+        "room_id"
+      ],
+      "parent": "room",
+      "references": [
+        "room_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "room_closure",
+      "columns": [
+        "actor_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking_violation",
+      "columns": [
+        "booking_id"
+      ],
+      "parent": "booking",
+      "references": [
+        "booking_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking_violation",
+      "columns": [
+        "affected_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "command_attempt",
+      "columns": [
+        "actor_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "login_identity",
+      "columns": [
+        "user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "login_credential",
+      "columns": [
+        "user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "login_session",
+      "columns": [
+        "user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "room_inspection",
+      "columns": [
+        "room_id"
+      ],
+      "parent": "room",
+      "references": [
+        "room_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "room_inspection",
+      "columns": [
+        "actor_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "help_message",
+      "columns": [
+        "user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "stock_movement",
+      "columns": [
+        "booking_id",
+        "equipment_id"
+      ],
+      "parent": "booking_equipment",
+      "references": [
+        "booking_booking_id",
+        "equipment_equipment_id"
+      ],
+      "optional": false
+    },
+    {
+      "child": "booking",
+      "columns": [
+        "decided_actor_user_id"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": true
+    },
+    {
+      "child": "penalty",
+      "columns": [
+        "decided_by"
+      ],
+      "parent": "users",
+      "references": [
+        "user_id"
+      ],
+      "optional": true
+    }
+  ],
+  "pk": {
+    "affiliation": [
+      "affiliation_id"
+    ],
+    "booking": [
+      "booking_id"
+    ],
+    "booking_equipment": [
+      "booking_booking_id",
+      "equipment_equipment_id"
+    ],
+    "booking_log": [
+      "booking_log_id"
+    ],
+    "booking_participant": [
+      "booking_booking_id",
+      "users_user_id"
+    ],
+    "building": [
+      "building_id"
+    ],
+    "equipment": [
+      "equipment_id"
+    ],
+    "floor": [
+      "floor_id"
+    ],
+    "holiday": [
+      "holiday_id"
+    ],
+    "notification": [
+      "notification_id"
+    ],
+    "penalty": [
+      "penalty_id"
+    ],
+    "report": [
+      "report_id"
+    ],
+    "room": [
+      "room_id"
+    ],
+    "room_assignment": [
+      "staff_staff_id",
+      "room_room_id"
+    ],
+    "room_equipment": [
+      "room_room_id",
+      "equipment_equipment_id"
+    ],
+    "room_type": [
+      "room_type_id"
+    ],
+    "staff": [
+      "staff_id"
+    ],
+    "users": [
+      "user_id"
+    ],
+    "kku_schema_migration": [
+      "name"
+    ],
+    "kku_app_lock": [
+      "id"
+    ],
+    "room_closure": [
+      "closure_id"
+    ],
+    "booking_violation": [
+      "violation_id"
+    ],
+    "command_attempt": [
+      "actor_user_id",
+      "request_key"
+    ],
+    "login_identity": [
+      "provider",
+      "subject"
+    ],
+    "login_credential": [
+      "user_id"
+    ],
+    "login_session": [
+      "token_hash"
+    ],
+    "room_inspection": [
+      "inspection_id"
+    ],
+    "help_faq": [
+      "faq_id"
+    ],
+    "help_message": [
+      "message_id"
+    ],
+    "stock_movement": [
+      "movement_id"
+    ]
+  },
+  "base_names": [
+    "affiliation",
+    "booking",
+    "booking_equipment",
+    "booking_log",
+    "booking_participant",
+    "building",
+    "equipment",
+    "floor",
+    "holiday",
+    "notification",
+    "penalty",
+    "report",
+    "room",
+    "room_assignment",
+    "room_equipment",
+    "room_type",
+    "staff",
+    "users"
+  ]
+}

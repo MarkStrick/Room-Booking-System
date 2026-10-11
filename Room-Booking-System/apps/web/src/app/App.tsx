@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
-  ArrowRight,
   BarChart3,
   Bell,
   BookOpen,
@@ -15,6 +14,8 @@ import {
   Grid2X2,
   LogOut,
   Menu,
+  MessageCircle,
+  Search,
   Package,
   RotateCcw,
   Settings2,
@@ -36,11 +37,17 @@ import {
 } from "../features/Administration";
 import { Reports } from "../features/Reports";
 import { Help, Notifications, Profile } from "../features/HelpProfile";
-import { UserAccess } from '../features/UserAccess';
-import { Brand } from '../components/Brand';
+import { UserAccess } from "../features/UserAccess";
+import { Brand } from "../components/Brand";
 
 const items = [
-  {id:'access',label:'บัญชีและสิทธิ์',icon:UserRound,roles:['ADMIN'],group:'บริหารพื้นที่'},
+  {
+    id: "access",
+    label: "บัญชีและสิทธิ์",
+    icon: UserRound,
+    roles: ["ADMIN"],
+    group: "บริหารพื้นที่",
+  },
   {
     id: "rooms",
     label: "ค้นหาและจองห้อง",
@@ -131,12 +138,25 @@ const subscribeMobile = (cb: () => void) => {
 const getMobile = () => mobileQuery.matches;
 const getRoute = () => window.location.hash.replace(/^#\/?/, "") || "rooms";
 export function App() {
-  const { state, user, switchUser, toast, showToast, persistent, mode, logout } = useDemo();
+  const {
+    state,
+    user,
+    switchUser,
+    toast,
+    showToast,
+    persistent,
+    mode,
+    logout,
+    canTest,
+  } = useDemo();
   const route = useSyncExternalStore(subscribe, getRoute);
   const mobile = useSyncExternalStore(subscribeMobile, getMobile);
   const [action, setAction] = useState<DialogAction | null>(null);
   const [menu, setMenu] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
+  const accountButtonRef = useRef<HTMLButtonElement>(null);
+
   const sidebarRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!menu || !mobile) return;
@@ -152,71 +172,45 @@ export function App() {
   useEffect(() => {
     setAction(null);
     setMenu(false);
+    setAccountOpen(false);
     window.scrollTo({ top: 0 });
   }, [route, user.id]);
-  const allowed = items.filter((i) => i.roles.includes(user.role) && (i.id !== 'access'||mode === 'server'));
+  useEffect(() => {
+    if (!accountOpen) return;
+    function dismiss(event: PointerEvent) {
+      if (!accountRef.current?.contains(event.target as Node))
+        setAccountOpen(false);
+    }
+    document.addEventListener("pointerdown", dismiss);
+    return () => document.removeEventListener("pointerdown", dismiss);
+  }, [accountOpen]);
+  const allowed = items.filter(
+    (i) =>
+      i.roles.includes(user.role) && (i.id !== "access" || mode === "server"),
+  );
   const current = allowed.find((i) => i.id === route);
   const unread = state.notices.filter(
-    (n) => n.userId === user.id && (mode === 'demo' ? n.status === 'QUEUED' : !n.readAt),
+    (n) =>
+      n.userId === user.id &&
+      (mode === "demo" ? n.status === "QUEUED" : !n.readAt),
   ).length;
-  if (!loggedIn)
-    return (
-      <div className="login-page">
-        <div className="login-art">
-          <Brand />
-          <div>
-            <span className="eyebrow">SPACE TO LEARN. ROOM TO GROW.</span>
-            <h1>
-              พื้นที่แห่งการเรียนรู้
-              <br />
-              เริ่มต้นที่นี่
-            </h1>
-            <p>
-              ค้นหา จอง และใช้พื้นที่ร่วมกัน
-              <br />
-              ในมหาวิทยาลัยขอนแก่น
-            </p>
-            <div className="login-blocks">
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
-          <small>มหาวิทยาลัยขอนแก่น • KKU SPACE</small>
-        </div>
-        <div className="login-content">
-          <span className="badge warm">เว็บต้นแบบ • บัญชีสาธิต</span>
-          <h2>ยินดีต้อนรับกลับ</h2>
-          <p>เลือกบัญชีเพื่อทดลองใช้งานระบบจองห้อง</p>
-          {state.users
-            .filter((u) => u.id <= 3)
-            .map((u) => (
-              <button
-                className="login-account"
-                key={u.id}
-                onClick={() => {
-                  switchUser(u.id);
-                  setLoggedIn(true);
-                  window.location.hash = "#/rooms";
-                }}
-              >
-                <span className="avatar">{u.name[0]}</span>
-                <span>
-                  <strong>{roleLabels[u.role]}</strong>
-                  <small>{u.name}</small>
-                </span>
-                <ArrowRight size={20} />
-              </button>
-            ))}
-          <div className="info-strip">
-            การเข้าสู่ระบบ Google จะเชื่อมในขั้นพัฒนาระบบจริง
-          </div>
-        </div>
-      </div>
-    );
+  const mobileItems =
+    user.role === "USER"
+      ? [
+          { id: "rooms", label: "ค้นหา", icon: Search },
+          { id: "bookings", label: "การจอง", icon: CalendarCheck },
+          { id: "help", label: "ผู้ช่วย", icon: MessageCircle },
+        ]
+      : [
+          { id: "approvals", label: "อนุมัติ", icon: ShieldCheck },
+          { id: "rooms", label: "ค้นหา", icon: Search },
+          { id: "help", label: "ผู้ช่วย", icon: MessageCircle },
+        ];
   let page;
   switch (current?.id) {
-    case 'access': page=<UserAccess/>; break;
+    case "access":
+      page = <UserAccess />;
+      break;
     case "rooms":
       page = <Rooms open={setAction} />;
       break;
@@ -263,7 +257,9 @@ export function App() {
       );
   }
   return (
-    <div className={`app-shell ${user.role === "USER" ? "student-shell" : ""}`}>
+    <div
+      className={`app-shell integrated-shell ${user.role === "USER" ? "student-shell" : ""}`}
+    >
       <a
         href="#main-content"
         className="skip-link"
@@ -285,10 +281,28 @@ export function App() {
       <aside
         ref={sidebarRef}
         inert={mobile && !menu}
+        onClick={(event) => {
+          if ((event.target as HTMLElement).closest("a")) setMenu(false);
+        }}
         onKeyDown={(event) => {
           if (event.key === "Escape") setMenu(false);
+          if (event.key === "Tab" && mobile && menu) {
+            const controls = sidebarRef.current?.querySelectorAll<HTMLElement>(
+              "a[href], button:not([disabled])",
+            );
+            const first = controls?.[0],
+              last = controls?.[controls.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+              event.preventDefault();
+              last?.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              first?.focus();
+            }
+          }
         }}
         className={`sidebar ${menu ? "mobile-open" : ""}`}
+        id="workspace-navigation"
       >
         <div className="sidebar-brand">
           <Brand />
@@ -357,27 +371,28 @@ export function App() {
       </aside>
       <div className="workspace" inert={mobile && menu}>
         <header className="topbar">
-          <div className="breadcrumb">
-            <button
-              className="icon-button mobile-only"
-              aria-label="เปิดเมนู"
-              onClick={() => setMenu(true)}
-            >
-              <Menu size={21} />
-            </button>
-            <span>พื้นที่มหาวิทยาลัย</span>
-            <ChevronRight size={14} />
-            <strong>{current?.label ?? "ไม่พบหน้า"}</strong>
+          <div className="workspace-brand">
+            <Brand />
+            <div className="desktop-workspace-title">
+              <GraduationCap size={22} />
+              <span>
+                <small>มหาวิทยาลัยขอนแก่น</small>
+                <strong>{current?.label ?? "พื้นที่มหาวิทยาลัย"}</strong>
+              </span>
+            </div>
+            <span className="workspace-brand-description">
+              ระบบจองห้อง มหาวิทยาลัยขอนแก่น
+            </span>
           </div>
           <div className="topbar-actions">
-            {user.role === "USER" && mode === 'demo' ? (
+            {user.role === "USER" && mode === "demo" ? (
               <span className="prototype-label">ข้อมูลตัวอย่าง</span>
             ) : null}
             <button
               className="clock-button"
               onClick={() => setAction({ kind: "clock" })}
               title="เปลี่ยนเวลาเดโม"
-              hidden={mode !== 'demo'}
+              hidden={mode !== "demo" || !canTest}
             >
               <Clock3 size={16} />
               <span>
@@ -388,26 +403,80 @@ export function App() {
             <a
               href="#/notifications"
               className="icon-button notification-button"
-              aria-label="เปิดการแจ้งเตือน"
+              aria-label={
+                unread
+                  ? `เปิดการแจ้งเตือน ${unread} รายการที่ยังไม่อ่าน`
+                  : "เปิดการแจ้งเตือน"
+              }
             >
               <Bell size={19} />
-              {unread ? <i /> : null}
+              {unread ? (
+                <span className="notification-count">
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              ) : null}
             </a>
-            <div className="topbar-divider" />
-            <a className="header-user" href="#/profile">
-              <span className="avatar">{user.name[0]}</span>
-              <span>
-                <strong>{user.name}</strong>
-                <small>{roleLabels[user.role]}</small>
-              </span>
-            </a>
-            <button
-              className="icon-button logout-button"
-              aria-label="ออกจากระบบ"
-              onClick={() => mode === 'demo' ? setLoggedIn(false) : void logout().catch(e=>showToast((e as Error).message))}
+            <div
+              className="account-menu"
+              ref={accountRef}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  setAccountOpen(false);
+                  accountButtonRef.current?.focus();
+                }
+              }}
             >
-              <LogOut size={17} />
+              <button
+                ref={accountButtonRef}
+                className="header-user account-trigger"
+                aria-label="เปิดเมนูบัญชี"
+                aria-expanded={accountOpen}
+                aria-controls="account-options"
+                onClick={() => setAccountOpen((value) => !value)}
+              >
+                <span className="avatar">{user.name[0]}</span>
+                <span className="account-name">
+                  <strong>{user.name}</strong>
+                  <small>{roleLabels[user.role]}</small>
+                </span>
+                <ChevronDown size={16} />
+              </button>
+              {accountOpen ? (
+                <div id="account-options" className="account-options">
+                  <strong>{user.name}</strong>
+                  <small>{user.email}</small>
+                  <a href="#/profile" onClick={() => setAccountOpen(false)}>
+                    <UserRound size={18} />
+                    ข้อมูลส่วนตัว
+                  </a>
+                  <button
+                    onClick={() =>
+                      void logout().catch((e) =>
+                        showToast((e as Error).message),
+                      )
+                    }
+                  >
+                    <LogOut size={18} />
+                    ออกจากระบบ
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div className="breadcrumb">
+            <button
+              className="icon-button mobile-only"
+              aria-label="เปิดเมนู"
+              aria-expanded={menu}
+              aria-controls="workspace-navigation"
+              onClick={() => setMenu(true)}
+            >
+              <Menu size={21} />
             </button>
+            <Grid2X2 size={16} />
+            <span>พื้นที่มหาวิทยาลัย</span>
+            <ChevronRight size={14} />
+            <strong>{current?.label ?? "ไม่พบหน้า"}</strong>
           </div>
         </header>
         {!persistent ? (
@@ -424,57 +493,88 @@ export function App() {
             </span>
             <span>มหาวิทยาลัยขอนแก่น</span>
           </footer>{" "}
-          {mode === 'demo' ? <details className="demo-settings">
-            <summary>
-              <Settings2 size={16} />
-              ตั้งค่าต้นแบบ <span>ข้อมูลจำลอง</span>
-            </summary>
-            <div className="demo-bar">
-              <span>
-                <span className="demo-dot" />
-                <strong>ต้นแบบสำหรับทดลองใช้งาน</strong>
-                <span className="demo-description">
-                  ข้อมูลจำลอง ไม่มีการส่งอีเมลจริง
+          {mode === "demo" && canTest ? (
+            <details className="demo-settings">
+              <summary>
+                <Settings2 size={16} />
+                เครื่องมือทดสอบ <span>เฉพาะผู้ดูแลระบบ</span>
+              </summary>
+              <div className="demo-bar">
+                <span>
+                  <span className="demo-dot" />
+                  <strong>ต้นแบบสำหรับทดลองใช้งาน</strong>
+                  <span className="demo-description">
+                    ข้อมูลจำลอง ไม่มีการส่งอีเมลจริง
+                  </span>
                 </span>
-              </span>
-              <label>
-                <Settings2 size={14} />
-                ทดลองบทบาท
-                <select
-                  aria-label="ทดลองบทบาท"
-                  value={user.id}
-                  onChange={(e) => switchUser(Number(e.target.value))}
+                <label>
+                  <Settings2 size={14} />
+                  ทดลองบทบาท
+                  <select
+                    aria-label="ทดลองบทบาท"
+                    value={user.id}
+                    onChange={(e) => switchUser(Number(e.target.value))}
+                  >
+                    {state.users.map((u) => (
+                      <option key={u.id} value={u.id}>
+                        {roleLabels[u.role]} · {u.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <div className="demo-settings-actions">
+                <span>
+                  เวลาในต้นแบบ {thaiDate(state.now, true)} {time(state.now)} น.
+                </span>
+                <button
+                  className="btn ghost small"
+                  onClick={() => setAction({ kind: "clock" })}
                 >
-                  {state.users.map((u) => (
-                    <option key={u.id} value={u.id}>
-                      {roleLabels[u.role]} · {u.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-            <div className="demo-settings-actions">
-              <span>
-                เวลาในต้นแบบ {thaiDate(state.now, true)} {time(state.now)} น.
-              </span>
-              <button
-                className="btn ghost small"
-                onClick={() => setAction({ kind: "clock" })}
-              >
-                <Clock3 size={16} />
-                เวลาและงานสาธิต
-              </button>
-              <button
-                className="btn ghost small"
-                onClick={() => setAction({ kind: "reset" })}
-              >
-                <RotateCcw size={16} />
-                เริ่มข้อมูลสาธิตใหม่
-              </button>
-            </div>
-          </details> : null}
+                  <Clock3 size={16} />
+                  เวลาและงานสาธิต
+                </button>
+                <button
+                  className="btn ghost small"
+                  onClick={() => setAction({ kind: "reset" })}
+                >
+                  <RotateCcw size={16} />
+                  เริ่มข้อมูลสาธิตใหม่
+                </button>
+              </div>
+            </details>
+          ) : null}
         </main>
       </div>
+      <nav
+        className="mobile-bottom-nav"
+        aria-label="เมนูด่วน"
+        inert={mobile && menu}
+      >
+        {mobileItems.map((item) => (
+          <a
+            key={item.id}
+            href={`#/${item.id}`}
+            className={route === item.id ? "active" : ""}
+            aria-current={route === item.id ? "page" : undefined}
+          >
+            <item.icon size={22} />
+            <span>{item.label}</span>
+          </a>
+        ))}
+        <button
+          aria-label="เปิดเมนูทั้งหมด"
+          aria-expanded={menu}
+          aria-controls="workspace-navigation"
+          className={
+            !mobileItems.some((item) => item.id === route) ? "active" : ""
+          }
+          onClick={() => setMenu(true)}
+        >
+          <Menu size={22} />
+          <span>เมนู</span>
+        </button>
+      </nav>
       {action ? (
         <ActionDialog
           key={`${action.kind}-${action.id ?? "new"}`}

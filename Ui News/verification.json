@@ -1,0 +1,65 @@
+{
+  "screens": [
+    {
+      "screen": "01-login",
+      "text_layers": 10,
+      "images": 0,
+      "bytes": 6456
+    },
+    {
+      "screen": "02-search",
+      "text_layers": 101,
+      "images": 7,
+      "bytes": 230922
+    },
+    {
+      "screen": "04-history",
+      "text_layers": 50,
+      "images": 0,
+      "bytes": 28115
+    },
+    {
+      "screen": "05-chatbot",
+      "text_layers": 14,
+      "images": 0,
+      "bytes": 11388
+    },
+    {
+      "screen": "03-booking",
+      "text_layers": 25,
+      "images": 1,
+      "bytes": 51361
+    },
+    {
+      "screen": "03-booking-full",
+      "text_layers": 25,
+      "images": 1,
+      "bytes": 51374
+    },
+    {
+      "screen": "06-admin",
+      "text_layers": 78,
+      "images": 1,
+      "bytes": 59363
+    },
+    {
+      "screen": "07-checklist",
+      "text_layers": 31,
+      "images": 0,
+      "bytes": 24386
+    },
+    {
+      "screen": "07-checklist-full",
+      "text_layers": 31,
+      "images": 0,
+      "bytes": 24415
+    },
+    {
+      "screen": "08-notifications-empty",
+      "text_layers": 4,
+      "images": 0,
+      "bytes": 3534
+    }
+  ],
+  "browser_errors": []
+}

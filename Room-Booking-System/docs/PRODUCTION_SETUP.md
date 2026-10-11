@@ -1,14 +1,18 @@
 # เปิดใช้งาน KKU Space กับ Supabase
 
-รุ่นนี้มี React frontend, NestJS API และ worker แยกกระบวนการ โดยใช้ Supabase PostgreSQL เป็นฐานข้อมูลกลาง มีอีเมล/รหัสผ่านที่เก็บด้วย Argon2id และ Google OpenID Connect ผู้ใช้สมัครเองและ Google ใช้ได้ทุกอีเมลตามคำขอล่าสุดวันที่ 9 ตุลาคม 2569 ใช้ session cookie แบบ HttpOnly ไม่ใช้ Supabase Auth หรือเก็บ token ใน localStorage ดู [ระบบรหัสผ่านและ migration ใหม่](PASSWORD_AUTH.md)
+**อัปเดต 11 ตุลาคม 2569:** เตรียมรองรับ Vercel แล้วโดยยังไม่ Deploy ใช้ [VERCEL_SETUP.md](VERCEL_SETUP.md) สำหรับ function, cron, inline CA และรายการ Environment ระบบปิด development login ทุกโหมด พื้นที่จำลองเปิดเฉพาะ ADMIN ที่ยืนยันตัวตนแล้ว ข้อมูลการเชื่อมต่อวันที่ 10 ต.ค. ด้านล่างเป็นประวัติ; วันที่ 11 ต.ค. ตรวจฐานข้อมูล/TLS/schema ผ่านจากเครื่องนี้
 
-**ติดตั้งใน Supabase และเชื่อม API/worker ในเครื่องแล้ววันที่ 9 ตุลาคม 2569 แต่ยังไม่มีโฮสต์สาธารณะ** ดู [ผลตรวจและบริการที่ยังรอตั้งค่า](SUPABASE_CONNECTION.md) Google Login และ SMTP ยังไม่ได้ตั้งค่า ต้องตรวจด้วยบัญชีและอีเมลจริงก่อนรับผู้ใช้ ขั้นตอนด้านล่างใช้สำหรับตั้งค่าเครื่องใหม่หรือโฮสต์จริง
+รุ่นนี้มี React frontend, NestJS API และ worker ใช้ session cookie แบบ HttpOnly และ Google OpenID Connect เป็นช่องทางเข้าสู่ระบบเดียว ไม่ใช้ Supabase Auth หรือเก็บ token ใน localStorage ดู [การตั้งค่า Google Login](MOBILE_UI_GOOGLE_LOGIN.md)
+
+**สถานะวันที่ 10 ตุลาคม 2569:** Supabase cloud มี schema และ settings migration แล้ว แต่ direct IPv6 เชื่อมจากเครือข่ายเครื่องนี้ไม่ได้ ต้องใช้ Session pooler ที่คัดลอกจากหน้า Connect จริง โค้ด/API/worker/Docker ตรวจผ่านกับฐานทดสอบในเครื่อง Google Login, SMTP และโฮสต์ HTTPS ยังไม่มีค่าบริการจริง ดู [ผลตรวจล่าสุด](AUDIT_FIX_VERIFICATION.md) และ [ประวัติการเชื่อมต่อ](SUPABASE_CONNECTION.md)
 
 ## 1. ฐานข้อมูลใหม่
 
-สร้าง Supabase project สำหรับระบบนี้ เปิด SQL Editor แล้วรัน `supabase/migrations/202610080001_server_storage.sql` หนึ่งครั้ง เก็บประวัติการรัน migration ของโครงการไว้ สคริปต์สร้าง schema `kku_private` ใหม่ ไม่ใช่สคริปต์ย้ายข้อมูล Oracle และไม่แก้ไฟล์ข้อเสนอเดิม
+สำหรับฐานใหม่ รัน migration ตามลำดับ `202610080001_server_storage.sql`, `202610090001_password_auth.sql`, `20261009171230_audit_settings.sql` ใน `supabase/migrations` เก็บประวัติการรันไว้ มี 23 ตารางรวม app_lock และ settings ใน schema `kku_private` ไม่ใช่สคริปต์ย้ายข้อมูล Oracle สำหรับ cloud เดิมให้เทียบ remote history ก่อนเสมอ: ทั้งสามส่วนติดตั้งแล้วและ timestamps ของ migration เดิมต่างจากชื่อไฟล์ local ห้ามส่งซ้ำด้วย db push โดยไม่เทียบ history
 
-ตารางมี RLS และไม่มีสิทธิ์สำหรับ `anon`/`authenticated` ไม่เพิ่ม `kku_private` ใน exposed schemas ของ Data API เบราว์เซอร์เรียก API ของ NestJS เท่านั้น บัญชีเชื่อมฐานข้อมูลฝั่งเซิร์ฟเวอร์ต้องเป็นเจ้าของตารางหรือ role ที่ได้รับสิทธิ์และข้าม RLS ได้ตามที่ผู้ดูแลฐานข้อมูลกำหนด
+อัปเดต 12 ต.ค.: หลังสาม migration ข้างต้นใช้ `20261011184944_sql_security_hardening.sql` ซึ่งติดตั้งบน cloud เดิมแล้ว ต้อง provision `kku_server` ที่ไม่มีสิทธิ์พิเศษก่อนรัน สำหรับรายละเอียดและ remote history ดู [SQL_SECURITY.md](SQL_SECURITY.md)
+
+ตารางมี RLS และไม่มีสิทธิ์สำหรับ `anon`/`authenticated` ไม่เพิ่ม `kku_private` ใน exposed schemas ของ Data API เบราว์เซอร์เรียก API ของ NestJS เท่านั้น `kku_server` มี DML ผ่าน server_access policy เฉพาะ role นี้ โดยไม่เป็นเจ้าของตาราง ไม่มี CREATE/TRUNCATE/BYPASSRLS รัน migrations ด้วยบัญชีผู้ดูแล
 
 จากปุ่ม Connect คัดลอก connection string ไปตั้ง `DATABASE_URL` ฝั่งเซิร์ฟเวอร์ สำหรับเซิร์ฟเวอร์ถาวรใช้ direct connection หากรองรับ IPv6 หรือ session pooler หากใช้ IPv4 เท่านั้น ตาม [เอกสาร Supabase](https://supabase.com/docs/guides/database/connecting-to-postgres) encode อักขระพิเศษในรหัสผ่านของ URL
 
@@ -20,9 +24,9 @@
 
 สร้าง Google OAuth client ประเภท Web application ใส่ callback **ตรงกับ** `${APP_ORIGIN}/api/auth/google/callback` เช่น `https://rooms.example.edu/api/auth/google/callback` ตั้งค่า consent screen และการอนุญาตแอปกับ Google Workspace ของมหาวิทยาลัยให้เหมาะกับกลุ่มผู้ใช้
 
-ตั้ง `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` และ `ALLOW_PUBLIC_GOOGLE=1` เพื่อรองรับ Google ทุกโดเมน รุ่นนี้ตรวจ `email_verified` จาก token ที่ Google ยืนยันและผูกบัญชีตาม `sub` ไม่เชื่อการส่งอีเมลหรือบทบาทมาจากเว็บ ดู [เอกสาร Google](https://developers.google.com/identity/openid-connect/openid-connect)
+ตั้ง `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `ALLOW_PUBLIC_GOOGLE=0` และ `ALLOWED_GOOGLE_DOMAINS=kkumail.com,kku.ac.th` รุ่นนี้ตรวจ `email_verified`, โดเมนอีเมล และ `hd` จาก token ที่ Google ยืนยันและผูกบัญชีตาม `sub` ไม่เชื่อการส่งอีเมลหรือบทบาทมาจากเว็บ ดู [เอกสาร Google](https://developers.google.com/identity/openid-connect/openid-connect)
 
-คำขอล่าสุดเปิดรับทุกอีเมล จึงไม่ต้องตั้งรายการโดเมน Google credentials เป็นตัวเลือกสำหรับช่องทาง Google ส่วนอีเมล/รหัสผ่านต้องรัน migration ใหม่และตั้ง SMTP เพื่อยืนยันอีเมลก่อนเปิดสมัคร หากในอนาคตต้องกลับมาจำกัดโดเมน ให้ตั้ง `ALLOW_PUBLIC_GOOGLE=0` และ `ALLOWED_GOOGLE_DOMAINS` ตามนโยบายที่ตกลงใหม่
+Google credentials เป็นค่าจำเป็นสำหรับเข้าสู่ระบบ อีเมลนอกสองโดเมนมหาวิทยาลัยถูกปฏิเสธก่อนสร้างบัญชีหรือ session และไม่มีช่องทางอีเมล/รหัสผ่านเปิดใช้งาน
 
 ใส่อีเมลผู้ดูแลเริ่มต้นที่ยืนยันแล้วใน `BOOTSTRAP_ADMIN_EMAILS` ก่อนเข้าสู่ระบบครั้งแรก บัญชีใหม่ทั่วไปได้สิทธิ์ผู้จอง ผู้ดูแลเพิ่มสิทธิ์เจ้าหน้าที่และมอบหมายห้องจากหน้า “บัญชีและสิทธิ์” หลังสร้างบัญชีผู้ดูแลสำเร็จให้ลบ bootstrap list การปิดบัญชีเพิกถอน session ทันที
 
@@ -72,4 +76,26 @@ npm.cmd start
 
 ## ขอบเขตที่คงไว้
 
-ไม่แก้ข้อเสนอ `../docs/SYSTEM_ARCHITECTURE.md`, `../docs/DATABASE_REVIEW.md` หรือ SQL/DDL ใน `../Request` ไม่เพิ่ม pending timeout, lead time 4 ชั่วโมง หรือ late-cancel record โดยไม่มีนโยบายที่ยืนยันแล้ว FAQ ใช้คำตอบที่เตรียมไว้ รายงานชั่วโมงยังเป็นประมาณการ รุ่นจริงยังไม่เปิดรายชื่อผู้ร่วมใช้ห้องจากทะเบียนบุคคล และการคืนอุปกรณ์เป็นการคืนยอดกันจอง ไม่ใช่การตรวจรับของจริง
+ข้อเสนอ Oracle และ Request เดิมเก็บเป็นหลักฐาน ดู [baseline ปัจจุบันและ decision log](CURRENT_ARCHITECTURE.md) สำหรับ SLA, pending expiry, lead time รายห้อง, ประวัติ 7/30 วัน และการมอบหมายตามวันที่ มีจ่าย/คืนอุปกรณ์จริงพร้อม audit, อีเมลผู้ร่วมใช้ที่เจ้าของกรอกเอง, FAQ/contact แก้ไขได้ และ OpenAPI ที่ `/api/openapi.json` รายงานเวลายังเป็นประมาณการจากเช็คอินและกำหนดการ ไม่ใช่ sensor IoT การส่งอีเมลจริง/Google/HTTPS และ load/restore บน production ยังต้องตรวจตาม [runbook](OPERATIONS_RUNBOOK.md)
+
+## การยืนยันยกเลิกช้า
+
+แก้ตาม Audit F02 วันที่ 9 ตุลาคม 2569: เมื่อเจ้าของรายการยืนยันคำขอยกเลิก PENDING/APPROVED ที่เหลือเวลาก่อนเริ่มน้อยกว่า 2 ชั่วโมง ระบบปฏิเสธพร้อมบันทึก `LATE_CANCEL` และประวัติเหตุการณ์ครั้งเดียวต่อ booking/type ก่อนตอบ HTTP 409 โดยไม่เปลี่ยนสถานะ ไม่คืนอุปกรณ์ และไม่ส่งอีเมลยืนยันการยกเลิก
+
+การดูรายละเอียด/เปิดหน้าต่างยืนยันยังไม่สร้างความผิด หน้าเว็บยังป้องกันปุ่มยกเลิกเมื่อทราบว่าพ้นกำหนดแล้ว แต่ API ตรวจเวลาจริงอีกครั้งตอนยืนยันเพื่อรองรับหน้าจอเก่าหรือเวลาที่ผ่านไป การกดซ้ำหรือ retry ไม่เพิ่มความผิด และ idempotency key เดิมยังตอบว่าไม่สำเร็จ เมื่อเหลือ 2 ชั่วโมงพอดียกเลิกได้ตามปกติ ผู้ที่ไม่ใช่เจ้าของหรือคำขอที่ไม่ผ่าน session/CSRF/input validation ไม่สร้างความผิด
+
+ความผิดนี้ใช้การนับรวมของระบบบทลงโทษเดิม ไม่ระงับสิทธิ์อัตโนมัติ และไม่ป้องกันการบันทึก NO_SHOW อีกประเภทหากภายหลังผู้จองไม่เช็คอิน ข้อมูลเพิ่มเติมเก็บใน JSONB เดิม จึงไม่ต้องมี migration ใหม่
+
+## การเปลี่ยนความจุห้อง
+
+แก้ตาม Audit F03 วันที่ 9 ตุลาคม 2569: ผู้ดูแลบันทึกความจุห้องไม่ได้หากต่ำกว่าจำนวนคนของรายการ PENDING, APPROVED หรือ CHECKED_IN ที่ยังมีผล ต้องจัดการรายการเหล่านั้นก่อน ระบบไม่ยกเลิกรายการให้เอง ส่วนรายการที่จบแล้วไม่ขวางการปรับความจุ และบันทึกความจุเท่าจำนวนคนได้
+
+ก่อนอนุมัติ API ตรวจจำนวนคนกับความจุปัจจุบันอีกครั้ง หากเกินจะปฏิเสธด้วย `ROOM_CAPACITY_EXCEEDED` โดยไม่เปลี่ยนสถานะ ไม่สร้างอีเมลอนุมัติ และไม่เปลี่ยนยอดอุปกรณ์ เจ้าหน้าที่ยังปฏิเสธคำขอพร้อมเหตุผลได้ การแก้ความจุที่กระทบรายการค้างตอบ `ROOM_CAPACITY_CONFLICT` โดยคงข้อมูลห้องเดิม ทั้งสองจุดตรวจอยู่ใน transaction เดียวกับคำสั่งเพื่อให้การแก้ห้องและอนุมัติพร้อมกันใช้ข้อมูลที่สอดคล้องกัน
+
+## การจัดการวันหยุดมหาวิทยาลัย
+
+แก้ตาม Audit F04: ผู้ดูแลเพิ่ม แก้ไขวันที่ และลบวันหยุดได้ที่ **อาคารและชั้น → วันหยุดมหาวิทยาลัย** เฉพาะ ADMIN ใช้ `HOLIDAY_SAVE` และ `HOLIDAY_DELETE` ได้ ระบบตรวจวันที่จริง วันที่ซ้ำ และวันที่เดิมที่ถูกลบไปแล้ว พร้อมบันทึกประวัติผู้ดำเนินการ รายการเรียงตามวันที่และรองรับกรณียังไม่มีวันหยุด
+
+วันหยุดใช้ทั้งวันตามเวลาประเทศไทย ทุกห้องไม่รับคำขอจองหรืออนุมัติในวันนั้น และหน้าค้นหาแสดงเหตุผลให้เลือกวันอื่น หากวันที่จะเพิ่มหรือเปลี่ยนไปมี PENDING, APPROVED หรือ CHECKED_IN ระบบปฏิเสธด้วย `HOLIDAY_BOOKING_CONFLICT` และคงวันหยุดเดิม การจอง อุปกรณ์ และคิวแจ้งเตือน ต้องจัดการการจองเหล่านั้นก่อน ไม่ยกเลิกหรือสร้างความผิดโดยอัตโนมัติ รายการที่จบแล้วไม่ขวางการตั้งวันหยุด
+
+การลบต้องยืนยันในหน้าจอ และทำให้วันที่นั้นรับการจองตามเงื่อนไขห้องปกติอีกครั้ง ไม่คืนสถานะการจองที่เคยยกเลิก การเปลี่ยนวันหยุดกับการจองตรวจใน transaction เดียวกัน รองรับ demo, SQLite สำหรับทดสอบ และ PostgreSQL ตาราง holidays เดิม ไม่ต้องเพิ่ม migration

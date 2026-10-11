@@ -1,0 +1,22 @@
+
+> kku-room-booking-prototype@0.1.0 build
+> npm run build --workspace apps/web && npm run build --workspace apps/backend
+
+
+> @kku/web@0.1.0 build
+> tsc -p ../../tsconfig.json --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1618 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                         1.18 kB │ gzip:   0.62 kB
+dist/assets/index-QQgTpXM4.css        137.16 kB │ gzip:  25.32 kB
+dist/assets/AdminSandbox-CyXEpR2U.js    7.06 kB │ gzip:   2.61 kB
+dist/assets/index-CN44bSiH.js         415.45 kB │ gzip: 118.18 kB
+✓ built in 3.44s
+
+> @kku/backend@0.2.0 build
+> tsc --noEmit && node build.mjs
+

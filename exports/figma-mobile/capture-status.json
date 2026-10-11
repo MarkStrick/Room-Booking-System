@@ -1,0 +1,68 @@
+{
+  "fileKey": "2zUdJtNaFn2Z1I2aqpuVQU",
+  "mobile": {
+    "nodeId": "7:2",
+    "screens": 56
+  },
+  "iphone13": {
+    "nodeId": "8:2",
+    "screens": 56
+  },
+  "iphone17promax": {
+    "parts": [
+      {
+        "part": 1,
+        "captureId": "a95f181b-635c-453f-b79e-25739d50aeaf",
+        "nodeId": "14:2",
+        "screens": 14
+      },
+      {
+        "part": 2,
+        "captureId": "4efc2973-ce34-4e94-b27f-b1da3e883704",
+        "nodeId": "15:2",
+        "screens": 14
+      },
+      {
+        "part": 3,
+        "captureId": "984f2aeb-3b82-4bd0-b993-9ab38ea96d08",
+        "status": "processing",
+        "screens": 14
+      },
+      {
+        "part": 4,
+        "captureId": "b337dacf-069a-4b14-a05d-e308cf3b941c",
+        "status": "processing",
+        "screens": 14
+      }
+    ],
+    "originalFullCaptureId": "f63bc7a0-6fc8-4700-afaf-db6252699cd2",
+    "originalFullCaptureStatus": "processing",
+    "canonicalCaptures": [
+      {
+        "screens": "1–14",
+        "nodeId": "14:2"
+      },
+      {
+        "screens": "15–28",
+        "nodeId": "15:2"
+      },
+      {
+        "screens": "29–35",
+        "nodeId": "19:2"
+      },
+      {
+        "screens": "36–49",
+        "nodeId": "23:2"
+      },
+      {
+        "screens": "50–56",
+        "nodeId": "22:2"
+      }
+    ],
+    "completedAdditionalReference": {
+      "nodeId": "21:2",
+      "screens": "43–49"
+    }
+  },
+  "status": "168 distinct screens completed"
+}

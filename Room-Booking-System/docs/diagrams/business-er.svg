@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2240" height="1840" viewBox="0 0 2240 1840">
+<rect width="100%" height="100%" fill="#F7F9FC"/>
+<text x="70" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="38" font-weight="700" fill="#20354D">KKU SPACE / Business ER</text>
+<text x="70" y="123" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="400" fill="#63738A">Current application model | JSONB properties, not additional SQL columns | 2026-10-12</text>
+<text x="70" y="161" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="400" fill="#63738A">SOLID: FK   |   DASHED: JSON / APPLICATION   |   PURPLE: EMBEDDED   |   GRAY: LEGACY</text>
+<polyline points="460,325.5 484,325.5 484,400.0 720,400.0" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="709.4690092573155,405.75310646325045 720,400.0 709.4690092573155,394.24689353674955" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="460,778.0 484,778.0 484,815.5 720,815.5" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="709.4690092573155,821.2531064632504 720,815.5 709.4690092573155,809.7468935367496" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="915.0,570 915.0,650" fill="none" stroke="#476D9B" stroke-width="2" />
+<polyline points="909.2468935367496,639.4690092573155 915.0,650 920.7531064632504,639.4690092573155" fill="none" stroke="#476D9B" stroke-width="2"/>
+<polyline points="1110,815.5 1134,815.5 1134,764.0 1350,764.0" fill="none" stroke="#84619D" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1339.4690092573155,769.7531064632504 1350,764.0 1339.4690092573155,758.2468935367496" fill="none" stroke="#84619D" stroke-width="2"/>
+<polyline points="1780,325.5 1756,325.5 1756,764.0 1740,764.0" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1750.5309907426845,758.2468935367496 1740,764.0 1750.5309907426845,769.7531064632504" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="460,778.0 484,778.0 484,600 1326,600 1326,344.0 1350,344.0" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1339.4690092573155,349.75310646325045 1350,344.0 1339.4690092573155,338.24689353674955" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="1110,400.0 1134,400.0 1134,344.0 1350,344.0" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1339.4690092573155,349.75310646325045 1350,344.0 1339.4690092573155,338.24689353674955" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="1110,400.0 1134,400.0 1134,620 1756,620 1756,745.5 1780,745.5" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1769.4690092573155,751.2531064632504 1780,745.5 1769.4690092573155,739.7468935367496" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="1110,400.0 1134,400.0 1134,1120 1756,1120 1756,1259.5 1780,1259.5" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1769.4690092573155,1265.2531064632503 1780,1259.5 1769.4690092573155,1253.7468935367497" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="265.0,906 265.0,970" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="259.24689353674955,959.4690092573155 265.0,970 270.75310646325045,959.4690092573155" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="265.0,906 265.0,930 40,930 40,1216 265.0,1216 265.0,1240" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="259.24689353674955,1229.4690092573155 265.0,1240 270.75310646325045,1229.4690092573155" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="460,778.0 484,778.0 484,1273.5 720,1273.5" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="709.4690092573155,1279.2531064632503 720,1273.5 709.4690092573155,1267.7468935367497" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="915.0,981 915.0,1150" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="909.2468935367496,1139.4690092573155 915.0,1150 920.7531064632504,1139.4690092573155" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="1110,815.5 1134,815.5 1134,1259.5 1350,1259.5" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1339.4690092573155,1265.2531064632503 1350,1259.5 1339.4690092573155,1253.7468935367497" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="460,778.0 484,778.0 484,1120 1326,1120 1326,1259.5 1350,1259.5" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="1339.4690092573155,1265.2531064632503 1350,1259.5 1339.4690092573155,1253.7468935367497" fill="none" stroke="#6B849C" stroke-width="2"/>
+<polyline points="915.0,981 915.0,1005 690,1005 690,1476 915.0,1476 915.0,1500" fill="none" stroke="#6B849C" stroke-width="2" stroke-dasharray="8 7"/>
+<polyline points="909.2468935367496,1489.4690092573155 915.0,1500 920.7531064632504,1489.4690092573155" fill="none" stroke="#6B849C" stroke-width="2"/>
+<rect x="73" y="235" width="390" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="230" width="390" height="191" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="70" y="230" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="88" y="261" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">buildings</text>
+<text x="88" y="295" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="88" y="327" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="88" y="355" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">name: string</text>
+<text x="88" y="383" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">floors: number</text>
+<text x="88" y="411" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">active?: boolean</text>
+<rect x="723" y="235" width="390" height="340" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="720" y="230" width="390" height="340" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="720" y="230" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="738" y="261" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">rooms</text>
+<text x="738" y="295" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="738" y="327" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="738" y="355" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">buildingId: number</text>
+<text x="738" y="383" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">code / name: string</text>
+<text x="738" y="411" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">floor / capacity: number</text>
+<text x="738" y="439" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">type / status: string</text>
+<text x="738" y="467" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">amenities: string[]</text>
+<text x="738" y="495" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">inventory?: item[]</text>
+<text x="738" y="523" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">hours?: operating hours</text>
+<text x="738" y="554" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">Inventory is embedded; no room_equipment table.</text>
+<rect x="1783" y="235" width="390" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1780" y="230" width="390" height="191" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="1780" y="230" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="1798" y="261" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">equipment</text>
+<text x="1798" y="295" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="1798" y="327" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="1798" y="355" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">name: string</text>
+<text x="1798" y="383" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">total: number</text>
+<text x="1798" y="411" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">remaining: number</text>
+<rect x="1353" y="235" width="390" height="228" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1350" y="230" width="390" height="228" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="1350" y="230" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="1368" y="261" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">assignments</text>
+<text x="1368" y="295" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ACCESS MAPPING</text>
+<text x="1368" y="327" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number -&gt; key</text>
+<text x="1368" y="355" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">roomIds: number[]</text>
+<text x="1368" y="383" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">start?: string</text>
+<text x="1368" y="411" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">end?: string</text>
+<text x="1368" y="442" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">One row per staff user; roomIds is an array.</text>
+<rect x="73" y="655" width="390" height="256" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="650" width="390" height="256" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="70" y="650" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="88" y="681" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">users</text>
+<text x="88" y="715" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="88" y="747" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="88" y="775" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">name / email: string</text>
+<text x="88" y="803" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">phone / affiliation: string</text>
+<text x="88" y="831" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">role: USER | STAFF | ADMIN</text>
+<text x="88" y="859" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">active: boolean</text>
+<text x="88" y="890" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">STAFF is a role; there is no staff SQL table.</text>
+<rect x="723" y="655" width="390" height="331" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="720" y="650" width="390" height="331" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="720" y="650" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="738" y="681" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">bookings</text>
+<text x="738" y="715" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB + INDEXED SQL COLUMNS</text>
+<text x="738" y="747" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id / ref</text>
+<text x="738" y="775" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId / roomId</text>
+<text x="738" y="803" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">start / end</text>
+<text x="738" y="831" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">purpose / attendees</text>
+<text x="738" y="859" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">status / createdAt</text>
+<text x="738" y="887" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">decidedBy? / decidedAt?</text>
+<text x="738" y="915" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">participantEmails?: string[]</text>
+<text x="738" y="943" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">equipment: loanItem[]</text>
+<text x="738" y="971" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">SLA / archive timestamps?</text>
+<rect x="1353" y="655" width="390" height="228" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1350" y="650" width="390" height="228" fill="#F5EFFA" stroke="#72508D" stroke-width="1"/>
+<rect x="1350" y="650" width="390" height="45" fill="#72508D" stroke="none" stroke-width="1"/>
+<text x="1368" y="681" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">booking equipment[]</text>
+<text x="1368" y="715" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#72508D">EMBEDDED / NOT A TABLE</text>
+<text x="1368" y="747" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; equipment.id</text>
+<text x="1368" y="775" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">qty: number</text>
+<text x="1368" y="803" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">issued?: number</text>
+<text x="1368" y="831" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">returned?: number</text>
+<text x="1368" y="862" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">Stored inside bookings.payload.equipment.</text>
+<rect x="1783" y="655" width="390" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1780" y="650" width="390" height="191" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="1780" y="650" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="1798" y="681" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">closures</text>
+<text x="1798" y="715" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="1798" y="747" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="1798" y="775" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">roomId: number</text>
+<text x="1798" y="803" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">start / end: string</text>
+<text x="1798" y="831" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">reason: string</text>
+<rect x="73" y="975" width="390" height="191" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="970" width="390" height="191" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="70" y="970" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="88" y="1001" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">messages</text>
+<text x="88" y="1035" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="88" y="1067" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="88" y="1095" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number</text>
+<text x="88" y="1123" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">question / answer</text>
+<text x="88" y="1151" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">at: string</text>
+<rect x="73" y="1245" width="390" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="70" y="1240" width="390" height="219" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="70" y="1240" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="88" y="1271" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">penalties</text>
+<text x="88" y="1305" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="88" y="1337" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="88" y="1365" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number</text>
+<text x="88" y="1393" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">type: WARNING | SUSPENSION</text>
+<text x="88" y="1421" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">start / end: string</text>
+<text x="88" y="1449" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">actorId / reason / at</text>
+<rect x="723" y="1155" width="390" height="247" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="720" y="1150" width="390" height="247" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="720" y="1150" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="738" y="1181" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">notices</text>
+<text x="738" y="1215" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="738" y="1247" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="738" y="1275" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number</text>
+<text x="738" y="1303" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">bookingId?: number</text>
+<text x="738" y="1331" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">subject / content</text>
+<text x="738" y="1359" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">status / attempts</text>
+<text x="738" y="1387" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">createdAt / readAt?</text>
+<rect x="1353" y="1155" width="390" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1350" y="1150" width="390" height="219" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="1350" y="1150" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="1368" y="1181" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">violations</text>
+<text x="1368" y="1215" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="1368" y="1247" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="1368" y="1275" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">userId: number</text>
+<text x="1368" y="1303" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">bookingId: number</text>
+<text x="1368" y="1331" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">type: NO_SHOW | LATE_CANCEL</text>
+<text x="1368" y="1359" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">at: string</text>
+<rect x="1783" y="1155" width="390" height="219" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="1780" y="1150" width="390" height="219" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="1780" y="1150" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="1798" y="1181" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">inspections</text>
+<text x="1798" y="1215" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="1798" y="1247" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id: number -&gt; key</text>
+<text x="1798" y="1275" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">roomId: number</text>
+<text x="1798" y="1303" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">actorId: number</text>
+<text x="1798" y="1331" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">condition / note / at</text>
+<text x="1798" y="1359" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">items?: inventory snapshot[]</text>
+<rect x="723" y="1505" width="390" height="163" fill="#E5EAF1" stroke="none" stroke-width="1"/>
+<rect x="720" y="1500" width="390" height="163" fill="#EFF5FD" stroke="#173B64" stroke-width="1"/>
+<rect x="720" y="1500" width="390" height="45" fill="#173B64" stroke="none" stroke-width="1"/>
+<text x="738" y="1531" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">audit</text>
+<text x="738" y="1565" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#173B64">JSONB ENTITY</text>
+<text x="738" y="1597" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">id / at / text</text>
+<text x="738" y="1625" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">actorId: number | null</text>
+<text x="738" y="1653" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="400" fill="#20354D">bookingId?: number</text>
+<rect x="522.0" y="385.0" width="160.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="532.0" y="405.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..* / buildingId</text>
+<rect x="585.7" y="800.5" width="127.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="595.7" y="820.5" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..* / userId</text>
+<rect x="922.0" y="611.0" width="136.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="932.0" y="631.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#476D9B">1 : 0..* / roomId</text>
+<rect x="1169.5" y="749.0" width="145.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1179.5" y="769.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#84619D">1 : 0..* / contains</text>
+<rect x="1763.0" y="529.75" width="95.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1773.0" y="549.75" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / id</text>
+<rect x="672.1" y="585.0" width="129.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="682.1" y="605.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..1 / userId</text>
+<rect x="1157.0" y="329.0" width="170.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1167.0" y="349.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">0..* : 0..* / roomIds[]</text>
+<rect x="1501.4" y="605.0" width="136.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1511.4" y="625.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / roomId</text>
+<rect x="1141.0" y="889.0" width="136.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1151.0" y="909.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / roomId</text>
+<rect x="272.0" y="935.8" width="127.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="282.0" y="955.8" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / userId</text>
+<rect x="134.0" y="1201.0" width="127.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="144.0" y="1221.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / userId</text>
+<rect x="491.0" y="1109.85" width="127.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="501.0" y="1129.85" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / userId</text>
+<rect x="922.0" y="1084.3" width="183.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="932.0" y="1104.3" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">0..1 : 0..* / bookingId?</text>
+<rect x="1141.0" y="1111.3" width="159.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="1151.0" y="1131.3" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / bookingId</text>
+<rect x="673.1" y="1105.0" width="127.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="683.1" y="1125.0" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">1 : 0..* / userId</text>
+<rect x="500.0" y="1319.7" width="183.0" height="30.0" fill="#FFFFFF" stroke="#DCE4ED" stroke-width="1"/>
+<text x="510.0" y="1339.7" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="700" fill="#6B849C">0..1 : 0..* / bookingId?</text>
+<text x="70" y="1735" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">Solid = DB foreign key; dashed = application / JSONB reference; purple = embedded JSON array.</text>
+<text x="70" y="1766" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">Rooms.inventory and inspections.items are fixed-stock snapshots. Booking equipment refers to loan stock.</text>
+<text x="70" y="1797" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="400" fill="#63738A">Secondary actor references (decidedBy / actorId) are listed in SCHEMA.md. Reports are computed, not stored tables.</text>
+<text x="2060" y="1823" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#63738A">02 / 05</text>
+</svg>

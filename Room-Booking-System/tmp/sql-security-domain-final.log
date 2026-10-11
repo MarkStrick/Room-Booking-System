@@ -1,0 +1,35 @@
+
+> kku-room-booking-prototype@0.1.0 test
+> tsx --test tests/*.test.ts
+
+✔ SLA notifications respect boundaries, scope and dedupe; pending expires at start without penalty (17.6921ms)
+✔ issued equipment stays held after completion, supports partial returns and rejects double returns (2.0225ms)
+✔ inactive rooms/buildings disappear from search; deletes preserve references and old history (3.4679ms)
+✔ room inventory inspection snapshots quantities and requires scoped complete validation (0.7766ms)
+✔ participant emails enforce counts/uniqueness and remain private to authorized bookings (4.3909ms)
+✔ help uses editable FAQ, contact details and only reveals owned booking status (1.9528ms)
+✔ report hours clip to now, utilization subtracts closures and holidays, assets use actual inspection (2.5408ms)
+✔ hours, minimum lead and dated staff scope enforce rules without forcing defaults (0.7661ms)
+✔ terminal history is archived after 30 days without deleting data or violations (1.2639ms)
+✔ cancellation notice includes reference, room, original date/time, reason and correct recipient (1.7139ms)
+✔ request → scoped approval → cancellation returns stock and queues notices (19.138ms)
+✔ overlapping requests rejected; adjacent intervals accepted; failed stock transaction atomic (3.9828ms)
+✔ owner and assigned room boundaries enforced (0.5128ms)
+✔ late cancellation records one violation without cancelling or releasing equipment (2.2991ms)
+✔ pending quota, room capacity, advance range and holiday enforced (3.8992ms)
+✔ check-in and expiry jobs are idempotent; 30 minute boundary inclusive (1.6244ms)
+✔ closure cancels overlapping bookings without penalizing the owner (1.9006ms)
+✔ warning keeps booking rights; suspension blocks during its dates and expires (4.0556ms)
+✔ equipment edits cannot discard allocations; rejected request releases them (2.0354ms)
+✔ room capacity changes protect active bookings but allow equal capacity and completed history (3.5675ms)
+✔ approval rechecks current capacity and leaves over-capacity requests available for rejection (2.151ms)
+✔ holiday CRUD validates dates and permissions, and controls booking availability (4.594ms)
+✔ holiday additions and edits preserve active bookings and reject conflicts atomically (4.732ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 375.4842

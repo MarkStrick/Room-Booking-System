@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T02:21:37+07:00",
+  "title": "Design System: KKU Room Booking — Mobile Reference",
+  "extensions": {
+    "colorMeta": {
+      "kku-red": { "role": "primary", "displayName": "KKU red" },
+      "kku-red-dark": { "role": "primary", "displayName": "KKU dark red" },
+      "kku-gold": { "role": "accent", "displayName": "KKU gold" },
+      "gray-50": { "role": "neutral", "displayName": "Page surface", "tonalRamp": ["#111827", "#1f2937", "#374151", "#4b5563", "#6b7280", "#9ca3af", "#e5e7eb", "#f9fafb"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Daily overview", "purpose": "Mobile overview heading." },
+      "body": { "displayName": "Body and fields", "purpose": "Descriptions and standard form controls." },
+      "supporting": { "displayName": "Supporting", "purpose": "Room metadata and small supporting text." }
+    },
+    "shadows": [
+      { "name": "primary-small", "value": "0 1px 2px 0 rgb(127 29 29 / 0.2)", "purpose": "Primary buttons and brand symbol." },
+      { "name": "service-banner", "value": "0 10px 15px -3px rgb(127 29 29 / 0.15), 0 4px 6px -4px rgb(127 29 29 / 0.15)", "purpose": "Red service banner." },
+      { "name": "card-hover", "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", "purpose": "Mobile room-card hover." },
+      { "name": "account-menu", "value": "0 20px 25px -5px rgb(17 24 39 / 0.1), 0 8px 10px -6px rgb(17 24 39 / 0.1)", "purpose": "Account dropdown." },
+      { "name": "login-panel", "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)", "purpose": "White login panel." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "150ms cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Tailwind default control transitions." },
+      { "name": "slide-up", "value": "referenceSlideUp .3s ease-out; from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); }", "purpose": "Mobile panels and filters." },
+      { "name": "fade-in", "value": "referenceFadeIn .3s ease-out; from { opacity: 0; } to { opacity: 1; }", "purpose": "Overlay and success entry." },
+      { "name": "scale-in", "value": "referenceScaleIn .25s ease-out; from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); }", "purpose": "Account dropdown and wider modal entry." },
+      { "name": "room-photo-hover", "value": "transform 300ms cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.05)", "purpose": "Room image hover." },
+      { "name": "reduced-motion", "value": "@media (prefers-reduced-motion: reduce) { animation: none !important; transition: none !important; scroll-behavior: auto !important; }", "purpose": "Existing scoped reduced-motion override." }
+    ],
+    "breakpoints": [
+      { "name": "narrow-mobile", "value": "359px", "purpose": "Search time fields use 80px width / 4px horizontal padding and date fields use 6px horizontal padding." },
+      { "name": "sm", "value": "640px", "purpose": "Existing centered modal variant; not a desktop layout specification." },
+      { "name": "desktop-boundary", "value": "1024px", "purpose": "Mobile copy and composition give way to the separately maintained desktop rules." }
+    ],
+    "sourceExpressions": {
+      "scope": "Mobile only; Operate mode. Values extracted from adopted code and installed Tailwind defaults.",
+      "cssProperties": { "--primary": "#A4233B", "--primary-dark": "#8B1E32", "--primary-soft": "#fef2f2", "--ink": "#111827", "--line": "#f3f4f6" },
+      "focus": "outline: 2px solid #A4233B; outline-offset: 2px",
+      "fieldFocus": "outline: none; border-color: #A4233B; search background-color: #ffffff",
+      "overviewGradient": "linear-gradient(to bottom right, #fef2f2, #ffffff, #fffbeb)",
+      "loginGradient": "linear-gradient(to bottom, #A4233B, #8B1E32)",
+      "photoOverlay": "linear-gradient(to top, rgb(0 0 0 / 0.5), transparent)",
+      "capacityChip": "background: rgb(0 0 0 / 0.4); backdrop-filter: blur(4px)",
+      "modalBackdrop": "background: rgb(0 0 0 / 0.4); backdrop-filter: blur(4px)",
+      "loginIconPanel": "background: rgb(255 255 255 / 0.15); border: 1px solid rgb(255 255 255 / 0.2); backdrop-filter: blur(4px)",
+      "loginPanelCorners": "border-radius: 24px 24px 0 0",
+      "source": "Ui News/booking_room_kku",
+      "screenshots": ["preview/reference-integration-mobile.png", "preview/mobile-booking-form.png", "preview/google-only-login-mobile.png"]
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Shared medium primary action; large booking submit changes padding to 14px 20px and type to 16px.",
+      "html": "<button class=\"ds-primary\">ส่งคำขอจอง</button>",
+      "css": ".ds-primary{font-family:Sarabun,'Noto Sans Thai',Inter,system-ui,sans-serif;font-size:14px;line-height:20px;font-weight:600;padding:10px 16px;border:0;border-radius:12px;background:var(--primary,#A4233B);color:#fff;box-shadow:0 1px 2px 0 rgb(127 29 29 / .2);transition:all 150ms cubic-bezier(.4,0,.2,1);cursor:pointer}.ds-primary:hover{background:var(--primary-dark,#8B1E32)}.ds-primary:focus-visible{outline:2px solid var(--primary,#A4233B);outline-offset:2px}.ds-primary:active{transform:scale(.97)}.ds-primary:disabled{opacity:.4;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined secondary action.",
+      "html": "<button class=\"ds-secondary\">กลับหน้าค้นหา</button>",
+      "css": ".ds-secondary{font-family:Sarabun,'Noto Sans Thai',Inter,system-ui,sans-serif;font-size:14px;line-height:20px;font-weight:600;padding:10px 16px;border:1px solid rgb(164 35 59 / .2);border-radius:12px;background:#fff;color:var(--primary,#A4233B);transition:all 150ms cubic-bezier(.4,0,.2,1);cursor:pointer}.ds-secondary:hover{background:#fef2f2}.ds-secondary:focus-visible{outline:2px solid var(--primary,#A4233B);outline-offset:2px}.ds-secondary:active{transform:scale(.97)}.ds-secondary:disabled{opacity:.4;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+    },
+    {
+      "name": "Booking Field",
+      "kind": "input",
+      "refersTo": "booking-field",
+      "description": "White field with the source border and focus treatment.",
+      "html": "<input class=\"ds-field\" aria-label=\"วัตถุประสงค์\" placeholder=\"ระบุหัวข้อการประชุม...\" />",
+      "css": ".ds-field{font-family:Sarabun,'Noto Sans Thai',Inter,system-ui,sans-serif;font-size:14px;line-height:20px;padding:12px 16px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;color:#111827;caret-color:var(--primary,#A4233B);transition:color 150ms cubic-bezier(.4,0,.2,1),background-color 150ms cubic-bezier(.4,0,.2,1),border-color 150ms cubic-bezier(.4,0,.2,1)}.ds-field::placeholder{color:#9ca3af;opacity:1}.ds-field:focus{outline:none;border-color:var(--primary,#A4233B)}@media(prefers-reduced-motion:reduce){.ds-field{transition:none}}"
+    },
+    {
+      "name": "Room Card",
+      "kind": "card",
+      "refersTo": "room-card",
+      "description": "Mobile result card with the implemented missing-image placeholder.",
+      "html": "<button class=\"ds-room\"><div class=\"ds-room-photo\"><svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z\"/><path d=\"M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4\"/></svg><span>ยังไม่มีรูปห้อง</span><div class=\"ds-room-shade\"></div><div class=\"ds-room-caption\"><strong>ชื่อห้อง</strong><span>อาคาร · ชั้น</span></div></div><div class=\"ds-room-body\"><p>กรุณาสอบถามเวลาให้บริการจากผู้ดูแล</p><span class=\"ds-room-tag\">Wi-Fi</span></div></button>",
+      "css": ".ds-room{font-family:Sarabun,'Noto Sans Thai',Inter,system-ui,sans-serif;width:100%;padding:0;text-align:left;background:#fff;border:1px solid #f3f4f6;border-radius:16px;overflow:hidden;transition:all 150ms cubic-bezier(.4,0,.2,1);cursor:pointer}.ds-room:hover{border-color:rgb(164 35 59 / .3);box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}.ds-room:focus-visible{outline:2px solid var(--primary,#A4233B);outline-offset:2px}.ds-room:active{transform:scale(.99)}.ds-room-photo{height:144px;position:relative;background:#e5e7eb;color:#6b7280;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;line-height:16px}.ds-room-shade{position:absolute;inset:0;background:linear-gradient(to top,rgb(0 0 0 / .5),transparent)}.ds-room-caption{position:absolute;bottom:8px;left:12px;right:12px;color:#fff}.ds-room-caption strong{display:block;font-size:16px;line-height:24px;font-weight:700}.ds-room-caption span{display:block;color:rgb(255 255 255 / .8)}.ds-room-body{padding:12px}.ds-room-body p{margin:0 0 8px;font-size:12px;line-height:16px;color:#9ca3af}.ds-room-tag{display:inline-block;font-size:11px;line-height:1.5;font-weight:500;padding:2px 8px;border-radius:9999px;background:#fef2f2;color:var(--primary,#A4233B)}@media(prefers-reduced-motion:reduce){.ds-room{transition:none}}"
+    },
+    {
+      "name": "Bottom Navigation",
+      "kind": "nav",
+      "refersTo": "bottom-navigation",
+      "description": "Three-item mobile navigation; user variant shown.",
+      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-active\" aria-current=\"page\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><span>ค้นหา</span></button><button><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l4 2\"/></svg><span>ประวัติ</span></button><button><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z\"/></svg><span>แชท</span></button></nav>",
+      "css": ".ds-nav{height:64px;padding-bottom:4px;display:flex;align-items:center;justify-content:space-around;background:#fff;border-top:1px solid #f3f4f6}.ds-nav button{font-family:Sarabun,'Noto Sans Thai',Inter,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border:0;background:transparent;color:#9ca3af;cursor:pointer;transition:color 150ms cubic-bezier(.4,0,.2,1)}.ds-nav button.ds-nav-active{color:var(--primary,#A4233B)}.ds-nav span{font-size:11px;line-height:1.5;font-weight:600}.ds-nav button:focus-visible{outline:2px solid var(--primary,#A4233B);outline-offset:2px}@media(prefers-reduced-motion:reduce){.ds-nav button{transition:none}}"
+    },
+    {
+      "name": "Amenity Chip",
+      "kind": "chip",
+      "refersTo": "amenity-chip",
+      "description": "Static room-amenity label from result cards.",
+      "html": "<span class=\"ds-amenity\">Wi-Fi</span>",
+      "css": ".ds-amenity{font-family:Sarabun,'Noto Sans Thai',Inter,system-ui,sans-serif;display:inline-block;font-size:11px;line-height:1.5;font-weight:500;padding:2px 8px;border-radius:9999px;background:#fef2f2;color:var(--primary,#A4233B)}"
+    },
+    {
+      "name": "Google Sign-In Button",
+      "kind": "button",
+      "refersTo": "google-button",
+      "description": "Sole sign-in action; disabled when Google is unavailable or session state is loading.",
+      "html": "<button class=\"ds-google\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\"><path fill=\"#4285F4\" d=\"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z\"/><path fill=\"#34A853\" d=\"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z\"/><path fill=\"#FBBC05\" d=\"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z\"/><path fill=\"#EA4335\" d=\"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z\"/></svg>เข้าสู่ระบบด้วย Google</button>",
+      "css": ".ds-google{font-family:Sarabun,'Noto Sans Thai',Inter,system-ui,sans-serif;font-size:16px;line-height:24px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:14px 16px;background:#fff;border:2px solid #e5e7eb;border-radius:12px;color:#374151;transition:all 150ms cubic-bezier(.4,0,.2,1);cursor:pointer}.ds-google:hover{background:#f9fafb;border-color:#d1d5db}.ds-google:focus-visible{outline:2px solid var(--primary,#A4233B);outline-offset:2px}.ds-google:active{transform:scale(.98)}.ds-google:disabled{opacity:.4;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-google{transition:none}}"
+    },
+    {
+      "name": "Login Panel",
+      "kind": "custom",
+      "refersTo": "login-panel",
+      "description": "White mobile login sheet with rounded top corners.",
+      "html": "<section class=\"ds-login-panel\"><h2>เข้าสู่ระบบ</h2><p>ใช้บัญชี Google เพื่อเข้าสู่ระบบ</p></section>",
+      "css": ".ds-login-panel{font-family:Sarabun,'Noto Sans Thai',Inter,system-ui,sans-serif;background:#fff;padding:28px 24px 32px;border-radius:24px 24px 0 0;box-shadow:0 25px 50px -12px rgb(0 0 0 / .25)}.ds-login-panel h2{margin:0 0 4px;font-size:18px;line-height:28px;font-weight:700;color:#111827}.ds-login-panel p{margin:0 0 20px;font-size:14px;line-height:20px;color:#6b7280}"
+    }
+  ],
+  "narrative": {
+    "overview": "This records the mobile interface adopted from Ui News/booking_room_kku. That source is the visual authority: preserve its composition, colors, typography, spacing, and component shapes at a 1:1 mobile priority. The default working mode is Operate: apply the existing system to real application behavior.\n\nThe interface uses Sarabun, a red university identity, white controls, pale gray surfaces, and compact supporting text. Search combines a workspace header, daily overview, red service banner, filters, room cards, and three bottom navigation items. This document covers the mobile reference subtree; desktop layout is maintained separately.",
+    "keyCharacteristics": ["Source-led mobile composition and Thai-first typography.", "Red emphasis for actions and active navigation; gold accents in the service banner.", "Rounded cards, clear form labels, and scrollable screen content.", "Real room data and honest unavailable-image states."],
+    "rules": [],
+    "dos": ["Do treat the confirmed source mobile interface as the visual authority.", "Do preserve the existing red palette, Sarabun hierarchy, rounded shapes, and mobile spacing.", "Do use real room data, missing-image placeholders, and visible busy/error states.", "Do compare mobile changes against preview/reference-integration-mobile.png, preview/mobile-booking-form.png, and preview/google-only-login-mobile.png in the repository root."],
+    "donts": ["Don't introduce a new visual identity or decorative raster assets for this adopted interface.", "Don't restore demo-role or password sign-in controls.", "Don't present simulated attachments or unsaved operations as successful actions.", "Don't apply these mobile composition rules as a promise to redesign the separately maintained desktop interface."]
+  }
+}

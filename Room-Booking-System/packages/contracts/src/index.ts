@@ -20,6 +20,7 @@ export interface Building {
   id: number;
   name: string;
   floors: number;
+  active?: boolean;
 }
 export interface Room {
   id: number;
@@ -33,6 +34,15 @@ export interface Room {
   status: "AVAILABLE" | "MAINTENANCE" | "CLOSED";
   reason: string;
   scene: number;
+  active?: boolean;
+  imageUrl?: string;
+  inventory?: { id: number; name: string; total: number; damaged: number }[];
+  hours?: {
+    start: string;
+    end: string;
+    weekdays: number[];
+    leadMinutes: number;
+  };
 }
 export interface Equipment {
   id: number;
@@ -50,13 +60,18 @@ export interface Booking {
   purpose: string;
   attendees: number;
   participants: number[];
-  equipment: { id: number; qty: number }[];
+  equipment: { id: number; qty: number; issued?: number; returned?: number }[];
   status: BookingStatus;
   createdAt: string;
   decidedAt?: string;
   decidedBy?: number;
   checkedInAt?: string;
   reason?: string;
+  participantEmails?: string[];
+  approvalDeadline?: string;
+  slaReminderAt?: string;
+  slaEscalatedAt?: string;
+  archivedAt?: string;
 }
 export interface Notice {
   id: number;
@@ -100,6 +115,7 @@ export interface Inspection {
   condition: string;
   note: string;
   actorId: number;
+  items?: { id: number; name: string; total: number; damaged: number }[];
 }
 export interface Message {
   id: number;
@@ -131,7 +147,18 @@ export interface AppState {
   messages: Message[];
   audit: Audit[];
   holidays: string[];
-  assignments: { userId: number; roomIds: number[] }[];
+  assignments: {
+    userId: number;
+    roomIds: number[];
+    start?: string;
+    end?: string;
+  }[];
+  settings?: {
+    contactEmail: string;
+    contactPhone: string;
+    faqs: { q: string; a: string; keys: string[] }[];
+    workerAt?: string;
+  };
 }
 export interface SearchFilter {
   date: string;
@@ -142,6 +169,7 @@ export interface SearchFilter {
   type: string;
   query: string;
   amenity: string;
+  floor?: string;
 }
 export type Command =
   | {
@@ -152,6 +180,7 @@ export type Command =
       purpose: string;
       attendees: number;
       participants: number[];
+      participantEmails?: string[];
       equipment: { id: number; qty: number }[];
     }
   | { type: "CANCEL" | "CHECKIN"; bookingId: number }
@@ -164,8 +193,33 @@ export type Command =
       end: string;
       reason: string;
     }
-  | { type: "INSPECT"; roomId: number; condition: string; note: string }
+  | {
+      type: "INSPECT";
+      roomId: number;
+      condition: string;
+      note: string;
+      items?: { id: number; damaged: number }[];
+    }
   | { type: "BUILDING_SAVE"; id?: number; name: string; floors: number }
+  | { type: "HOLIDAY_SAVE"; date: string; previousDate?: string }
+  | { type: "HOLIDAY_DELETE"; date: string }
+  | { type: "ROOM_ACTIVE"; roomId: number; active: boolean }
+  | { type: "BUILDING_ACTIVE"; buildingId: number; active: boolean }
+  | { type: "ROOM_DELETE"; roomId: number }
+  | { type: "BUILDING_DELETE"; buildingId: number }
+  | {
+      type: "EQUIPMENT_HANDOVER";
+      bookingId: number;
+      equipmentId: number;
+      qty: number;
+      action: "ISSUE" | "RETURN";
+    }
+  | {
+      type: "SETTINGS_SAVE";
+      contactEmail: string;
+      contactPhone: string;
+      faqs: { q: string; a: string; keys: string[] }[];
+    }
   | { type: "EQUIPMENT_SAVE"; id?: number; name: string; total: number }
   | {
       type: "PENALTY";
@@ -177,6 +231,7 @@ export type Command =
     }
   | { type: "PROFILE"; name: string; phone: string }
   | { type: "HELP"; question: string }
+  | { type: "SUPPORT_REQUEST"; question: string }
   | { type: "RETRY"; noticeId: number }
   | { type: "READ_NOTICE"; noticeId: number }
   | { type: "CLOCK"; now: string }

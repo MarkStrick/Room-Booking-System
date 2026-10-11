@@ -6,10 +6,10 @@ import type { Data, Store } from '../infrastructure/store';
 import { cookieOptions, digest, flowCookie, issueSession, secret } from './session';
 export interface GoogleClaims {sub:string;email?:unknown;email_verified?:unknown;hd?:unknown;name?:unknown}
 export function linkGoogle(data:Data,claims:GoogleClaims,c:Config,now:string) {
- const email=typeof claims.email==='string'?claims.email.toLowerCase():'';
- const domain=email.split('@')[1];
+ const email=typeof claims.email==='string'?claims.email.trim().toLowerCase():'';
+ const domain=/^[^@\s]+@([^@\s]+)$/.exec(email)?.[1];
  if(!claims.sub||claims.email_verified!==true||!domain)throw new ForbiddenException('บัญชี Google ยังไม่ได้ยืนยันอีเมล');
- if(!c.allowPublicGoogle&&(!c.allowedDomains.includes(domain)||typeof claims.hd!=='string'||!c.allowedDomains.includes(claims.hd.toLowerCase())))throw new ForbiddenException('กรุณาใช้บัญชีมหาวิทยาลัยที่ได้รับอนุญาต');
+ if(!c.allowPublicGoogle&&(!c.allowedDomains.includes(domain)||typeof claims.hd!=='string'||!c.allowedDomains.includes(claims.hd.toLowerCase())))throw new ForbiddenException({code:'GOOGLE_DOMAIN_NOT_ALLOWED',message:'กรุณาใช้บัญชีมหาวิทยาลัยที่ได้รับอนุญาต'});
  const identity=data.identities.find(i=>i.subject===claims.sub);
  if(identity) {
   const user=data.state.users.find(u=>u.id===identity.userId);

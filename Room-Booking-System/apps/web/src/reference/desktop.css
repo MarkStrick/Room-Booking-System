@@ -1,0 +1,121 @@
+/* Shared application frame. Mobile remains a full-height touch interface. */
+.reference-ui .reference-stage { min-height: 100dvh; background: #f6f7f9; }
+.reference-ui .reference-frame { position: relative; width: 100%; height: 100dvh; background: white; overflow: hidden; }
+.reference-workspace, .reference-main { height: 100%; min-height: 0; }
+.reference-main { position: relative; display: flex; flex-direction: column; min-width: 0; }
+.desktop-navigation, .reference-account-name, .desktop-room-action { display: none; }
+.reference-ui .search-date-fields > label { display: contents; }
+.desktop-field-label { display: none; }
+.reference-ui input[type=date], .reference-ui input[type=time] { min-width: 0; }
+.reference-ui .search-room-photo img { height: 100%; }
+.reference-ui button { cursor: pointer; }
+.reference-ui button:disabled { cursor: not-allowed; }
+
+@media (min-width: 1024px) {
+  .reference-workspace { display: grid; grid-template-columns: 248px minmax(0, 1fr); }
+  .reference-main { background: #f6f7f9; }
+  .desktop-navigation { display: flex; flex-direction: column; min-height: 0; background: white; border-right: 1px solid #e5e7eb; }
+  .reference-ui .desktop-brand { display: flex; align-items: center; gap: 12px; padding: 32px 24px; text-decoration: none; color: #18212f; }
+  .desktop-brand-symbol { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; background: #a4233b; color: white; border-radius: 12px; }
+  .reference-ui .desktop-brand strong { display: block; font-size: 24px; font-weight: 800; letter-spacing: -.03em; }
+  .desktop-brand strong > span { color: #a4233b; }
+  .desktop-brand small { display: block; font-size: 11px; color: #626c7a; margin-top: 3px; }
+  .desktop-navigation nav { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 20px; }
+  .desktop-nav-group + .desktop-nav-group { margin-top: 28px; }
+  .reference-ui .desktop-nav-group > p { font-size: 12px; font-weight: 600; color: #687180; padding: 0 12px; margin-bottom: 8px; }
+  .reference-ui .desktop-nav-group button { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 46px; padding: 10px 12px; margin-top: 4px; border-radius: 10px; text-align: left; font-size: 14px; color: #515c6c; transition: background-color 160ms ease-out, color 160ms ease-out; }
+  .desktop-nav-group button > svg { flex-shrink: 0; }
+  .desktop-nav-group button > span { flex: 1; }
+  .reference-ui .desktop-nav-group button:hover { background: #f7f8fa; color: #18212f; }
+  .reference-ui .desktop-nav-group button[aria-current=page] { background: #fcf0f2; color: #a4233b; font-weight: 700; }
+  .desktop-nav-group b { font-size: 11px; background: #a4233b; color: #fff; padding: 1px 6px; border-radius: 6px; }
+  .desktop-campus { display: flex; align-items: center; gap: 10px; margin: 0 24px; padding: 24px 0; border-top: 1px solid #e5e7eb; color: #687180; font-size: 11px; }
+  .desktop-campus small { display: block; font-size: 10px; margin-top: 4px; }
+  .reference-ui .reference-bottom-nav { display: none; }
+  .reference-ui .reference-account-name { display: block; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 600; margin: 0 8px; }
+  .reference-ui .reference-header-brand, .reference-ui .reference-header-divider { display: none; }
+  .reference-app-header > div:first-child { height: 72px; padding: 0 36px; }
+  .reference-app-header > div:first-child > .flex-1 > p:first-child { display: none; }
+  .reference-app-header > div:first-child > .flex-1 > p:last-child { font-size: 17px; }
+  .reference-app-header > div:last-child { padding-inline: 36px; height: 44px; background: white; }
+  .reference-ui .reference-page-header { height: 80px; padding: 0 36px; }
+  .reference-ui .reference-page-header h1 { font-size: 22px; }
+  .reference-main > div > div > .overflow-y-auto, .reference-main .legacy-page { padding: 28px 36px; }
+  .reference-ui .legacy-page { max-width: 1440px; width: 100%; margin-inline: auto; }
+  .reference-ui .legacy-page .metrics-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .reference-ui .legacy-page :is(.help-grid,.profile-grid,.manage-grid) { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .reference-ui .legacy-page :is(.page-heading,.student-page-heading) h1 { font-size: 28px; }
+  .reference-ui .search-overview { position: relative; padding: 32px 36px; background: #f6f7f9; border: 0; }
+  .reference-ui .search-overview > h2 { font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+  .reference-ui .search-overview > p { color: #626c7a; }
+  .reference-ui .search-welcome { position: absolute; right: 36px; top: 32px; width: 360px; margin: 0; padding: 16px 20px; box-shadow: none; border-radius: 12px; }
+  .reference-ui .search-welcome > .absolute { display: none; }
+  .reference-ui .search-welcome .text-base { font-size: 13px; white-space: normal; }
+  .reference-ui .search-welcome > span { font-size: 24px; }
+  .reference-ui .search-controls { margin: 0 36px; padding: 20px 24px; border: 1px solid #e1e5eb; border-radius: 12px; display: grid; grid-template-columns: minmax(240px, 1fr) minmax(360px, 1fr); gap: 16px 24px; align-items: start; }
+  .reference-ui .search-controls input { min-height: 44px; font-size: 14px; }
+  .reference-ui .search-controls > div:first-child { min-width: 0; }
+  .reference-ui .search-controls > div:first-child > button { min-width: 44px; }
+  .reference-ui .search-date-fields { margin-top: 0; }
+  .reference-ui .search-date-fields > label { display: block; min-width: 0; flex: 1; }
+  .reference-ui .search-date-fields > label:first-child { flex: 1.5; }
+  .reference-ui .desktop-field-label { display: block; color: #626c7a; font-size: 12px; margin-bottom: 6px; }
+  .reference-ui .search-controls > div:first-child { padding-top: 24px; }
+  .reference-ui .search-date-fields input[type=date], .reference-ui .search-date-fields input[type=time] { width: 100%; }
+  .reference-ui .search-controls > .animate-slide-up { grid-column: 1 / -1; margin-top: 0; padding-top: 16px; border-top: 1px solid #e5e7eb; }
+  .reference-ui .search-results { padding: 28px 36px 40px; }
+  .reference-ui .search-results > p { font-size: 16px; margin-bottom: 18px; }
+  .reference-ui .search-room-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+  .reference-ui .search-room-grid > * { margin: 0; }
+  .reference-ui .search-room-grid > :not([hidden]) ~ :not([hidden]) { margin-top: 0; }
+  .reference-ui .search-room-card { border-color: #e1e5eb; border-radius: 12px; }
+  .reference-ui .search-room-card:hover { box-shadow: none; border-color: #a4233b; }
+  .reference-ui .search-room-photo { height: 190px; }
+  .reference-ui .search-room-photo h3 { font-size: 19px; }
+  .reference-ui .search-room-photo > div:last-child { left: 20px; right: 20px; bottom: 16px; }
+  .reference-ui .search-room-card > div:last-child { padding: 18px 20px; }
+  .reference-ui .search-room-card > div:last-child > div:first-child { color: #626c7a; font-size: 12px; margin-bottom: 12px; }
+  .reference-ui .desktop-room-action { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 1px solid #eceef2; color: #a4233b; font-size: 13px; font-weight: 600; }
+  .reference-ui .booking-content { display: grid; grid-template-columns: minmax(260px,.85fr) minmax(0,1.15fr); gap: 36px; align-items: start; }
+  .reference-ui .booking-room-summary { position: sticky; top: 0; display: block; padding: 0; }
+  .reference-ui .booking-room-summary > :first-child { height: 260px; width: 100%; border-radius: 0; padding: 0; }
+  .reference-ui .booking-room-summary > div:last-child { padding: 24px; }
+  .reference-ui .booking-form-fields label { flex-direction: row; align-items: center; justify-content: flex-start; text-align: left; gap: 8px; }
+  .reference-ui .booking-form-fields label svg { flex-shrink: 0; }
+  .reference-ui .booking-room-summary h2 { font-size: 22px; margin-bottom: 8px; }
+  .reference-ui .booking-room-summary p { color: #626c7a; font-size: 14px; }
+  .reference-ui .screen-booking > div > div > div:last-child { padding: 16px 36px; }
+  .reference-ui .screen-booking > div > div > div:last-child > button { max-width: 360px; display: block; margin-left: auto; }
+  .reference-ui :is(.screen-history,.screen-admin) .overflow-y-auto > .space-y-3 { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; align-items: start; }
+  .reference-ui :is(.screen-history,.screen-admin) .overflow-y-auto > .space-y-3 > * { margin: 0; }
+  .reference-ui :is(.screen-history,.screen-admin) .overflow-y-auto > .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0; }
+  .reference-ui :is(.screen-history,.screen-admin) .shrink-0:not(.reference-app-header) { padding-inline: 36px; }
+  .reference-ui .screen-chatbot .overflow-y-auto { padding-inline: max(36px, calc((100% - 800px)/2)); }
+  .reference-ui .screen-chatbot .shrink-0:not(.reference-app-header) { padding-inline: max(36px, calc((100% - 800px)/2)); }
+  .reference-ui .reference-toast { position: fixed; left: auto; right: 32px; bottom: 24px; width: min(480px,calc(100vw - 300px)); box-shadow: 0 8px 24px #11182726; }
+  .reference-ui .scrollbar-hide { scrollbar-width: thin; scrollbar-color: #c5cad3 transparent; }
+  .reference-ui .scrollbar-hide::-webkit-scrollbar { display: block; width: 6px; }
+  .reference-ui .scrollbar-hide::-webkit-scrollbar-thumb { background: #c5cad3; border-radius: 6px; }
+  .reference-ui .text-gray-400 { color: #657080; }
+  .reference-ui input::placeholder { color: #657080; }
+  .reference-ui .animate-slide-up { animation: none; }
+  /* The signed-out entry uses the same brand, with a focused two-column layout. */
+  .reference-frame > .flex.flex-col { flex-direction: row; background: #a4233b; }
+  .reference-frame > .flex.flex-col > div:first-child { flex: 1.15; align-items: flex-start; padding: 80px; }
+  .reference-frame > .flex.flex-col > div:first-child h1 { font-size: 40px; text-align: left; }
+  .reference-frame > .flex.flex-col > div:last-child { flex: .85; display: flex; flex-direction: column; justify-content: center; border-radius: 0; padding: clamp(40px,6vw,100px); box-shadow: none; }
+  .reference-frame > .flex.flex-col > div:last-child h2 { font-size: 28px; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .reference-workspace { grid-template-columns: 220px minmax(0,1fr); }
+  .reference-ui .search-welcome { width: 300px; }
+  .reference-ui .search-overview > h2 { font-size: 24px; }
+  .reference-ui .search-controls { grid-template-columns: 1fr; }
+  .reference-ui .search-date-fields input[type=time] { flex: 1; }
+}
+@media (min-width: 1600px) {
+  .reference-ui .search-room-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .reference-ui .search-overview, .reference-ui .search-controls, .reference-ui .search-results { max-width: 1440px; width: calc(100% - 72px); margin-inline: auto; }
+  .reference-ui .search-overview, .reference-ui .search-results { padding-inline: 0; }
+  .reference-ui .search-welcome { right: 0; }
+}

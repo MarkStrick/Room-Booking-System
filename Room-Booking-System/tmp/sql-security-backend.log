@@ -1,0 +1,343 @@
+
+> kku-room-booking-prototype@0.1.0 test:backend
+> tsx --tsconfig apps/backend/tsconfig.json --test tests/backend/*.test.ts
+
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [NestFactory] Starting Nest application...
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [InstanceLoader] ApiModule dependencies initialized +9ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RoutesResolver] ApiController {/api}: +12ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/config, GET} route +3ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/openapi.json, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/public/catalog, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/health/live, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/internal/jobs, GET} route +1ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/health/ready, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/operations, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/test-tools, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/readiness, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/session, GET} route +1ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/state, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/commands, POST} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/development, POST} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/google, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/google/callback, GET} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/access, POST} route +0ms
+[Nest] 52760  - 12/10/2569 01:58:21     LOG [NestApplication] Nest application successfully started +2ms
+{"requestId":"83520804-98f3-46da-999a-c4e1648d312f","method":"GET","path":"/api/state","status":401,"durationMs":12}
+{"requestId":"fca0805f-e040-432f-91e6-6b63bafa7377","method":"POST","path":"/api/commands","status":400,"durationMs":51}
+{"requestId":"15b688a5-b4c2-4b11-8850-c167e89d87bb","method":"POST","path":"/api/commands","status":400,"durationMs":4}
+▶ HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revocation
+  ✔ unauthenticated calls fail, forged actorId and clock commands are rejected (117.4422ms)
+{"requestId":"120ae399-9d72-4b32-9289-52fca4cd4079","method":"POST","path":"/api/commands","status":403,"durationMs":3}
+{"requestId":"3bf403af-3fa6-48ec-bc98-bef24ed1d974","method":"POST","path":"/api/commands","status":403,"durationMs":4}
+  ✔ CSRF and foreign origins fail before any writes (16.0977ms)
+{"requestId":"bdf4623d-bbe4-4720-b2d1-442b9d61094b","method":"POST","path":"/api/commands","status":201,"durationMs":13}
+{"requestId":"df5f35a4-aa45-4073-874a-80e0bc49d4f7","method":"POST","path":"/api/commands","status":409,"durationMs":7}
+{"requestId":"72d023ab-37e6-4eca-bcbe-4fa9456a88a4","method":"GET","path":"/api/state","status":200,"durationMs":4}
+{"requestId":"b78becd7-5501-4998-b034-39a673615169","method":"POST","path":"/api/commands","status":403,"durationMs":4}
+  ✔ simultaneous identical slots have one winner, and data is scoped (52.0451ms)
+{"requestId":"43d2d9af-2b04-4d3f-a858-74c711bbd060","method":"POST","path":"/api/commands","status":201,"durationMs":8}
+{"requestId":"a67771a5-9940-4ff1-a528-6430e9a986e6","method":"POST","path":"/api/commands","status":201,"durationMs":3}
+{"requestId":"6d42ee00-6a82-4bb9-b69d-df95039fb744","method":"POST","path":"/api/commands","status":409,"durationMs":2}
+  ✔ retrying one idempotency key creates one booking and one stock allocation (45.724ms)
+{"requestId":"ed3cad68-7e11-4e7f-ad40-8e4f37073d24","method":"POST","path":"/api/commands","status":403,"durationMs":3}
+{"requestId":"af90bbe2-5faa-4ded-8438-7189e289bdf5","method":"POST","path":"/api/commands","status":201,"durationMs":9}
+{"requestId":"4c4aca4c-8a23-42f4-88bf-4dd9fbf1d971","method":"GET","path":"/api/state","status":200,"durationMs":3}
+  ✔ students cannot approve, assigned staff can, and notices stay queued without SMTP (23.0739ms)
+{"requestId":"617a18f4-6b36-4e6c-989d-6cf7545d5c1c","method":"POST","path":"/api/commands","status":403,"durationMs":5}
+{"requestId":"4e8496e2-1659-4dc3-9484-a5d1ad0ac119","method":"POST","path":"/api/commands","status":201,"durationMs":5}
+{"requestId":"86b41013-d30a-4e44-a72c-8c999fc8e9ea","method":"POST","path":"/api/commands","status":201,"durationMs":3}
+  ✔ reading a notice changes only its owner read marker and is idempotent (22.3407ms)
+{"requestId":"32171563-7ec6-4e35-bb12-47a62014d823","method":"POST","path":"/api/commands","status":403,"durationMs":3}
+{"requestId":"6d5c6b1e-526b-4962-a226-c0f1a1f4fe0e","method":"POST","path":"/api/commands","status":403,"durationMs":2}
+{"requestId":"3df12485-7f00-4890-b984-447b6d05fbda","method":"POST","path":"/api/commands","status":409,"durationMs":4}
+{"requestId":"7b363f9d-293a-4804-afd7-cbba2194a22c","method":"POST","path":"/api/commands","status":409,"durationMs":3}
+{"requestId":"e4137845-09eb-4042-a5db-db7c1e14b49a","method":"POST","path":"/api/commands","status":409,"durationMs":5}
+{"requestId":"e55f3758-15d0-4f54-8e86-0b47be753d27","method":"POST","path":"/api/commands","status":409,"durationMs":2}
+  ✔ late cancellation commits one violation before returning 409, including concurrent retries (41.2151ms)
+{"requestId":"b97c8286-7e04-4e99-a082-c55df284be72","method":"POST","path":"/api/commands","status":409,"durationMs":6}
+{"requestId":"ad9c5f3f-2339-404a-af66-b1536ec26e77","method":"POST","path":"/api/commands","status":409,"durationMs":2}
+{"requestId":"e57804f0-ab87-4fbd-93f3-bc865f4fc35d","method":"POST","path":"/api/commands","status":201,"durationMs":4}
+  ✔ HTTP room edits and approvals reject over-capacity bookings without partial writes (30.7377ms)
+{"requestId":"b8bb71d2-b2b6-44c1-98c1-d7c1d69c5709","method":"POST","path":"/api/commands","status":403,"durationMs":2}
+{"requestId":"3163eed1-2c60-4c0e-a6fd-6858039d6cc0","method":"POST","path":"/api/commands","status":403,"durationMs":1}
+{"requestId":"0f5a471d-0251-4c61-9a52-b2acb90f04d0","method":"POST","path":"/api/commands","status":400,"durationMs":1}
+{"requestId":"6a231b03-60f5-4e96-bf70-4121bda197cc","method":"POST","path":"/api/commands","status":409,"durationMs":3}
+{"requestId":"7b5bfc21-87a6-46f1-abd6-cff6b05c8801","method":"POST","path":"/api/commands","status":201,"durationMs":4}
+{"requestId":"bd74dfdb-42d8-4b51-9cfc-142446ee25fc","method":"POST","path":"/api/commands","status":409,"durationMs":2}
+{"requestId":"783c3614-2d83-4907-ad4c-7091d17def00","method":"POST","path":"/api/commands","status":409,"durationMs":3}
+{"requestId":"1d0ab021-3588-49be-aa61-8071728c5c16","method":"POST","path":"/api/commands","status":201,"durationMs":3}
+{"requestId":"72028e0e-1b0a-4d28-9444-a93b9e0d4072","method":"POST","path":"/api/commands","status":403,"durationMs":3}
+{"requestId":"9c4b52d6-ba68-4d93-9761-de1b250b7f84","method":"POST","path":"/api/commands","status":403,"durationMs":2}
+{"requestId":"53dac3c5-e11d-4bb7-a0f3-33cce7550ff9","method":"POST","path":"/api/commands","status":201,"durationMs":2}
+{"requestId":"71830c80-652a-4ad5-82d0-f71112666ffe","method":"POST","path":"/api/commands","status":409,"durationMs":1}
+  ✔ holiday management requires admin, validates dates, blocks bookings and persists edits (55.9073ms)
+{"requestId":"53c5caf7-7dec-4826-acbc-008a2a48cddc","method":"POST","path":"/api/admin/access","status":403,"durationMs":5}
+{"requestId":"9541f56a-0fa7-4cc5-9773-e61eb24a44ed","method":"POST","path":"/api/admin/access","status":400,"durationMs":1}
+{"requestId":"8c432771-b061-4bc1-8e97-ede7f7205cb1","method":"POST","path":"/api/admin/access","status":201,"durationMs":4}
+{"requestId":"051da93a-5594-4a8b-a79e-1c544235314f","method":"GET","path":"/api/state","status":401,"durationMs":3}
+  ✔ admin deactivation revokes an existing session and the admin cannot lock itself out (23.3119ms)
+{"requestId":"29391f30-b901-4262-a501-b3c21013a7df","method":"POST","path":"/api/auth/logout","status":201,"durationMs":6}
+{"requestId":"eb6bddc4-8c98-41fe-8e83-f400b28ae7ba","method":"GET","path":"/api/state","status":401,"durationMs":4}
+  ✔ logout invalidates the server session (16.1575ms)
+✔ HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revocation (550.511ms)
+✔ late-cancel violation and rejected idempotency result survive a database restart (32.4946ms)
+✔ durable transaction rollback, no-show idempotence, fenced mail retries and recovery (37.1769ms)
+✔ Google identities require verified hosted university claims, and link by sub (1.9648ms)
+✔ production refuses development login, missing config, insecure origins and SQLite (0.7006ms)
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [NestFactory] Starting Nest application...
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [InstanceLoader] ApiModule dependencies initialized +7ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RoutesResolver] ApiController {/api}: +10ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/config, GET} route +3ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/openapi.json, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/public/catalog, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/health/live, GET} route +1ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/internal/jobs, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/health/ready, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/operations, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/test-tools, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/readiness, GET} route +1ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/session, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/state, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/commands, POST} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/development, POST} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/google, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/google/callback, GET} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/access, POST} route +0ms
+[Nest] 75844  - 12/10/2569 01:58:21     LOG [NestApplication] Nest application successfully started +2ms
+{"requestId":"0f07d9fc-fabf-498e-8ef7-adbe35cc5fae","method":"GET","path":"/api/state","status":401,"durationMs":9}
+{"requestId":"d50ea0ed-d0fc-4422-bec4-46ff2614052c","method":"GET","path":"/api/openapi.json","status":200,"durationMs":9}
+▶ audit API: static files, private participants, inventory, settings, lifecycle outbox and operations
+  ✔ static homepage/assets precede fallback, API still authenticates (83.6938ms)
+{"requestId":"7318fd29-512d-4db3-843f-f5511a7e89a8","method":"POST","path":"/api/commands","status":403,"durationMs":42}
+{"requestId":"73c63347-e625-44da-8b12-4831077fd0e6","method":"POST","path":"/api/commands","status":400,"durationMs":5}
+{"requestId":"04e2ba80-d728-46c6-92ef-b8ac10a3268c","method":"POST","path":"/api/commands","status":201,"durationMs":6}
+{"requestId":"881e7150-da45-4cc3-9ba9-9835aa0501a2","method":"POST","path":"/api/commands","status":201,"durationMs":5}
+  ✔ inventory and image validation require admin and inspection scope (78.2893ms)
+{"requestId":"51dd662d-ca5f-48fb-9032-76846101a090","method":"POST","path":"/api/commands","status":201,"durationMs":11}
+{"requestId":"ec697a14-47c9-4aff-83ae-490c529024f9","method":"GET","path":"/api/state","status":200,"durationMs":3}
+{"requestId":"489f774c-5886-4954-a9af-774a62d86bb3","method":"POST","path":"/api/commands","status":409,"durationMs":5}
+{"requestId":"1100eca4-17e1-4d05-9d4e-7b56cbfface6","method":"POST","path":"/api/commands","status":409,"durationMs":4}
+{"requestId":"102e9ec0-7795-4d1b-a62f-ab8511627e37","method":"GET","path":"/api/public/catalog","status":200,"durationMs":4}
+  ✔ emails replace directory lookup and unauthorized state redacts guest emails (48.125ms)
+{"requestId":"cae9027f-5bb2-4180-824b-d1c16f330fd9","method":"POST","path":"/api/commands","status":403,"durationMs":5}
+{"requestId":"275307e1-8e1a-4215-a483-6a875f90bfe7","method":"POST","path":"/api/commands","status":201,"durationMs":4}
+{"requestId":"9715b81f-2f70-4ba0-a678-d2751792a4a7","method":"POST","path":"/api/commands","status":201,"durationMs":4}
+{"requestId":"636e3ffa-5c3e-444a-b225-a842177e5892","method":"GET","path":"/api/admin/operations","status":403,"durationMs":3}
+{"requestId":"1bfe24ba-9b70-4f35-8049-ea242b6a40c7","method":"GET","path":"/api/admin/operations","status":200,"durationMs":3}
+  ✔ settings persist, private help queries and admin operations are scoped (33.694ms)
+  ✔ SLA queues real outbox once and pending expiration releases reservation without violation (12.715ms)
+{"requestId":"87dfcb28-509d-4157-a32d-c6dbfe3bb5e9","method":"POST","path":"/api/commands","status":403,"durationMs":6}
+{"requestId":"a5e0b3ac-9dd1-4c7f-a2a1-d5ff90a236e6","method":"POST","path":"/api/commands","status":201,"durationMs":4}
+{"requestId":"82b2e300-e7ef-4e14-9791-00a59ef54932","method":"POST","path":"/api/commands","status":201,"durationMs":5}
+{"requestId":"59a72277-d792-46f7-a486-f24e5bcf2e91","method":"POST","path":"/api/commands","status":409,"durationMs":3}
+  ✔ handovers validate staff scope and persist issued/returned separately (45.6317ms)
+{"requestId":"e258eb0c-a4a6-447e-b42a-299b09d5dbf9","method":"GET","path":"/api/state","status":200,"durationMs":32}
+{"requestId":"724e0395-7b29-4000-b81c-0f14a5626d0c","method":"GET","path":"/api/state","status":200,"durationMs":27}
+{"requestId":"e3892cde-d84c-4654-84d9-acb3c0bb7944","method":"GET","path":"/api/state","status":200,"durationMs":27}
+{"requestId":"f927ffc4-18bc-49e6-b866-e7b75b3719e2","method":"GET","path":"/api/state","status":200,"durationMs":27}
+{"requestId":"141cc5ae-a1f2-4f8d-bb1b-bb98b97eef94","method":"GET","path":"/api/state","status":200,"durationMs":28}
+{"requestId":"afcb5f03-8baf-4fbd-953d-a8ae08bd49f5","method":"GET","path":"/api/state","status":200,"durationMs":28}
+{"requestId":"93bdd9ce-57c9-4b44-900e-214b849c2978","method":"GET","path":"/api/state","status":200,"durationMs":28}
+{"requestId":"dbb99c85-3f2f-49cf-bc2a-92b70e416ff3","method":"GET","path":"/api/state","status":200,"durationMs":28}
+{"requestId":"7b526161-f477-4866-9397-c9ec0b8191eb","method":"GET","path":"/api/state","status":200,"durationMs":29}
+{"requestId":"bd73e85e-c706-4a72-baf8-176a63119423","method":"GET","path":"/api/state","status":200,"durationMs":29}
+{"requestId":"947df99d-d9af-46be-8fdc-9f4653168abf","method":"GET","path":"/api/state","status":200,"durationMs":30}
+{"requestId":"8b95040f-5a1c-4b8c-88e3-26ad38ed7274","method":"GET","path":"/api/state","status":200,"durationMs":31}
+{"requestId":"f3c28253-e49f-48fa-a90e-7af5655bbb12","method":"GET","path":"/api/state","status":200,"durationMs":31}
+{"requestId":"42640c30-9336-4e37-bd81-c8fe0f76c751","method":"GET","path":"/api/state","status":200,"durationMs":31}
+{"requestId":"d3a649c6-1397-44e6-8980-e7e8a5fd595f","method":"GET","path":"/api/state","status":200,"durationMs":30}
+{"requestId":"6c4a5dd2-8b64-48a8-976c-19bcd8222190","method":"GET","path":"/api/state","status":200,"durationMs":31}
+{"requestId":"6b661c58-1623-4a82-8cbb-f79dd2525848","method":"GET","path":"/api/state","status":200,"durationMs":32}
+{"requestId":"60accd54-8fc3-41bc-bcf4-208d51e8ec51","method":"GET","path":"/api/state","status":200,"durationMs":31}
+{"requestId":"6a45deb1-d686-4005-963d-11b98d22472c","method":"GET","path":"/api/state","status":200,"durationMs":32}
+{"requestId":"789468ff-9fda-4724-91ef-0da27b9a4694","method":"GET","path":"/api/state","status":200,"durationMs":32}
+{"requestId":"42684435-4dd4-4539-807b-6325819d461c","method":"GET","path":"/api/state","status":200,"durationMs":32}
+{"requestId":"f5f22405-c9c8-4c18-86e9-71aad74cb574","method":"GET","path":"/api/state","status":200,"durationMs":33}
+{"requestId":"ce6c24c2-cc27-41f6-b47a-5444484c7059","method":"GET","path":"/api/state","status":200,"durationMs":33}
+{"requestId":"17b75792-5cd8-40f2-88d6-c14517ebdffb","method":"GET","path":"/api/state","status":200,"durationMs":32}
+{"requestId":"f240caca-da47-4f25-a095-a9825c4c4988","method":"GET","path":"/api/state","status":200,"durationMs":33}
+{"requestId":"88baafd9-7adc-460b-9734-ef866fdf1afe","method":"GET","path":"/api/state","status":200,"durationMs":33}
+{"requestId":"1a7259b7-674a-4ace-98be-8efba96e9332","method":"GET","path":"/api/state","status":200,"durationMs":33}
+{"requestId":"a527240c-24e9-4940-9dac-001205f1ca16","method":"GET","path":"/api/state","status":200,"durationMs":34}
+{"requestId":"b5f95003-8606-4d30-8cb9-18eee8feee0d","method":"GET","path":"/api/state","status":200,"durationMs":34}
+{"requestId":"fa3aceff-a2a6-4b5b-93f7-8c477d29ff1f","method":"GET","path":"/api/state","status":200,"durationMs":34}
+{"requestId":"1465a089-ae3a-4deb-8845-c42bf320bb1c","method":"GET","path":"/api/state","status":200,"durationMs":35}
+{"requestId":"03206925-bd28-4d1f-a172-f7e28e428485","method":"GET","path":"/api/state","status":200,"durationMs":35}
+{"requestId":"13a0d1a1-5ccf-4d66-9fa3-51575b021c48","method":"GET","path":"/api/state","status":200,"durationMs":27}
+{"requestId":"c6bae621-1a13-4c45-a122-62f562da7413","method":"GET","path":"/api/state","status":200,"durationMs":27}
+{"requestId":"9ae80d1a-b7b3-4831-92ba-6eb8f8c1277a","method":"GET","path":"/api/state","status":200,"durationMs":27}
+{"requestId":"277451a5-acac-40e2-a38c-ea3d671db5dd","method":"GET","path":"/api/state","status":200,"durationMs":26}
+{"requestId":"2a5467ea-fd2c-42c9-8b60-6a292e5970cb","method":"GET","path":"/api/state","status":200,"durationMs":26}
+{"requestId":"a03b01f5-0c46-4967-86f8-bfb2921aba66","method":"GET","path":"/api/state","status":200,"durationMs":27}
+{"requestId":"61b3d9a9-9fe8-46c7-bab5-3dac49b9cfd9","method":"GET","path":"/api/state","status":200,"durationMs":27}
+{"requestId":"6596f759-ffd7-489b-9dc5-4767b6cd3e50","method":"GET","path":"/api/state","status":200,"durationMs":28}
+{"requestId":"17ab3e66-a369-4061-93b3-df063c7ec138","method":"GET","path":"/api/state","status":200,"durationMs":28}
+{"requestId":"ec1580a9-0e3e-42ea-8aaf-0d7653891fa2","method":"GET","path":"/api/state","status":200,"durationMs":28}
+{"requestId":"c4be4b95-1d61-4081-aea6-a4b5f21d2b0c","method":"GET","path":"/api/state","status":200,"durationMs":29}
+{"requestId":"b2a1b0f7-1bcb-49be-8935-4da1d6d42354","method":"GET","path":"/api/state","status":200,"durationMs":29}
+{"requestId":"1b1dbe31-8c42-4720-b36f-d8d5497dd950","method":"GET","path":"/api/state","status":200,"durationMs":30}
+{"requestId":"e71c5afc-3189-470b-a7ed-8d97d67a7f68","method":"GET","path":"/api/state","status":200,"durationMs":31}
+{"requestId":"65229a38-f36e-47fe-a7c6-a150992a6fb7","method":"GET","path":"/api/state","status":200,"durationMs":31}
+{"requestId":"57231691-8021-4f89-8751-494b36518f88","method":"GET","path":"/api/state","status":200,"durationMs":31}
+{"requestId":"72db1036-152e-45ba-a21a-a421f2fa2420","method":"GET","path":"/api/state","status":200,"durationMs":33}
+{"requestId":"e52bbc73-13a4-49e2-ac99-2dc79fde72d7","method":"GET","path":"/api/state","status":200,"durationMs":34}
+  ✔ 50 parallel reads complete without errors or exposing private guest emails (135.3362ms)
+✔ audit API: static files, private participants, inventory, settings, lifecycle outbox and operations (548.5933ms)
+✔ local backup restores inventory, settings and guest data after reopening the database (35.4562ms)
+✔ Supabase migration parses in PostgreSQL: overlap constraints and browser isolation (2565.6454ms)
+✔ Postgres adapter persists transactions, server sessions and outbox; errors roll back (1959.2269ms)
+✔ Argon2id uses a unique salt, verifies Unicode and never returns plaintext (1053.1843ms)
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [NestFactory] Starting Nest application...
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [InstanceLoader] ApiModule dependencies initialized +12ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RoutesResolver] ApiController {/api}: +12ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/config, GET} route +4ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/openapi.json, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/public/catalog, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/health/live, GET} route +1ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/internal/jobs, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/health/ready, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/admin/operations, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/admin/test-tools, GET} route +1ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/admin/readiness, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/session, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/state, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/commands, POST} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/auth/development, POST} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/auth/google, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/auth/google/callback, GET} route +0ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [RouterExplorer] Mapped {/api/admin/access, POST} route +1ms
+[Nest] 68120  - 12/10/2569 01:58:23     LOG [NestApplication] Nest application successfully started +1ms
+{"requestId":"836dbbb8-aff5-4761-b6a4-73ec4be816a7","method":"POST","path":"/api/auth/password/login","status":404,"durationMs":29}
+✖ password HTTP login has CSRF, hash isolation, durable lockout, session revocation and password change (274.6936ms)
+✔ self enrollment verifies one-use email tokens, reset revokes sessions, mail failure cannot activate accounts (787.6387ms)
+✔ Google accepts verified emails on any domain; public signup cannot choose roles (1.1416ms)
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [NestFactory] Starting Nest application...
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [InstanceLoader] ApiModule dependencies initialized +8ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RoutesResolver] ApiController {/api}: +18ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/config, GET} route +3ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/openapi.json, GET} route +1ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/public/catalog, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/health/live, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/internal/jobs, GET} route +1ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/health/ready, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/operations, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/test-tools, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/readiness, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/session, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/state, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/commands, POST} route +1ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/development, POST} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/google, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/auth/google/callback, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [RouterExplorer] Mapped {/api/admin/access, POST} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:21     LOG [NestApplication] Nest application successfully started +2ms
+{"requestId":"97b0497b-f4d3-40c5-b25d-f3714bcbcb8d","method":"GET","path":"/api/admin/test-tools","status":401,"durationMs":11}
+{"requestId":"c3a802a6-7085-46f6-86d0-23945968112c","method":"GET","path":"/api/admin/test-tools","status":403,"durationMs":4}
+{"requestId":"bdcc451d-86f7-4661-93bb-5db42599e2bd","method":"GET","path":"/api/admin/test-tools","status":403,"durationMs":2}
+{"requestId":"54bd8ff3-4103-43f5-960e-e079c05925d7","method":"GET","path":"/api/admin/test-tools","status":200,"durationMs":3}
+{"requestId":"c65a9e06-ff8d-4e0a-bcc0-e9bcf63578e9","method":"GET","path":"/api/admin/readiness","status":401,"durationMs":2}
+{"requestId":"98e90485-09d5-4e0a-a23a-3208bfd18f4a","method":"GET","path":"/api/admin/readiness","status":403,"durationMs":2}
+{"requestId":"9c46db67-bccf-45cd-99c1-def172d8f94f","method":"GET","path":"/api/admin/readiness","status":403,"durationMs":3}
+{"requestId":"d446cb95-573f-4fb5-867f-d528c1539670","method":"GET","path":"/api/admin/readiness","status":200,"durationMs":2}
+{"requestId":"70487e39-b3c2-4c72-abca-82ed9af72790","method":"GET","path":"/api/config","status":200,"durationMs":3}
+{"requestId":"f0d7eac9-ff56-4184-8336-c1053fc9bcb4","method":"POST","path":"/api/auth/development","status":403,"durationMs":35}
+{"requestId":"f6d5947f-ee17-458c-9a3b-51d297a144fc","method":"POST","path":"/api/auth/development","status":403,"durationMs":2}
+{"requestId":"7231753c-f8da-4f79-8862-c1c46dba7d7f","method":"POST","path":"/api/auth/development","status":403,"durationMs":2}
+{"requestId":"bb053d1c-aa6f-4dac-a5c0-e227b8f514c1","method":"GET","path":"/api/admin/readiness","status":200,"durationMs":2}
+{"requestId":"532f7aa7-3691-4029-8d87-fd7fece51e11","method":"GET","path":"/api/admin/test-tools","status":403,"durationMs":2}
+{"requestId":"201edbe0-ba1c-47d7-8f47-7d268bc98128","method":"GET","path":"/api/admin/test-tools","status":401,"durationMs":3}
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [NestFactory] Starting Nest application... +189ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [InstanceLoader] ApiModule dependencies initialized +4ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RoutesResolver] ApiController {/api}: +21ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/config, GET} route +1ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/openapi.json, GET} route +1ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/public/catalog, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/health/live, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/internal/jobs, GET} route +1ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/health/ready, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/admin/operations, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/admin/test-tools, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/admin/readiness, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/session, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/state, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/commands, POST} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +1ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/auth/development, POST} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/auth/google, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/auth/google/callback, GET} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [RouterExplorer] Mapped {/api/admin/access, POST} route +0ms
+[Nest] 62092  - 12/10/2569 01:58:22     LOG [NestApplication] Nest application successfully started +1ms
+✔ test tools and readiness require a live ADMIN; removed test login cannot create sessions (234.2674ms)
+{"requestId":"e9482e4b-ae9c-4d47-99f6-c0b438c6e0d6","method":"GET","path":"/api/internal/jobs","status":403,"durationMs":2}
+{"requestId":"01662bd9-0e6f-45a0-8fee-94e29674c09a","method":"GET","path":"/api/internal/jobs","status":403,"durationMs":1}
+{"event":"scheduled_jobs_complete","sent":0,"failed":0,"emailConfigured":false}
+{"requestId":"4923a7ec-7e5f-4ff3-997c-eb9b3c2a2276","method":"GET","path":"/api/internal/jobs","status":200,"durationMs":3}
+{"event":"scheduled_jobs_complete","sent":0,"failed":0,"emailConfigured":false}
+{"requestId":"076bc366-d024-41a0-bca9-ddd43f54100c","method":"GET","path":"/api/internal/jobs","status":200,"durationMs":12}
+✔ scheduled jobs reject missing/incorrect secrets before writes; repeat runs are safe (102.4751ms)
+✔ shared login limiter serializes concurrent requests and survives restart without retaining IPs (50.1069ms)
+✔ direct hosts ignore forged forwarded IPs; Vercel configuration enforces real production settings (2.865ms)
+✔ application startup never seeds public sample accounts even with the obsolete flag (2.0548ms)
+✔ first-admin bootstrap requires server allowlist, hashes the password and refuses overwriting accounts (791.5607ms)
+✔ PostgreSQL binds hostile values and keys on insert, update, read and delete (2969.2928ms)
+✔ PostgreSQL runtime can use the adapter, but cannot own, truncate or change schema; browsers cannot read private data (1344.6078ms)
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [NestFactory] Starting Nest application...
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [InstanceLoader] ApiModule dependencies initialized +5ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RoutesResolver] ApiController {/api}: +9ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/config, GET} route +2ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/openapi.json, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/public/catalog, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/health/live, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/internal/jobs, GET} route +1ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/health/ready, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/admin/operations, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/admin/test-tools, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/admin/readiness, GET} route +1ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/session, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/state, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/commands, POST} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/auth/development, POST} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/auth/google, GET} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/auth/google/callback, GET} route +1ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [RouterExplorer] Mapped {/api/admin/access, POST} route +0ms
+[Nest] 7412  - 12/10/2569 01:58:27     LOG [NestApplication] Nest application successfully started +0ms
+✔ database constraints reject missing JSON fields, impossible stock, mismatched times and reopened terminal bookings (1294.0733ms)
+✔ identifier allowlist rejects identifiers even if TypeScript is bypassed (0.4055ms)
+✔ SQLite prepared statements retain hostile values without changing other rows (0.8391ms)
+{"requestId":"378cfa87-d8aa-4a42-b0b2-afad87e4806d","method":"POST","path":"/api/commands","status":400,"durationMs":16}
+{"requestId":"10e56464-2a3b-46b7-a268-0acb4300537d","method":"POST","path":"/api/commands","status":400,"durationMs":1}
+{"requestId":"34b571a1-1ac2-4da8-af83-c649673b72d3","method":"POST","path":"/api/commands","status":400,"durationMs":1}
+✔ HTTP rejects SQL strings in numeric IDs and extra SQL fields before any writes (78.4178ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 42
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8000.3706
+
+✖ failing tests:
+
+test at tests\backend\password.test.ts:1:1615
+✖ password HTTP login has CSRF, hash isolation, durable lockout, session revocation and password change (274.6936ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  404 !== 403
+  
+      at TestContext.<anonymous> (C:\Users\kitti\OneDrive\เอกสาร\01_PROJECT\Web app\Room-Booking-System\tests\backend\password.test.ts:30:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 404,
+    expected: 403,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

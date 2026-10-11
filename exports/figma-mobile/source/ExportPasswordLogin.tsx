@@ -2,8 +2,8 @@ import { useEffect,useState,type FormEvent } from 'react';
 import { Eye,EyeOff,LogIn } from 'lucide-react';
 import { request,type PublicConfig,type Session } from '../lib/api';
 type View='login'|'register'|'forgot'|'verify-email'|'reset-password';
-export function PasswordLogin({config,onLogin,route}:{config:PublicConfig;onLogin:(session:Session)=>void;route:string}) {
- const initial:View=route==='verify-email'||route==='reset-password'?route:'login';
+export function ExportPasswordLogin({config,onLogin,route}:{config:PublicConfig;onLogin:(session:Session)=>void;route:string}) {
+ const initial:View=(['login','register','forgot','verify-email','reset-password'].includes(route)?route:'login') as View;
  const [view,setView]=useState<View>(initial),[email,setEmail]=useState(''),[name,setName]=useState(''),[password,setPassword]=useState(''),[confirmation,setConfirmation]=useState(''),[visible,setVisible]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
  const value=new URLSearchParams(location.hash.split('?')[1]??'').get('token')??'';
  useEffect(()=>{if(route==='verify-email'||route==='reset-password')setView(route);},[route]);
@@ -42,3 +42,4 @@ export function PasswordLogin({config,onLogin,route}:{config:PublicConfig;onLogi
   {view==='login'?<><div className="password-divider">หรือ</div><a className={`btn ghost session-google ${config.googleReady?'':'disabled'}`} href={config.googleReady?'/api/auth/google':undefined} aria-disabled={!config.googleReady}><LogIn size={19}/>เข้าสู่ระบบด้วย Google</a><p className="password-help">{config.googleReady?'ใช้บัญชี Google ได้ทุกอีเมล':'Google Login ยังไม่พร้อม กรุณาเข้าสู่ระบบด้วยรหัสผ่าน'}</p></>:null}
  </section>;
 }
+

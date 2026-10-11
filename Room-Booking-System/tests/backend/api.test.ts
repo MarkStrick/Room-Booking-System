@@ -12,6 +12,9 @@ import { readConfig } from '../../apps/backend/src/common/config';
 import { claimMail, finishMail, runTimers } from '../../apps/backend/src/modules/jobs';
 import { linkGoogle } from '../../apps/backend/src/modules/auth-service';
 import { addDays, dateOf, stamp } from '../../packages/core/src/domain';
+import { applyCommand } from '../../apps/backend/src/modules/booking-service';
+import { ConflictException } from '@nestjs/common';
+import { testSession } from './session-fixture';
 const origin='http://127.0.0.1:5174';
 function fixture(){const d=emptyData(),s=createSeed();d.state={...d.state,users:s.users,rooms:s.rooms,buildings:s.buildings,equipment:s.equipment,assignments:s.assignments};return d;}
 test('HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revocation',async t=>{
@@ -20,7 +23,7 @@ test('HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revo
  const app=await createApplication(store,readConfig({DEV_LOGIN:'1',APP_ORIGIN:origin}));
  await app.listen(0,'127.0.0.1');const base=await app.getUrl();
  async function call(path:string,options:RequestInit={}){return fetch(`${base}/api${path}`,{...options,headers:{'content-type':'application/json',origin,...options.headers}});}
- async function login(userId:number){const res=await call('/auth/development',{method:'POST',body:JSON.stringify({userId})});assert.equal(res.status,201);return {body:await res.json(),cookie:res.headers.get('set-cookie')!.split(';')[0]};}
+ async function login(userId:number){return testSession(store,readConfig({APP_ORIGIN:origin}),userId);}
  try {
   const student=await login(1),other=await login(4),staff=await login(2),admin=await login(3);
   const headers=(client:typeof student)=>({cookie:client.cookie,'x-csrf-token':client.body.csrfToken,'idempotency-key':randomUUID()});
@@ -75,6 +78,63 @@ test('HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revo
    assert.equal((await call('/commands',{method:'POST',headers:h,body:JSON.stringify(mark)})).status,201);
    assert.equal((await store.read()).state.notices.find(n=>n.id===notice.id)!.readAt,first.readAt);
   });
+  await t.test('late cancellation commits one violation before returning 409, including concurrent retries',async()=>{
+   let id=0;
+   await store.transaction(d=>{
+    const b=d.state.bookings.find(b=>b.roomId===3&&b.userId===1)!;id=b.id;
+    b.start=new Date(Date.now()+3600000).toISOString();b.end=new Date(Date.now()+7200000).toISOString();
+   });
+   const before=await store.read(),cancel={type:'CANCEL',bookingId:id},h=headers(student);
+   assert.equal((await call('/commands',{method:'POST',headers:headers(other),body:JSON.stringify(cancel)})).status,403);
+   assert.equal((await call('/commands',{method:'POST',headers:{...h,'x-csrf-token':'invalid'},body:JSON.stringify(cancel)})).status,403);
+   assert.equal((await store.read()).state.violations.length,before.state.violations.length);
+   const responses=await Promise.all([h,h,headers(student)].map(headers=>call('/commands',{method:'POST',headers,body:JSON.stringify(cancel)})));
+   for(const response of responses){assert.equal(response.status,409);assert.equal((await response.json()).code,'CANCELLATION_TOO_LATE');}
+   const after=await store.read();
+   assert.equal(after.state.violations.filter(v=>v.bookingId===id&&v.type==='LATE_CANCEL').length,1);
+   assert.equal(after.state.audit.length,before.state.audit.length+1);
+   assert.deepEqual(after.state.bookings,before.state.bookings);
+   assert.deepEqual(after.state.equipment,before.state.equipment);
+   assert.deepEqual(after.state.notices,before.state.notices);
+   assert.deepEqual(after.outbox,before.outbox);
+   const changed=await call('/commands',{method:'POST',headers:h,body:JSON.stringify({type:'CANCEL',bookingId:createdId})});
+   assert.equal(changed.status,409);assert.equal((await changed.json()).code,'IDEMPOTENCY_CONFLICT');
+  });
+  await t.test('HTTP room edits and approvals reject over-capacity bookings without partial writes',async()=>{
+   const before=await store.read(),room=before.state.rooms.find(r=>r.id===3)!,booking=before.state.bookings.find(b=>b.roomId===3)!;
+   const reduced=await call('/commands',{method:'POST',headers:headers(admin),body:JSON.stringify({type:'ROOM_SAVE',room:{...room,capacity:1}})});
+   assert.equal(reduced.status,409);assert.equal((await reduced.json()).code,'ROOM_CAPACITY_CONFLICT');
+   assert.deepEqual((await store.read()).state,before.state);
+   // Simulate inconsistent legacy data to verify the independent approval guard.
+   await store.transaction(d=>{d.state.rooms.find(r=>r.id===3)!.capacity=1;});
+   const legacy=await store.read();
+   const approved=await call('/commands',{method:'POST',headers:headers(admin),body:JSON.stringify({type:'DECIDE',bookingId:booking.id,approve:true,reason:''})});
+   assert.equal(approved.status,409);assert.equal((await approved.json()).code,'ROOM_CAPACITY_EXCEEDED');
+   const after=await store.read();assert.deepEqual(after.state,legacy.state);assert.deepEqual(after.outbox,legacy.outbox);
+   const rejected=await call('/commands',{method:'POST',headers:headers(admin),body:JSON.stringify({type:'DECIDE',bookingId:booking.id,approve:false,reason:'จำนวนคนเกินความจุปัจจุบัน'})});
+   assert.equal(rejected.status,201);
+   assert.equal((await store.read()).state.bookings.find(b=>b.id===booking.id)!.status,'REJECTED');
+  });
+  await t.test('holiday management requires admin, validates dates, blocks bookings and persists edits',async()=>{
+   const date=addDays(tomorrow,2),next=addDays(date,1);
+   const save={type:'HOLIDAY_SAVE',date};
+   const command=(client:typeof student,payload:unknown)=>call('/commands',{method:'POST',headers:headers(client),body:JSON.stringify(payload)});
+   for(const client of [student,staff]) assert.equal((await command(client,save)).status,403);
+   assert.equal((await command(admin,{...save,date:'2026-02-29'})).status,400);
+   const before=(await store.read()).state;
+   assert.equal((await command(admin,{type:'HOLIDAY_SAVE',date:tomorrow})).status,409);
+   assert.deepEqual((await store.read()).state,before);
+   assert.equal((await command(admin,save)).status,201);
+   assert.ok((await store.read()).state.holidays.includes(date));
+   assert.equal((await command(admin,save)).status,409);
+   assert.equal((await command(student,{...booking,start:stamp(date,'10:00'),end:stamp(date,'12:00')})).status,409);
+   assert.equal((await command(admin,{...save,date:next,previousDate:date})).status,201);
+   assert.deepEqual((await store.read()).state.holidays,[next]);
+   for(const client of [student,staff]) assert.equal((await command(client,{type:'HOLIDAY_DELETE',date:next})).status,403);
+   assert.equal((await command(admin,{type:'HOLIDAY_DELETE',date:next})).status,201);
+   assert.deepEqual((await store.read()).state.holidays,[]);
+   assert.equal((await command(admin,{type:'HOLIDAY_DELETE',date:next})).status,409);
+  });
   await t.test('admin deactivation revokes an existing session and the admin cannot lock itself out',async()=>{
    assert.equal((await call('/admin/access',{method:'POST',headers:headers(student),body:JSON.stringify({userId:4,role:'ADMIN',roomIds:[],active:true})})).status,403);
    assert.equal((await call('/admin/access',{method:'POST',headers:headers(admin),body:JSON.stringify({userId:3,role:'USER',roomIds:[],active:true})})).status,400);
@@ -86,6 +146,27 @@ test('HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revo
    assert.equal((await call('/state',{headers:{cookie:student.cookie}})).status,401);
   });
  }finally{await app.close();await store.close();await rm(dir,{recursive:true,force:true});}
+});
+
+test('late-cancel violation and rejected idempotency result survive a database restart',async()=>{
+ const dir=await mkdtemp(join(tmpdir(),'kku-late-cancel-')),path=join(dir,'store.sqlite');
+ const initial=fixture();initial.state.bookings=[createSeed().bookings.find(b=>b.id===1)!];
+ let store=new SqliteStore(path,initial);
+ const cancel={type:'CANCEL',bookingId:1},key='late-cancel-durable-key',now='2026-10-08T08:00:00+07:00';
+ try {
+  const rejected=await store.transaction(d=>applyCommand(d,1,cancel,key,now));
+  assert.ok(rejected instanceof ConflictException);
+  await store.close();store=new SqliteStore(path);
+  const persisted=await store.read();
+  assert.equal(persisted.state.violations.filter(v=>v.type==='LATE_CANCEL').length,1);
+  assert.equal(persisted.state.bookings[0].status,'APPROVED');
+  const repeated=await store.transaction(d=>applyCommand(d,1,cancel,key,now));
+  assert.ok(repeated instanceof ConflictException);
+  assert.deepEqual((await store.read()).state,persisted.state);
+  // Unrelated failures must still roll back every change in the transaction.
+  await assert.rejects(store.transaction(d=>{d.state.users[0].name='must roll back';return applyCommand(d,4,cancel,'foreign-cancel-key-01',now);}));
+  assert.deepEqual((await store.read()).state,persisted.state);
+ }finally{await store.close();await rm(dir,{recursive:true,force:true});}
 });
 test('durable transaction rollback, no-show idempotence, fenced mail retries and recovery',async()=>{
  const dir=await mkdtemp(join(tmpdir(),'kku-durable-')),path=join(dir,'store.sqlite');
@@ -111,6 +192,20 @@ test('Google identities require verified hosted university claims, and link by s
  const user=linkGoogle(d,{sub:'1',email:'student@kkumail.com',email_verified:true,hd:'kkumail.com'},c,now);assert.equal(user.role,'USER');
  assert.equal(linkGoogle(d,{sub:'1',email:'renamed@kkumail.com',email_verified:true,hd:'kkumail.com'},c,now).id,user.id);
  assert.equal(d.state.users.length,1);
+});
+test('Google default policy accepts only verified KKU domains and rejects lookalikes before changing identity',()=>{
+ const c=readConfig({}),d=emptyData(),now=new Date().toISOString();
+ assert.equal(c.allowPublicGoogle,false);
+ assert.deepEqual(c.allowedDomains,['kkumail.com','kku.ac.th']);
+ const student=linkGoogle(d,{sub:'student',email:'Student@KKUMAIL.COM',email_verified:true,hd:'KKUMAIL.COM'},c,now);
+ const staff=linkGoogle(d,{sub:'staff',email:'staff@kku.ac.th',email_verified:true,hd:'kku.ac.th'},c,now);
+ assert.equal(student.email,'student@kkumail.com');assert.equal(staff.role,'USER');
+ for(const [email,hd] of [['outside@gmail.com','gmail.com'],['fake@kkumail.com.evil.test','kkumail.com'],['fake@sub.kku.ac.th','kku.ac.th'],['fake@kkumail.com','evil.test'],['fake@kkumail.com',''],['fake@evil.test@kkumail.com','kkumail.com']]) {
+  assert.throws(()=>linkGoogle(d,{sub:'student',email,email_verified:true,hd},c,now));
+ }
+ assert.throws(()=>linkGoogle(d,{sub:'unverified',email:'student2@kkumail.com',email_verified:false,hd:'kkumail.com'},c,now));
+ assert.equal(d.state.users.length,2);assert.equal(d.identities.length,2);
+ assert.equal(student.email,'student@kkumail.com');
 });
 test('production refuses development login, missing config, insecure origins and SQLite',()=>{
  assert.throws(()=>readConfig({NODE_ENV:'production',DEV_LOGIN:'1'}));
