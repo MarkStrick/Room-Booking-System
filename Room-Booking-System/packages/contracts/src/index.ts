@@ -179,6 +179,7 @@ export interface AppState {
     contactPhone: string;
     faqs: { q: string; a: string; keys: string[] }[];
     workerAt?: string;
+    holidayPosters?: Record<string, string>;
   };
 }
 export interface SearchFilter {
@@ -227,7 +228,7 @@ export type Command =
   | { type: "BUILDING_SAVE"; id?: number; name: string; floors: number }
   | { type: "FLOOR_SAVE"; buildingId: number; number: number; name: string }
   | { type: "SEND_NOTICE"; recipientEmail: string; notificationType: "BOOKING" | "CANCELLATION" | "REMINDER" | "GENERAL"; bookingId?: number; message?: string }
-  | { type: "HOLIDAY_SAVE"; date: string; previousDate?: string }
+  | { type: "HOLIDAY_SAVE"; date: string; previousDate?: string; poster?: string }
   | { type: "HOLIDAY_DELETE"; date: string }
   | { type: "ROOM_ACTIVE"; roomId: number; active: boolean }
   | { type: "BUILDING_ACTIVE"; buildingId: number; active: boolean }

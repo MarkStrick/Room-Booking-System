@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import type { Command, Room } from "../../../../packages/contracts/src/index";
 import { useDemo } from "../app/DemoProvider";
+import { HolidayPosterUpload } from "./HolidayPosterUpload";
 import { RoomCover } from "./RoomCover";
 import {
   addDays,
@@ -79,6 +80,8 @@ export function ActionDialog({
   const [holidayDate, setHolidayDate] = useState(
     action.date ?? addDays(today, 1),
   );
+  const [posterUploading, setPosterUploading] = useState(false);
+  const [holidayPoster, setHolidayPoster] = useState(state.settings?.holidayPosters?.[action.date ?? ""] ?? "");
   const holidayBookings = state.bookings.filter(
     (b) =>
       ["PENDING", "APPROVED", "CHECKED_IN"].includes(b.status) &&
@@ -104,6 +107,7 @@ export function ActionDialog({
   }
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (posterUploading) return;
     if (busy) return;
     if (
       ["clock", "reset"].includes(action.kind) &&
@@ -213,6 +217,7 @@ export function ActionDialog({
             type: "HOLIDAY_SAVE",
             date: holidayDate,
             previousDate: action.date,
+            poster: holidayPoster,
           };
           break;
         case "room-active":
@@ -981,6 +986,7 @@ export function ActionDialog({
             <p className="subtle">
               ทุกห้องจะไม่เปิดรับการจองในวันที่กำหนด ตามเวลาประเทศไทย
             </p>
+            <HolidayPosterUpload value={holidayPoster} onChange={setHolidayPoster} onBusyChange={setPosterUploading} />
             {holidayBookings.length > 0 && holidayDate !== action.date ? (
               <p className="form-error" role="alert">
                 มีการจองที่ยังดำเนินการอยู่ {holidayBookings.length} รายการ
@@ -1113,7 +1119,7 @@ export function ActionDialog({
           <button type="button" className="btn ghost" onClick={close}>
             {action.kind === "book" ? "กลับไปเลือกห้อง" : "กลับ"}
           </button>
-          <button className="btn" disabled={busy}>
+          <button className="btn" disabled={busy || posterUploading}>
             {busy
               ? action.kind === "book"
                 ? "กำลังส่งคำขอ…"

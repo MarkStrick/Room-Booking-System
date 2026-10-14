@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { localRoomImagePattern } from '../../../../packages/core/src/media';
+import { isHolidayPoster, holidayPosterMaxLength, localRoomImagePattern } from '../../../../packages/core/src/media';
 const id = z.number().int().positive().max(2147483647);
 const text = (max = 500) => z.string().trim().min(1).max(max);
 const timestamp = z.iso.datetime({offset:true});
@@ -18,7 +18,7 @@ export const commandSchema = z.discriminatedUnion('type', [
  z.strictObject({type:z.literal('BUILDING_SAVE'),id:id.optional(),name:text(120),floors:id}),
  z.strictObject({type:z.literal('FLOOR_SAVE'),buildingId:id,number:id,name:text(120)}),
  z.strictObject({type:z.literal('SEND_NOTICE'),recipientEmail:z.email().max(254),notificationType:z.enum(['BOOKING','CANCELLATION','REMINDER','GENERAL']),bookingId:id.optional(),message:z.string().max(500).optional()}),
- z.strictObject({type:z.literal('HOLIDAY_SAVE'),date,previousDate:date.optional()}),
+ z.strictObject({type:z.literal('HOLIDAY_SAVE'),date,previousDate:date.optional(),poster:z.string().max(holidayPosterMaxLength).refine(isHolidayPoster).optional()}),
  z.strictObject({type:z.literal('HOLIDAY_DELETE'),date}),
  z.strictObject({type:z.literal('ROOM_ACTIVE'),roomId:id,active:z.boolean()}),
  z.strictObject({type:z.literal('BUILDING_ACTIVE'),buildingId:id,active:z.boolean()}),

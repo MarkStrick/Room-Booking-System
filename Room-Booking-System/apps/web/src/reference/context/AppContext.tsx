@@ -16,7 +16,7 @@ const knownScreens = new Set<Screen>(['search','history','admin','chatbot','book
 type BookingInput = Pick<Booking, 'roomId' | 'roomName' | 'building' | 'date' | 'startTime' | 'endTime' | 'purpose' | 'participants'> & { endDate?: string; equipment?: { id: number; qty: number }[]; participantEmails?: string[] };
 interface ContextValue {
   screen: Screen; navigate: (screen: Screen) => void; goBack: () => void;
-  currentUser: User; logout: () => void; refresh: () => Promise<void>;
+  currentUser: User; logout: () => Promise<void>; refresh: (manual?: boolean) => Promise<void>;
   rooms: Room[]; bookings: Booking[]; today: string;
   selectedRoom: Room | null; setSelectedRoom: (room: Room | null) => void;
   searchSlot: { date: string; start: string; end: string; endDate?: string; capacity?: number }; setSearchSlot: (slot: {date:string;start:string;end:string;endDate?:string;capacity?:number}) => void;
@@ -103,7 +103,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     ...(conversation.owner === owner ? conversation.messages : [])];
   return <AppContext.Provider value={{
     screen,navigate,goBack,currentUser:{id:String(user.id),name:user.name,email:user.email,avatarUrl:'',role:user.role==='USER'?'user':'admin'},
-    role:user.role,logout:()=>{void logout().then(()=>{clearSessionDrafts(owner);chatMemory.clear();}).catch(e=>showToast((e as Error).message));},refresh,rooms,bookings,today:dateOf(state.now),
+    role:user.role,logout:async()=>{try {await logout();clearSessionDrafts(owner);chatMemory.clear();}catch(e){showToast((e as Error).message, 'error');throw e;}},refresh,rooms,bookings,today:dateOf(state.now),
     selectedRoom,setSelectedRoom,selectedBookingForChecklist,setSelectedBookingForChecklist,searchSlot,setSearchSlot,
     roomAvailable:(room,date,start,end,endDate=date)=>{const r=state.rooms.find(r=>r.id===Number(room.id));if(!r||r.status!=='AVAILABLE'||state.holidays.includes(date))return false;if(searchSlotError(state,date,start,end,endDate))return false;return availability(state,r,stamp(date,start),stamp(endDate,end)).kind==='available';},
     addBooking:async data=>{await run({type:'BOOK',roomId:Number(data.roomId),start:stamp(data.date,data.startTime),end:stamp(data.endDate??data.date,data.endTime),purpose:data.purpose,attendees:data.participants,participants:[],participantEmails:data.participantEmails??[],equipment:data.equipment??[]},'ส่งคำขอจองแล้ว');},

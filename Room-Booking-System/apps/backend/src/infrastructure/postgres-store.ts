@@ -13,9 +13,7 @@ export function tableIdentifier(table: string): string {
  return `"kku_private"."${table}"`;
 }
 async function restrictTransaction(client:PoolClient) {
- await client.query("SET LOCAL search_path = pg_catalog");
- await client.query("SET LOCAL statement_timeout = '30s'");
- await client.query("SET LOCAL lock_timeout = '10s'");
+ await client.query("SELECT pg_catalog.set_config('search_path', 'pg_catalog', true), pg_catalog.set_config('statement_timeout', '30s', true), pg_catalog.set_config('lock_timeout', '10s', true)");
 }
 const stateTables=new Set<string>([...tables.slice(0,14),'reports']);
 function rows(data:Data,table:Table):unknown[] {
@@ -37,11 +35,20 @@ function key(table:Table,row:unknown):string {
 }
 async function load(client:PoolClient):Promise<Data> {
  const data=emptyData();
+ // One round trip avoids paying database network latency once per table.
+ const result=await client.query<{table_name:Table;payload:unknown}>(
+  tables.map(table=>`SELECT '${table}' AS table_name, key, payload FROM ${tableIdentifier(table)}`).join(' UNION ALL ')+' ORDER BY table_name, key',
+ );
+ const grouped=new Map<Table,unknown[]>();
+ for(const row of result.rows) {
+  const values=grouped.get(row.table_name)??[];
+  values.push(row.payload);grouped.set(row.table_name,values);
+ }
  for(const table of tables) {
-  const result=await client.query(`SELECT payload FROM ${tableIdentifier(table)} ORDER BY key`);
-  if(table==='settings'){data.state.settings=result.rows[0]?.payload;continue;}
+  const values=grouped.get(table)??[];
+  if(table==='settings'){data.state.settings=values[0] as Data['state']['settings'];continue;}
   const target=stateTables.has(table)?data.state:data;
-  (target as unknown as Record<string,unknown>)[table==='password_tokens'?'passwordTokens':table]=result.rows.map(r=>r.payload);
+  (target as unknown as Record<string,unknown>)[table==='password_tokens'?'passwordTokens':table]=values;
  }
  for(const name of ['bookings','notices','inspections','audit'] as const)data.state[name].sort((a,b)=>b.id-a.id);
  data.state.reports?.sort((a,b)=>b.id-a.id);

@@ -1,3 +1,4 @@
+import { HolidayPosterNotice } from "../components/HolidayPosterNotice";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   BarChart3,
@@ -452,7 +453,7 @@ export function App() {
                   <button
                     onClick={() =>
                       void logout().catch((e) =>
-                        showToast((e as Error).message),
+                        showToast((e as Error).message, 'error'),
                       )
                     }
                   >
@@ -575,6 +576,7 @@ export function App() {
           <span>เมนู</span>
         </button>
       </nav>
+      {route === "rooms" && <HolidayPosterNotice />}
       {action ? (
         <ActionDialog
           key={`${action.kind}-${action.id ?? "new"}`}

@@ -1,3 +1,4 @@
+import { SoundEffects } from './components/SoundEffects';
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ReferenceApp as App } from "./reference/ReferenceApp";
@@ -13,7 +14,7 @@ import "./reference/glass.css";
 import "./scrollbars.css";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AppErrorBoundary><DemoProvider>
+    <AppErrorBoundary><SoundEffects /><DemoProvider>
       <App />
     </DemoProvider></AppErrorBoundary>
   </StrictMode>,

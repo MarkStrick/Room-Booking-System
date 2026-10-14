@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Module, Post, Req, Res, BadRequestException, ForbiddenException, HttpException, Catch, type ArgumentsHost, type ExceptionFilter } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Module, Post, Req, Res, BadRequestException, ForbiddenException, UnauthorizedException, HttpException, Catch, type ArgumentsHost, type ExceptionFilter } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import type { Request, Response } from 'express';
 import type { Store } from '../infrastructure/store';
@@ -88,6 +88,7 @@ export class ApiController {
   return {checkedAt:now,ready:checks.every(c=>c.ready),checks};
  }
  @Get('session') async session(@Req()req:Request) {
+  if(typeof req.cookies?.[sessionCookie(this.c)]!=='string')throw new UnauthorizedException('กรุณาเข้าสู่ระบบ');
   return this.store.transaction(data=>{const now=new Date().toISOString();
   const {user,session}=actor(data,req.cookies?.[sessionCookie(this.c)],now);
   runTimers(data,now);
@@ -111,9 +112,13 @@ export class ApiController {
   return result;
  }
  @Post('auth/logout') async logout(@Req()req:Request,@Res({passthrough:true})res:Response) {
-  await this.store.transaction(data=>{
-   const {session}=actor(data,req.cookies?.[sessionCookie(this.c)],new Date().toISOString());checkCsrf(req,session.csrf,this.c);
-   data.sessions=data.sessions.filter(s=>s.hash!==session.hash);
+  checkOrigin(req,this.c);
+  const token=req.cookies?.[sessionCookie(this.c)];
+  if(typeof token==='string'&&token.length<=200)await this.store.transaction(data=>{
+   // Expired sessions and disabled users must still be able to sign out.
+   const session=data.sessions.find(s=>s.hash===digest(token));
+   if(session)checkCsrf(req,session.csrf,this.c);
+   data.sessions=data.sessions.filter(s=>s.hash!==digest(token));
   });
   res.clearCookie(sessionCookie(this.c),cookieOptions(this.c));return {ok:true};
  }

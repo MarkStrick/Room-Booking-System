@@ -29,7 +29,7 @@ export async function createApplication(store:Store,c:Config) {
   }catch{res.status(503).json({message:'ระบบเข้าสู่ระบบยังไม่พร้อม กรุณาลองอีกครั้ง'});}
  });
  else server.use('/api/auth',rateLimit({windowMs:60000,limit:20,standardHeaders:'draft-8',legacyHeaders:false,message:{message:'ทำรายการถี่เกินไป กรุณารอสักครู่แล้วลองใหม่'}}));
- server.use(cookieParser());server.use(express.json({limit:'64kb'}));
+ server.use(cookieParser());server.use(express.json({limit:'512kb'}));
  const app=await NestFactory.create(apiModule(store,c),new ExpressAdapter(server),{bodyParser:false,logger:['error','warn','log']});
  const webRoot=process.env.WEB_DIST?resolve(process.env.WEB_DIST):fileURLToPath(new URL('../../web/dist/',import.meta.url));
  if(existsSync(webRoot))server.use(express.static(webRoot,{index:'index.html',maxAge:0}));

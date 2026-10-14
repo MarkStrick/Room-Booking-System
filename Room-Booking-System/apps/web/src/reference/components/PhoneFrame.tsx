@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Bell, ChevronDown, ChevronLeft, ChevronRight, Grid2X2, LogOut, RefreshCw } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import type { Screen } from '../types';
@@ -29,6 +29,25 @@ export function PhoneFrame({ children }: { children: React.ReactNode }) {
 export function AppHeader({ title, showBack = true }: { title?: string; showBack?: boolean }) {
   const { goBack, screen, currentUser, logout, navigate, unreadNotificationCount, refresh, role } = useApp();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+  const logoutPending = useRef(false);
+  async function signOut() {
+    if (logoutPending.current) return;
+    logoutPending.current = true;
+    setLoggingOut(true);
+    try { await logout(); setProfileOpen(false); }
+    catch { /* The shared logout handler displays the error. */ }
+    finally { logoutPending.current = false; setLoggingOut(false); }
+  }
+  const [refreshing, setRefreshing] = useState(false);
+  const refreshPending = useRef(false);
+  async function refreshData() {
+    if (refreshPending.current) return;
+    refreshPending.current = true;
+    setRefreshing(true);
+    try { await refresh(true); }
+    finally { refreshPending.current = false; setRefreshing(false); }
+  }
 
   if (showBack) {
     return (
@@ -85,10 +104,12 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
                   {(['access','locations','equipment','penalties','operations'] as const).map(s=><button key={s} onClick={()=>navigate(s)} className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50">{screenLabels[s]}</button>)}
                 </>}
                 <button
-                  onClick={() => { logout(); setProfileOpen(false); }}
+                  onClick={() => void signOut()}
+                  disabled={loggingOut}
+                  aria-busy={loggingOut}
                   className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-red-50 text-kku-red text-sm font-semibold hover:bg-red-100 transition-colors"
                 >
-                  <LogOut size={17} /> ออกจากระบบ
+                  <LogOut size={17} /> {loggingOut ? 'กำลังออกจากระบบ…' : 'ออกจากระบบ'}
                 </button>
               </div>
             )}
@@ -101,8 +122,9 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
         <ChevronRight size={15} className="text-gray-300" />
         <span className="text-sm font-bold text-gray-800 truncate">{title ?? screenLabels[screen]}</span>
         <div className="ml-auto flex items-center gap-1">
-          <button onClick={()=>void refresh()} className="p-1.5 rounded-lg text-gray-400 hover:text-kku-red hover:bg-white transition-colors" aria-label="รีเฟรช">
-            <RefreshCw size={18} />
+          <span className="reference-refresh-status" role="status">{refreshing ? 'กำลังอัปเดต…' : ''}</span>
+          <button onClick={()=>void refreshData()} disabled={refreshing} aria-busy={refreshing} className="reference-refresh-button p-1.5 rounded-lg text-gray-400 hover:text-kku-red hover:bg-white transition-colors" aria-label={refreshing ? 'กำลังรีเฟรชข้อมูล' : 'รีเฟรช'} title={refreshing ? 'กำลังอัปเดตข้อมูล' : 'อัปเดตข้อมูลล่าสุด'}>
+            <RefreshCw size={18} className={refreshing ? 'reference-refresh-spin' : ''} aria-hidden="true" />
           </button>
   
         {currentUser.id!=='0' && (

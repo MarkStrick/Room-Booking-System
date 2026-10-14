@@ -1,3 +1,4 @@
+import { playSound, type SoundEffect } from '../lib/sound-effects';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Command } from '../../../../packages/contracts/src/index';
 import { DemoContext } from './DemoProvider';
@@ -11,7 +12,11 @@ export default function AdminSandbox({ children, onExit }: { children: ReactNode
   const [state, setState] = useState(createSeed);
   const stateRef = useRef(state);
   const [userId, setUserId] = useState(3);
-  const [toast, showToast] = useState('');
+  const [toast, setToast] = useState('');
+  function showToast(message: string, sound: SoundEffect = 'notification') {
+    if (message) playSound(sound);
+    setToast(message);
+  }
   const user = state.users.find(u => u.id === userId) ?? state.users.find(u => u.role === 'ADMIN')!;
   useEffect(() => {
     if (!toast) return;
@@ -27,7 +32,7 @@ export default function AdminSandbox({ children, onExit }: { children: ReactNode
     try {
       const next = executeCommand(stateRef.current, user.id, command);
       stateRef.current = next; setState(next);
-      if (message) showToast(message);
+      if (message) { playSound('success'); showToast(message); }
     } catch (error) {
       if (error instanceof RecordedRejection) { stateRef.current = error.state; setState(error.state); }
       throw error;
@@ -38,7 +43,7 @@ export default function AdminSandbox({ children, onExit }: { children: ReactNode
     state, user, run, toast, showToast, mode: 'demo', persistent: true,
     canTest: true, openSandbox: async () => {}, switchUser: setUserId,
     reset: () => { const next = createSeed(); stateRef.current = next; setState(next); setUserId(3); showToast('เริ่มข้อมูลจำลองใหม่แล้ว'); },
-    logout: async () => onExit(), manageAccess: unavailable, refresh: async () => {},
+    logout: async () => onExit(), manageAccess: unavailable, refresh: async (manual) => { if (manual) showToast('อัปเดตข้อมูลจำลองแล้ว', 'success'); },
   }}><div className="sandbox-frame">
     <div className="connection-banner sandbox-banner" role="status">
       <span>พื้นที่ทดสอบสำหรับผู้ดูแล • ใช้ข้อมูลจำลอง • ไม่บันทึกลงระบบจริง</span>

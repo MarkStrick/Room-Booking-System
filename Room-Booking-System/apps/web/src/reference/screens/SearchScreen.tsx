@@ -1,8 +1,9 @@
+import { HolidayBookingWarning } from '../../components/HolidayBookingWarning';
 import { TimeSelect } from '../components/TimeSelect';
 import { useDemo } from '../../app/DemoProvider';
 import { searchSlotError } from '../../../../../packages/core/src/search';
-import { addDays, availability, stamp } from '../../lib/domain';
-import { useEffect, useState } from 'react';
+import { availability, stamp } from '../../lib/domain';
+import { useEffect, useRef, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { AppHeader } from '../components/PhoneFrame';
 import { Users, MapPin, Clock, Search as SearchIcon, SlidersHorizontal, CalendarDays, DoorOpen, ChevronRight } from 'lucide-react';
@@ -21,28 +22,31 @@ export function SearchScreen() {
   const [capacityFilter, setCapacityFilter] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const {date,start:time,end:endT}=searchSlot;
+  const dateInput = useRef<HTMLInputElement>(null);
+  const isHoliday = state.holidays.includes(date);
+  const chooseDate = () => { dateInput.current?.focus(); try { dateInput.current?.showPicker(); } catch {} };
   useEffect(() => {
     const start = searchTimes.includes(time) ? time : '';
     const end = searchTimes.includes(endT) ? endT : '';
-    if (start !== time || end !== endT) setSearchSlot({ ...searchSlot, start, end });
+    if (start !== time || end !== endT || searchSlot.endDate) setSearchSlot({ ...searchSlot, start, end, endDate: undefined });
   }, [searchSlot, setSearchSlot, time, endT]);
-  const setDate=(date:string)=>setSearchSlot({...searchSlot,date,endDate:searchSlot.endDate&&searchSlot.endDate!==searchSlot.date?addDays(date,1):undefined});
+  const setDate=(date:string)=>setSearchSlot({...searchSlot,date,endDate:undefined});
   const setTime=(start:string)=>setSearchSlot({...searchSlot,start});
   const setEndT=(end:string)=>setSearchSlot({...searchSlot,end});
 
-  const slotError=searchSlotError(state,date,time,endT,searchSlot.endDate??date);
+  const slotError=searchSlotError(state,date,time,endT,date);
   const needsTime = !date || !time || !endT;
-  const canSelect = (room: typeof rooms[0]) => needsTime
+  const canSelect = (room: typeof rooms[0]) => !isHoliday && (needsTime
     ? state.rooms.some(r => String(r.id) === room.id && r.status === 'AVAILABLE')
-    : roomAvailable(room,date,time,endT,searchSlot.endDate);
+    : roomAvailable(room,date,time,endT));
   const filtered = rooms.filter((room) => {
     const matchText = !searchText || room.name.includes(searchText) || room.building.includes(searchText);
     const matchCap = !capacityFilter || room.capacity >= capacityFilter;
     return matchText && matchCap && (!buildingId || state.rooms.find(r=>String(r.id)===room.id)?.buildingId===Number(buildingId));
   });
 
-  const availableCount=filtered.filter(r=>roomAvailable(r,date,time,endT,searchSlot.endDate)).length;
-  const statusFor=(id:string)=>{const r=state.rooms.find(r=>String(r.id)===id)!;return r.status!=='AVAILABLE'?{label:r.status==='MAINTENANCE'?'ปิดปรับปรุง':'ปิดให้บริการ',reason:r.reason}:slotError?{label:'รอเลือกช่วงเวลา',reason:''}:availability(state,r,stamp(date,time),stamp(searchSlot.endDate??date,endT));};
+  const availableCount=filtered.filter(r=>roomAvailable(r,date,time,endT)).length;
+  const statusFor=(id:string)=>{const r=state.rooms.find(r=>String(r.id)===id)!;return isHoliday?{label:'วันหยุด · จองไม่ได้',reason:''}:r.status!=='AVAILABLE'?{label:r.status==='MAINTENANCE'?'ปิดปรับปรุง':'ปิดให้บริการ',reason:r.reason}:slotError?{label:'รอเลือกช่วงเวลา',reason:''}:availability(state,r,stamp(date,time),stamp(date,endT));};
   const handleSelect = (room: typeof rooms[0]) => {
     if(currentUser.id==='0')sessionStorage.setItem('kku-booking-intent',JSON.stringify({roomId:room.id,slot:searchSlot}));
     setSelectedRoom(room);
@@ -60,10 +64,10 @@ export function SearchScreen() {
         <div className="search-welcome">
           <span className="search-welcome-icon"><DoorOpen size={24} strokeWidth={1.75} aria-hidden="true" /></span>
           <div className="search-welcome-copy">
-            <p>พร้อมให้บริการ</p>
-            <p>ค้นหาห้องที่เหมาะกับการประชุมของคุณ</p>
+            <p>{isHoliday ? 'ปิดให้บริการในวันที่เลือก' : 'พร้อมให้บริการ'}</p>
+            <p>{isHoliday ? 'วันหยุดมหาวิทยาลัย กรุณาเปลี่ยนวันที่จอง' : 'ค้นหาห้องที่เหมาะกับการประชุมของคุณ'}</p>
           </div>
-          <span className="search-availability"><strong>{slotError ? '—' : availableCount}</strong><span>{slotError ? 'เลือกเวลา' : 'ห้องว่าง'}</span></span>
+          <span className="search-availability"><strong>{slotError ? '—' : availableCount}</strong><span>{isHoliday ? 'วันหยุด' : slotError ? 'เลือกเวลา' : 'ห้องว่าง'}</span></span>
         </div>
       </section>
 
@@ -94,7 +98,10 @@ export function SearchScreen() {
         <div className="search-date-fields flex gap-2 mt-2.5">
           <label><span className="desktop-field-label">วันที่ต้องการจอง</span>
           <input
+            ref={dateInput}
             type="date"
+            aria-invalid={isHoliday}
+            aria-describedby={isHoliday ? "holiday-booking-warning" : undefined}
             aria-label="วันที่ต้องการจอง"
             value={date}
             onChange={(e) => setDate(e.target.value)}
@@ -104,6 +111,7 @@ export function SearchScreen() {
           <label><span className="desktop-field-label">เวลาเริ่ม</span>
           <TimeSelect
             aria-label="เวลาเริ่ม"
+            disabled={isHoliday}
             allowedTimes={searchTimes}
             value={time}
             onChange={(e) => setTime(e.target.value)}
@@ -113,6 +121,7 @@ export function SearchScreen() {
           <label><span className="desktop-field-label">เวลาสิ้นสุด</span>
           <TimeSelect
             aria-label="เวลาสิ้นสุด"
+            disabled={isHoliday}
             allowedTimes={searchTimes}
             value={endT}
             onChange={(e) => setEndT(e.target.value)}
@@ -121,7 +130,8 @@ export function SearchScreen() {
           </label>
         </div>
 
-        <label className="flex items-center gap-2 mt-3 text-sm text-gray-700"><input type="checkbox" checked={!!searchSlot.endDate&&searchSlot.endDate!==date} onChange={e=>setSearchSlot({...searchSlot,endDate:e.target.checked?addDays(date,1):undefined})}/> สิ้นสุดในวันถัดไป (เฉพาะห้องที่เปิดข้ามคืน)</label>
+
+        {isHoliday && <HolidayBookingWarning date={date} onChooseDate={chooseDate} />}
 
         {showFilters && (
           <div className="mt-3 animate-slide-up">
@@ -145,7 +155,7 @@ export function SearchScreen() {
 
       {/* Results */}
       <div className="search-results px-4 py-3">
-        {slotError && <p role="status" className="text-sm text-gray-600 mb-3">{needsTime ? 'กดแบนเนอร์ห้องเพื่อเลือกวันและเวลาจอง หรือเลือกเวลาที่ด้านบนเพื่อเช็คห้องว่าง' : slotError}</p>}
+        {!isHoliday && slotError && <p role="status" className="text-sm text-gray-600 mb-3">{needsTime ? 'กดแบนเนอร์ห้องเพื่อเลือกวันและเวลาจอง หรือเลือกเวลาที่ด้านบนเพื่อเช็คห้องว่าง' : slotError}</p>}
         <p className="text-sm font-semibold text-gray-700 mb-3">
           พบ {filtered.length} ห้อง{!slotError && ` · ว่าง ${availableCount} ห้องในช่วงเวลาที่เลือก`}
         </p>

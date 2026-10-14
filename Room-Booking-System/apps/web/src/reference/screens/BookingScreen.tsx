@@ -1,6 +1,7 @@
+import { HolidayBookingWarning } from '../../components/HolidayBookingWarning';
 import { TimeSelect } from '../components/TimeSelect';
 import { QuantityInput } from '../../components/QuantityInput';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { AppHeader } from '../components/PhoneFrame';
 import { Button } from '../components/ui';
@@ -20,13 +21,13 @@ export function BookingScreen() {
   const [date, setDate] = useSessionDraft(`${draftKey}:date`, searchSlot.date || dateOf(state.now));
   const [startTime, setStartTime] = useSessionDraft(`${draftKey}:start`, searchSlot.start);
   const [endTime, setEndTime] = useSessionDraft(`${draftKey}:end`, searchSlot.end);
-  const [endNextDay,setEndNextDay]=useSessionDraft(`${draftKey}:overnight`, !!searchSlot.endDate&&searchSlot.endDate!==searchSlot.date);
   const room = state.rooms.find(r => String(r.id) === selectedRoom?.id);
-  const canEndNextDay = !room?.hours || room.hours.end < room.hours.start;
-  const bookingNextDay = endNextDay && canEndNextDay;
-  const endDate=date && bookingNextDay?addDays(date,1):date;
-  const timeOptions = useMemo(() => bookingTimeOptions(state, room, date, bookingNextDay, startTime, [searchSlot.start, searchSlot.end]),
-    [state, room, date, bookingNextDay, startTime, searchSlot.start, searchSlot.end]);
+  const endDate = date;
+  const dateInput = useRef<HTMLInputElement>(null);
+  const isHoliday = state.holidays.includes(date);
+  const chooseDate = () => { dateInput.current?.focus(); try { dateInput.current?.showPicker(); } catch {} };
+  const timeOptions = useMemo(() => bookingTimeOptions(state, room, date, false, startTime, [searchSlot.start, searchSlot.end]),
+    [state, room, date, startTime, searchSlot.start, searchSlot.end]);
   const validStart = timeOptions.starts.includes(startTime) ? startTime : '';
   const validEnd = validStart && timeOptions.ends.includes(endTime) ? endTime : '';
   useEffect(() => {
@@ -35,7 +36,7 @@ export function BookingScreen() {
   }, [startTime, endTime, validStart, validEnd]);
   const slotError = searchSlotError(state,date,validStart,validEnd,endDate);
   const available = room && !slotError ? availability(state,room,stamp(date,startTime),stamp(endDate,endTime)) : undefined;
-  const timeIssue = slotError || (!room ? 'ไม่พบห้องที่เลือก' : available?.kind !== 'available' ? available?.reason || available?.label || 'กรุณาเลือกช่วงเวลาอื่น' : '');
+  const timeIssue = (isHoliday ? 'วันหยุดมหาวิทยาลัย ไม่เปิดรับการจอง' : slotError) || (!room ? 'ไม่พบห้องที่เลือก' : available?.kind !== 'available' ? available?.reason || available?.label || 'กรุณาเลือกช่วงเวลาอื่น' : '');
   const reserved = state.bookings.filter(b => b.roomId === room?.id && ['PENDING','APPROVED','CHECKED_IN'].includes(b.status) && dateOf(b.start) <= endDate && dateOf(b.end) >= date).sort((a,b)=>Date.parse(a.start)-Date.parse(b.start));
   const [participants, setParticipants] = useSessionDraft(`${draftKey}:participants`, Math.max(1,Math.min(searchSlot.capacity??10,selectedRoom?.capacity??10)));
   const [purpose, setPurpose] = useSessionDraft(`${draftKey}:purpose`, '');
@@ -60,7 +61,7 @@ export function BookingScreen() {
   const handleSubmit = () => perform(async () => {
     if(timeIssue)throw new Error(timeIssue);
     if(hasEquipmentError)throw new Error('กรุณาแก้ไขจำนวนอุปกรณ์ก่อนส่งคำขอจอง');
-    if(!date || !startTime || !endTime || (!bookingNextDay&&endTime<=startTime))throw new Error('กรุณาเลือกวันที่และเวลาให้ถูกต้อง');
+    if(!date || !startTime || !endTime || endTime<=startTime)throw new Error('กรุณาเลือกวันที่และเวลาให้ถูกต้อง');
     if(!purpose.trim())throw new Error('กรุณาระบุวัตถุประสงค์ของการจอง');
     if(!Number.isInteger(participants)||participants<1||participants>selectedRoom.capacity)throw new Error(`จำนวนผู้เข้าร่วมต้องอยู่ระหว่าง 1–${selectedRoom.capacity} ท่าน`);
     await addBooking({
@@ -135,17 +136,21 @@ export function BookingScreen() {
               <Calendar size={16} className="text-kku-red" /> วันที่ต้องการจอง
             </label>
             <input
+              ref={dateInput}
               type="date"
+              aria-invalid={isHoliday}
               aria-label="วันที่ต้องการจอง"
               value={date}
               min={dateOf(state.now)}
               max={addDays(dateOf(state.now),15)}
               disabled={busy}
               onChange={e=>setDate(e.target.value)}
-              aria-describedby="booking-time-feedback"
+              aria-describedby={isHoliday ? "holiday-booking-warning" : "booking-time-feedback"}
               className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors"
             />
           </div>
+
+          {isHoliday && <HolidayBookingWarning date={date} onChooseDate={chooseDate} />}
 
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -156,9 +161,9 @@ export function BookingScreen() {
                 aria-label="เวลาเริ่ม"
                 value={validStart}
                 allowedTimes={timeOptions.starts}
-                disabled={busy || timeOptions.starts.length === 0}
+                disabled={busy || isHoliday || timeOptions.starts.length === 0}
                 onChange={e=>setStartTime(e.target.value)}
-                aria-describedby="booking-time-feedback"
+                aria-describedby={isHoliday ? "holiday-booking-warning" : "booking-time-feedback"}
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors"
               />
             </div>
@@ -170,17 +175,16 @@ export function BookingScreen() {
                 aria-label="เวลาสิ้นสุด"
                 value={validEnd}
                 allowedTimes={validStart ? timeOptions.ends : []}
-                disabled={busy || !validStart || timeOptions.ends.length === 0}
+                disabled={busy || isHoliday || !validStart || timeOptions.ends.length === 0}
                 onChange={e=>setEndTime(e.target.value)}
-                aria-describedby="booking-time-feedback"
+                aria-describedby={isHoliday ? "holiday-booking-warning" : "booking-time-feedback"}
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors"
               />
             </div>
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-gray-700"><input type="checkbox" disabled={busy || !canEndNextDay} checked={bookingNextDay} onChange={e=>setEndNextDay(e.target.checked)}/> สิ้นสุดในวันถัดไป {bookingNextDay?`(${endDate})`:''}</label>
-          {timeOptions.starts.length === 0 && <p role="status" className="text-sm text-gray-600">ไม่มีช่วงเวลาว่างที่จองได้ในวันที่เลือก กรุณาเลือกวันอื่น{room?.hours && room.hours.end < room.hours.start ? ' หรือเปลี่ยนตัวเลือกสิ้นสุดในวันถัดไป' : ''}</p>}
-          <p id="booking-time-feedback" role="status" className={`text-sm ${timeIssue && startTime && endTime ? 'text-red-600' : 'text-gray-600'}`}>{timeIssue || 'ห้องว่างในช่วงที่เลือก พร้อมส่งคำขอจอง'}</p>
+          {!isHoliday && timeOptions.starts.length === 0 && <p role="status" className="text-sm text-gray-600">ไม่มีช่วงเวลาว่างที่จองได้ในวันที่เลือก กรุณาเลือกวันอื่น</p>}
+          {!isHoliday && <p id="booking-time-feedback" role="status" className={`text-sm ${timeIssue && startTime && endTime ? 'text-red-600' : 'text-gray-600'}`}>{timeIssue || 'ห้องว่างในช่วงที่เลือก พร้อมส่งคำขอจอง'}</p>}
           {reserved.length > 0 && <div className="text-sm text-gray-600"><p className="font-semibold">ช่วงเวลาที่มีการจองแล้ว</p>{reserved.map(b=><p key={b.id}>{time(b.start)}–{time(b.end)} น.</p>)}</div>}
           <div>
             <label className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">

@@ -270,7 +270,7 @@ export function BookingTable({
           : "อนุมัติคำขอแล้ว",
       );
     } catch (e) {
-      showToast((e as Error).message);
+      showToast((e as Error).message, 'error');
     }
   }
   if (!bookings.length) return <Empty title="ไม่พบการจองตามเงื่อนไข" />;

@@ -205,3 +205,10 @@
   .reference-ui .search-welcome { background: #fff; }
   .reference-ui .search-room-photo > div:last-child > span { background: #222735; }
 }
+
+.reference-ui .reference-refresh-button { min-width: 36px; min-height: 36px; }
+.reference-ui .reference-refresh-button:disabled { color: #a4233b; background: #a4233b0d; cursor: wait; }
+.reference-ui .reference-refresh-status { color: #85233b; font-size: 12px; white-space: nowrap; }
+.reference-ui .reference-refresh-spin { animation: referenceRefreshSpin .8s linear infinite; }
+@keyframes referenceRefreshSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .reference-ui .reference-refresh-spin { animation: none; } }

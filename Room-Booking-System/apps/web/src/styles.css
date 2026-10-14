@@ -3417,3 +3417,62 @@ tbody tr:hover {
 .public-catalog { width: min(1200px, 100%); margin: auto; padding: 24px; }
 .public-catalog > header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 32px; }
 @media(max-width:600px) { .asset-editor { grid-template-columns: 1fr 1fr; } .asset-editor > label:first-child { grid-column: 1 / -1; } }
+
+.holiday-upload-preview { display: block; max-width: 100%; max-height: 280px; object-fit: contain; margin: 12px auto; border-radius: 8px; }
+/* The dialog stays transparent so only the rounded poster and controls show. */
+.holiday-poster-modal,
+.reference-ui .holiday-poster-modal {
+  width: fit-content;
+  max-width: min(480px, calc(100vw - 32px));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #222735;
+  box-shadow: none;
+  overflow: visible;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.holiday-poster-modal::backdrop { background: rgba(34, 39, 53, .38); backdrop-filter: blur(6px); }
+.holiday-poster-modal .modal-inner { position: relative; padding: 0; }
+.holiday-poster-modal .modal-header { position: absolute; top: 12px; right: 12px; margin: 0; z-index: 1; }
+.holiday-poster-modal .modal-header > div { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.holiday-poster-modal .icon-button,
+.reference-ui .holiday-poster-modal .icon-button {
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; padding: 0; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .95); background: rgba(255, 255, 255, .94);
+  color: #222735; box-shadow: 0 4px 16px rgba(37, 48, 75, .18);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+}
+.holiday-poster-modal .icon-button:hover { background: #fff; }
+.holiday-poster-image,
+.reference-ui .holiday-poster-image {
+  display: block; width: auto; height: auto;
+  max-width: min(480px, calc(100vw - 32px)); max-height: 72dvh;
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(20, 28, 45, .3);
+}
+.holiday-poster-dismiss,
+.reference-ui .holiday-poster-dismiss {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: fit-content; max-width: 100%; min-height: 44px;
+  margin: 16px auto 0; padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, .9); border-radius: 999px;
+  background: rgba(255, 255, 255, .96); color: #222735;
+  box-shadow: 0 6px 24px rgba(20, 28, 45, .14);
+  font-size: 15px; font-weight: 600; line-height: 1.5; cursor: pointer;
+}
+.holiday-poster-dismiss input { width: 18px; height: 18px; flex-shrink: 0; accent-color: #a4233b; }
+.holiday-upload > label { display: block; }
+.holiday-upload input[type="file"] { display: block; width: 100%; margin-top: 8px; }
+.holiday-booking-warning,
+.reference-ui .holiday-booking-warning { display: flex; gap: 12px; margin-top: 12px; padding: 16px; border: 1px solid #e7acb5; border-left: 4px solid #a4233b; border-radius: 14px; background: #fff0f2; color: #811c30; }
+.holiday-booking-warning > svg { flex-shrink: 0; margin-top: 2px; }
+.holiday-booking-warning strong { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.holiday-booking-warning p { margin: 6px 0 10px; font-size: 14px; line-height: 1.6; color: #811c30; }
+.reference-ui .holiday-booking-warning button,
+.holiday-booking-warning button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px; border: 1px solid #a4233b; border-radius: 8px; background: #a4233b; color: #fff; font-size: 14px; font-weight: 600; }
+.reference-ui .search-controls input[type="date"][aria-invalid="true"],
+.reference-ui .booking-form-fields input[type="date"][aria-invalid="true"] { border: 2px solid #a4233b; background: #fff0f2; color: #811c30; }
+.reference-ui .search-date-fields select:disabled { opacity: .55; cursor: not-allowed; }

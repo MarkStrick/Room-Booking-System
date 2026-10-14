@@ -16,6 +16,7 @@ import { Equipment, Locations, ManageRooms, Penalties } from '../features/Admini
 import { Reports } from '../features/Reports';
 import { UserAccess } from '../features/UserAccess';
 import { EquipmentHandovers, HelpSettings, AdminReadiness, WorkerStatus } from '../features/OperationsControls';
+import { HolidayPosterNotice } from '../components/HolidayPosterNotice';
 import { ActionDialog } from '../components/ActionDialog';
 import type { DialogAction } from '../components/ui';
 import type { Screen } from './types';
@@ -41,6 +42,7 @@ function Router() {
     <main className={`reference-main screen-${screen}`}>
     <div key={screen} className="flex-1 min-h-0 overflow-hidden flex flex-col">{page}</div>
     {!denied && <BottomNav/>}
+    {!denied && (screen === "search" || screen === "booking") && <HolidayPosterNotice/>}
     {action&&<ActionDialog action={action} close={()=>setAction(null)}/>}
     {toast&&<div role="status" className="reference-toast"><span>{toast}</span><button aria-label="ปิดการแจ้งผล" onClick={()=>showToast('')}><X size={16}/></button></div>}
     </main>

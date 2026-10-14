@@ -1,3 +1,4 @@
+import { playSound, type SoundEffect } from '../lib/sound-effects';
 import {
   createContext,
   lazy,
@@ -33,7 +34,7 @@ interface DemoContextValue {
   run: (command: Command, message?: string) => Promise<void>;
   reset: () => void;
   toast: string;
-  showToast: (message: string) => void;
+  showToast: (message: string, sound?: SoundEffect) => void;
   persistent: boolean;
   mode: "demo" | "server";
   logout: () => Promise<void>;
@@ -45,7 +46,7 @@ interface DemoContextValue {
     start?: string,
     end?: string,
   ) => Promise<void>;
-  refresh: () => Promise<void>;
+  refresh: (manual?: boolean) => Promise<void>;
   canTest: boolean;
   openSandbox: () => Promise<void>;
   askAssistant?: (input: AssistantRequest, signal?: AbortSignal) => Promise<AssistantResponse>;
@@ -65,36 +66,52 @@ function ServerProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [connectionIssue, setConnectionIssue] = useState("");
-  const [toast, showToast] = useState("");
+  const [toast, setToast] = useState("");
+  function showToast(message: string, sound: SoundEffect = 'notification') {
+    if (message) playSound(sound);
+    setToast(message);
+  }
   const [sandbox, setSandbox] = useState(false);
   const mounted = useRef(true),
     generation = useRef(0),
     pendingWrites = useRef(0),
     sessionRef = useRef<Session | null>(null);
+  const refreshPending = useRef<Promise<void> | null>(null);
+  const refreshAbort = useRef<AbortController | null>(null);
+  const logoutPending = useRef<Promise<void> | null>(null);
+  const loadAbort = useRef<AbortController | null>(null);
   function update(value: Session | null) {
     if (value?.user.role !== "ADMIN") setSandbox(false);
     sessionRef.current = value;
     setSession(value);
   }
   async function load() {
+    loadAbort.current?.abort();
+    const controller = new AbortController();
+    loadAbort.current = controller;
+    const version = ++generation.current;
+    const options = { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(25000)]) };
     setLoading(true);
     setError("");
     try {
       const [publicConfig, current] = await Promise.all([
-        request<PublicConfig>("/config"),
-        request<Session>("/session").catch((e) => {
+        request<PublicConfig>("/config", options),
+        request<Session>("/session", options).catch((e) => {
           if (e instanceof ApiError && e.status === 401) return null;
           throw e;
         }),
       ]);
-      if (!mounted.current) return;
+      if (!mounted.current || version !== generation.current) return;
       setConfig(publicConfig);
       update(current);
-      if(!current)setCatalog(await request<AppState>("/public/catalog"));
+      if(!current) {
+        const publicCatalog = await request<AppState>("/public/catalog", options);
+        if (mounted.current && version === generation.current) setCatalog(publicCatalog);
+      }
     } catch (e) {
-      if (mounted.current) setError((e as Error).message);
+      if (mounted.current && version === generation.current && !controller.signal.aborted) setError((e as Error).message);
     } finally {
-      if (mounted.current) setLoading(false);
+      if (mounted.current && version === generation.current) setLoading(false);
     }
   }
   useEffect(() => {
@@ -102,6 +119,8 @@ function ServerProvider({ children }: { children: ReactNode }) {
     void load();
     return () => {
       mounted.current = false;
+      loadAbort.current?.abort();
+      refreshAbort.current?.abort();
     };
   }, []);
   useEffect(() => {
@@ -109,34 +128,57 @@ function ServerProvider({ children }: { children: ReactNode }) {
     const timer = setTimeout(() => showToast(""), 6000);
     return () => clearTimeout(timer);
   }, [toast]);
-  async function refresh() {
+  function refresh(manual = false): Promise<void> {
+    if (logoutPending.current) return Promise.resolve();
+    if (refreshPending.current) return refreshPending.current;
+    const pending = refreshData(manual).finally(() => { refreshPending.current = null; });
+    refreshPending.current = pending;
+    return pending;
+  }
+  async function refreshData(manual = false) {
     // A focus/poll refresh must not supersede an in-flight command response.
-    if(pendingWrites.current>0)return;
-    if (!sessionRef.current) {
-      try {setCatalog(await request<AppState>("/public/catalog"));}
-      catch(e){showToast((e as Error).message);}
+    if(pendingWrites.current>0) {
+      if (manual) showToast('กำลังบันทึกรายการ กรุณารอสักครู่แล้วรีเฟรชอีกครั้ง');
       return;
     }
     const version = ++generation.current;
+    const controller = new AbortController();
+    refreshAbort.current = controller;
+    const options = { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(25000)]) };
+    if (!sessionRef.current) {
+      try {
+        const catalog = await request<AppState>("/public/catalog", options);
+        if (!mounted.current || version !== generation.current) return;
+        setCatalog(catalog);
+        if (manual) showToast('อัปเดตข้อมูลล่าสุดแล้ว', 'success');
+      }
+      catch(e){if (mounted.current && version === generation.current && !controller.signal.aborted && manual) showToast((e as Error).message, 'error');}
+      return;
+    }
     try {
-      const current = await request<Session>("/session");
+      const current = await request<Session>("/session", options);
       if (mounted.current && version === generation.current) {
         update(current);
         setConnectionIssue("");
+        if (manual) showToast('อัปเดตข้อมูลล่าสุดแล้ว', 'success');
       }
     } catch (e) {
-      if (!mounted.current || version !== generation.current) return;
-      if (e instanceof ApiError && e.status === 401) update(null);
-      else
+      if (!mounted.current || version !== generation.current || controller.signal.aborted) return;
+      if (e instanceof ApiError && e.status === 401) {
+        update(null);
+        if (manual) showToast('เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง', 'error');
+      } else {
+        if (manual) showToast('อัปเดตข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง', 'error');
         setConnectionIssue(
           "ข้อมูลอาจยังไม่ล่าสุด เชื่อมต่อระบบไม่ได้ กรุณาลองอีกครั้ง",
         );
+      }
     }
   }
   useEffect(() => {
     if (!session && !catalog) return;
     const timer = setInterval(() => {
-      void refresh();
+      if (document.visibilityState === 'visible') void refresh();
     }, 15000);
     const focus = () => {
       void refresh();
@@ -162,7 +204,7 @@ function ServerProvider({ children }: { children: ReactNode }) {
             state.users.find((u) => u.id === current.user.id) ?? current.user,
           state,
         });
-      if (message) showToast(message);
+      if (message) { playSound('success'); showToast(message); }
       setConnectionIssue("");
     } catch (e) {
       if (e instanceof ApiError && e.status === 401) update(null);
@@ -173,16 +215,24 @@ function ServerProvider({ children }: { children: ReactNode }) {
       if(recover&&pendingWrites.current===0)void refresh();
     }
   }
-  async function logout() {
-    if (!sessionRef.current) return;
-    await request("/auth/logout", {
+  function logout(): Promise<void> {
+    if (logoutPending.current) return logoutPending.current;
+    const current = sessionRef.current;
+    if (!current) return Promise.resolve();
+    ++generation.current;
+    refreshAbort.current?.abort();
+    loadAbort.current?.abort();
+    const pending = request("/auth/logout", {
       method: "POST",
-      headers: { "x-csrf-token": sessionRef.current.csrfToken },
-    });
-    generation.current++;
-    update(null);
-    location.hash="#/rooms";
-    await load();
+      headers: { "x-csrf-token": current.csrfToken },
+    }).then(() => {
+      update(null);
+      setCatalog(null);
+      setConnectionIssue("");
+      location.hash = "#/login";
+    }).finally(() => { logoutPending.current = null; });
+    logoutPending.current = pending;
+    return pending;
   }
   async function askAssistant(input: AssistantRequest, signal?: AbortSignal) {
     const current = sessionRef.current;
@@ -216,7 +266,7 @@ function ServerProvider({ children }: { children: ReactNode }) {
       body: JSON.stringify({ userId, role, roomIds, active, start, end }),
     });
     if (version === generation.current) update({ ...current, state });
-    showToast("บันทึกสิทธิ์แล้ว");
+    playSound('success'); showToast("บันทึกสิทธิ์แล้ว");
   }
   async function openSandbox() {
     if (sessionRef.current?.user.role !== "ADMIN")

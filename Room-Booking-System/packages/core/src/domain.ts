@@ -1,4 +1,4 @@
-import { isLocalRoomImage } from './media';
+import { isHolidayPoster, isLocalRoomImage } from './media';
 import { reportData } from './reporting';
 import type {
   AppState,
@@ -953,6 +953,13 @@ export function executeCommand(
           "HOLIDAY_BOOKING_CONFLICT",
         );
       }
+      requireRule(c.poster === undefined || isHolidayPoster(c.poster), "รูปโปสเตอร์ไม่ถูกต้องหรือมีขนาดใหญ่เกินไป", "INVALID_HOLIDAY_POSTER");
+      const posters = { ...s.settings?.holidayPosters };
+      const poster = c.poster ?? posters[c.previousDate ?? c.date];
+      if (c.previousDate) delete posters[c.previousDate];
+      if (poster) posters[c.date] = poster;
+      else delete posters[c.date];
+      s.settings = { contactEmail: '', contactPhone: '', faqs: [], ...s.settings, holidayPosters: posters };
       s.holidays = [...s.holidays.filter((d) => d !== c.previousDate), c.date]
         .filter((d, i, dates) => dates.indexOf(d) === i)
         .sort();
@@ -971,6 +978,7 @@ export function executeCommand(
         "HOLIDAY_NOT_FOUND",
       );
       s.holidays = s.holidays.filter((d) => d !== c.date);
+      if (s.settings?.holidayPosters) delete s.settings.holidayPosters[c.date];
       log(`ลบวันหยุด ${c.date}`);
       break;
     }

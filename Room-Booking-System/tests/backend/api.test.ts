@@ -117,7 +117,8 @@ test('HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revo
   });
   await t.test('holiday management requires admin, validates dates, blocks bookings and persists edits',async()=>{
    const date=addDays(tomorrow,2),next=addDays(date,1);
-   const save={type:'HOLIDAY_SAVE',date};
+   const poster='data:image/jpeg;base64,/9j/'+'A'.repeat(100000);
+   const save={type:'HOLIDAY_SAVE',date,poster};
    const command=(client:typeof student,payload:unknown)=>call('/commands',{method:'POST',headers:headers(client),body:JSON.stringify(payload)});
    for(const client of [student,staff]) assert.equal((await command(client,save)).status,403);
    assert.equal((await command(admin,{...save,date:'2026-02-29'})).status,400);
@@ -126,13 +127,19 @@ test('HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revo
    assert.deepEqual((await store.read()).state,before);
    assert.equal((await command(admin,save)).status,201);
    assert.ok((await store.read()).state.holidays.includes(date));
+   assert.equal((await store.read()).state.settings?.holidayPosters?.[date],poster);
+   const projected=await (await call('/state',{headers:{cookie:student.cookie}})).json();
+   assert.equal(projected.settings.holidayPosters[date],poster);
+   assert.equal((await command(admin,{...save,date:next,poster:'data:image/svg+xml;base64,AAAA'})).status,400);
    assert.equal((await command(admin,save)).status,409);
    assert.equal((await command(student,{...booking,start:stamp(date,'10:00'),end:stamp(date,'12:00')})).status,409);
    assert.equal((await command(admin,{...save,date:next,previousDate:date})).status,201);
    assert.deepEqual((await store.read()).state.holidays,[next]);
+   assert.deepEqual((await store.read()).state.settings?.holidayPosters,{[next]:poster});
    for(const client of [student,staff]) assert.equal((await command(client,{type:'HOLIDAY_DELETE',date:next})).status,403);
    assert.equal((await command(admin,{type:'HOLIDAY_DELETE',date:next})).status,201);
    assert.deepEqual((await store.read()).state.holidays,[]);
+   assert.deepEqual((await store.read()).state.settings?.holidayPosters,{});
    assert.equal((await command(admin,{type:'HOLIDAY_DELETE',date:next})).status,409);
   });
   await t.test('admin deactivation revokes an existing session and the admin cannot lock itself out',async()=>{
@@ -142,8 +149,17 @@ test('HTTP sessions, scoped data, concurrency, idempotency, CSRF, roles and revo
    assert.equal((await call('/state',{headers:{cookie:other.cookie}})).status,401);
   });
   await t.test('logout invalidates the server session',async()=>{
+   assert.equal((await call('/auth/logout',{method:'POST',headers:{...headers(student),'x-csrf-token':'invalid'}})).status,403);
    assert.equal((await call('/auth/logout',{method:'POST',headers:headers(student)})).status,201);
    assert.equal((await call('/state',{headers:{cookie:student.cookie}})).status,401);
+   assert.equal((await call('/auth/logout',{method:'POST',headers:headers(student)})).status,201);
+   const expired=await login(1);
+   await store.transaction(data=>{for(const session of data.sessions)if(session.userId===1)session.expiresAt='2000-01-01T00:00:00Z';});
+   assert.equal((await call('/auth/logout',{method:'POST',headers:headers(expired)})).status,201);
+   assert.equal((await store.read()).sessions.some(s=>s.userId===1),false);
+   assert.equal((await call('/auth/logout',{method:'POST',headers:headers(other)})).status,201);
+   assert.equal((await call('/auth/logout',{method:'POST'})).status,201);
+   assert.equal((await call('/auth/logout',{method:'POST',headers:{origin:'https://other.example'}})).status,403);
   });
  }finally{await app.close();await store.close();await rm(dir,{recursive:true,force:true});}
 });

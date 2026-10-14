@@ -356,7 +356,7 @@ export function Notifications() {
     try {
       await run({ type: "RETRY", noticeId: id }, "นำกลับเข้าคิวแล้ว");
     } catch (e) {
-      showToast((e as Error).message);
+      showToast((e as Error).message, 'error');
     }
   }
   return (
@@ -425,7 +425,7 @@ export function Notifications() {
                         void run(
                           { type: "READ_NOTICE", noticeId: n.id },
                           "อ่านการแจ้งเตือนแล้ว",
-                        ).catch((e) => showToast((e as Error).message))
+                        ).catch((e) => showToast((e as Error).message, 'error'))
                       }
                     >
                       ทำเครื่องหมายว่าอ่านแล้ว

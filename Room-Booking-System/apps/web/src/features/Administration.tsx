@@ -287,7 +287,7 @@ export function Locations({ open }: { open: OpenDialog }) {
         {[...state.holidays].sort().map((d) => (
           <div className="list-row holiday-row" key={d}>
             <strong>{thaiDate(`${d}T12:00:00+07:00`)}</strong>
-            <span className="badge warm">ไม่เปิดรับการจอง</span>
+            <span className="badge warm">ไม่เปิดรับการจอง{state.settings?.holidayPosters?.[d] ? " · มีโปสเตอร์" : ""}</span>
             <div className="holiday-actions">
               <button
                 className="btn ghost"
@@ -389,7 +389,7 @@ export function Equipment({ open }: { open: OpenDialog }) {
                     <button className="btn ghost small" disabled={changing!==null||(e.active!==false&&e.total!==e.remaining)} onClick={async()=>{
                       setChanging(e.id);
                       try{await run({type:'EQUIPMENT_ACTIVE',equipmentId:e.id,active:e.active===false},e.active===false?'เปิดใช้งานอุปกรณ์แล้ว':'เลิกใช้งานอุปกรณ์แล้ว');}
-                      catch(error){showToast((error as Error).message);}finally{setChanging(null);}
+                      catch(error){showToast((error as Error).message, 'error');}finally{setChanging(null);}
                     }}>{changing===e.id?'กำลังบันทึก…':e.active===false?'เปิดใช้งาน':'เลิกใช้งาน'}</button>
                   </td>
                 </tr>
