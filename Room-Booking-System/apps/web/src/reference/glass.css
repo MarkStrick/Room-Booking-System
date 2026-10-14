@@ -1,0 +1,198 @@
+/* Shared glass material. Opaque defaults remain usable without backdrop-filter. */
+.reference-ui {
+  --glass-surface: #fff;
+  --glass-chrome: #f7f8fb;
+  --glass-edge: rgb(255 255 255 / 85%);
+  --glass-line: rgb(58 66 87 / 12%);
+  --glass-shadow: 0 8px 28px rgb(37 48 75 / 7%);
+  --glass-text: #222735;
+  --glass-secondary: #596173;
+  --ink: var(--glass-text);
+  --line: var(--glass-line);
+  color: var(--glass-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Sarabun', 'Noto Sans Thai', sans-serif;
+}
+.reference-ui .reference-stage {
+  background: #eef0f6;
+  background-image: radial-gradient(ellipse at 6% 12%, #e1ddec 0, transparent 55%),
+    radial-gradient(ellipse at 94% 85%, #d8e8ed 0, transparent 60%),
+    linear-gradient(135deg, #f5f3f7, #ecf0f6);
+}
+.reference-ui .reference-frame,
+.reference-ui .reference-main,
+.reference-ui .reference-main > div > .flex.flex-col,
+.reference-ui .search-overview { background: transparent; }
+.reference-ui .reference-frame { height: 100dvh; }
+.reference-ui :is(.reference-app-header, .reference-page-header, .desktop-navigation,
+  .reference-bottom-nav, [role='dialog'], .account-options) {
+  background: var(--glass-chrome);
+  border-color: var(--glass-edge);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgb(255 255 255 / 80%);
+}
+.reference-ui .reference-app-header > div:last-child {
+  background: rgb(255 255 255 / 24%);
+  border-color: var(--glass-line);
+}
+.reference-ui :is(.search-controls, .search-room-card, .booking-room-summary,
+  .legacy-page .panel, .legacy-page .metric-card, .legacy-page .profile-card,
+  .legacy-page .help-card, .reference-main .bg-white.rounded-2xl,
+  .reference-main .bg-white.rounded-xl) {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-edge);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgb(255 255 255 / 90%);
+}
+.reference-ui .search-welcome {
+  background: rgb(255 255 255 / 52%);
+  border-color: var(--glass-edge);
+  box-shadow: inset 0 1px 0 white;
+  color: #8b1e32;
+}
+.reference-ui .search-welcome-icon {
+  background: #a4233b;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgb(164 35 59 / 16%);
+}
+.reference-ui .search-overview > h2 {
+  color: var(--glass-text);
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+.reference-ui :is(.search-overview-date, .desktop-field-label, .text-gray-400, .text-gray-500) {
+  color: var(--glass-secondary);
+}
+.reference-ui :is(input:not([type='checkbox']):not([type='radio']), select, textarea) {
+  background: rgb(255 255 255 / 76%);
+  border: 1px solid var(--glass-line);
+  border-radius: 12px;
+  color: var(--glass-text);
+  box-shadow: inset 0 1px 2px rgb(36 43 64 / 3%);
+  min-height: 44px;
+}
+.reference-ui input::placeholder, .reference-ui textarea::placeholder { color: var(--glass-secondary); }
+.reference-ui input[type='checkbox'] { accent-color: var(--primary); }
+.reference-ui :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 3px solid #a4233b;
+  outline-offset: 3px;
+}
+.reference-ui ::selection { background: #a4233b; color: white; }
+.reference-ui .desktop-nav-group button {
+  min-height: 48px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+}
+.reference-ui .desktop-nav-group button:hover { background: rgb(255 255 255 / 62%); }
+.reference-ui .desktop-nav-group button[aria-current='page'] {
+  background: rgb(255 255 255 / 88%);
+  border-color: var(--glass-edge);
+  color: #981f35;
+  box-shadow: 0 3px 12px rgb(42 48 66 / 7%), inset 0 1px 0 white;
+  font-weight: 600;
+}
+.reference-ui .desktop-campus { border-color: var(--glass-line); }
+.reference-ui .search-room-card {
+  transition: box-shadow 180ms ease-out, border-color 180ms ease-out;
+}
+.reference-ui .search-room-card:hover:not(:disabled) {
+  border-color: rgb(164 35 59 / 30%);
+  box-shadow: 0 12px 32px rgb(37 48 75 / 12%), inset 0 1px 0 white;
+}
+.reference-ui .search-room-card:disabled { opacity: .72; }
+.reference-ui .search-room-photo > .bg-gradient-to-t {
+  background-image: linear-gradient(to top, rgb(10 17 28 / 82%), transparent 85%);
+}
+.reference-ui .search-room-photo .text-white\/80 { color: #fff; }
+.reference-ui .search-room-photo > div:last-child > span {
+  background: rgb(24 31 44 / 55%);
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 10px;
+  padding: 6px 9px;
+}
+.reference-ui .desktop-room-action { border-color: var(--glass-line); }
+.reference-ui .reference-bottom-nav {
+  margin: 8px 12px max(12px, env(safe-area-inset-bottom));
+  border: 1px solid var(--glass-edge);
+  border-radius: 24px;
+  min-height: 64px;
+}
+.reference-ui .reference-bottom-nav button { min-height: 44px; }
+.reference-ui .reference-bottom-nav button[aria-current='page'] {
+  background: rgb(164 35 59 / 7%);
+  border-radius: 18px;
+}
+.reference-ui .reference-toast {
+  background: rgb(34 39 53 / 94%);
+  border: 1px solid rgb(255 255 255 / 20%);
+  box-shadow: 0 10px 32px rgb(25 30 48 / 18%);
+}
+.reference-ui .search-content { scrollbar-color: #aeb7c6 transparent; }
+.reference-ui .glass-login {
+  background: transparent;
+  background-image: none;
+  padding: 24px;
+  gap: 24px;
+}
+.reference-ui .glass-login > div:first-child { color: var(--glass-text); }
+.reference-ui .glass-login > div:first-child > div {
+  background: var(--glass-surface);
+  border-color: var(--glass-edge);
+  color: #a4233b;
+  box-shadow: var(--glass-shadow);
+}
+.reference-ui .glass-login > div:first-child > p { color: var(--glass-secondary); }
+.reference-ui .glass-login > div:last-child {
+  background: var(--glass-chrome);
+  border: 1px solid var(--glass-edge);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow), inset 0 1px 0 white;
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .reference-ui {
+    --glass-surface: rgb(255 255 255 / 65%);
+    --glass-chrome: rgb(255 255 255 / 62%);
+  }
+  .reference-ui :is(.reference-app-header, .reference-page-header, .desktop-navigation,
+    .reference-bottom-nav, [role='dialog'], .account-options, .glass-login > div:last-child) {
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+  }
+  .reference-ui .search-controls {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+}
+@media (min-width: 1024px) {
+  .reference-ui .reference-stage { padding: 16px; }
+  .reference-ui .reference-frame {
+    height: calc(100dvh - 32px);
+    border: 1px solid var(--glass-edge);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgb(40 48 71 / 10%);
+  }
+  .reference-ui .desktop-navigation { border-right: 1px solid var(--glass-edge); box-shadow: none; }
+  .reference-ui .reference-bottom-nav { display: none; }
+  .reference-ui .glass-login { padding: 40px; gap: 40px; }
+  .reference-ui .glass-login > div:first-child { padding: clamp(32px, 5vw, 80px); }
+  .reference-ui .glass-login > div:last-child { padding: clamp(32px, 4vw, 72px); }
+}
+@media (max-width: 1023px) {
+  .reference-ui .search-controls { margin: 0 12px; padding: 16px; }
+  .reference-ui .search-overview { padding: 24px 16px 20px; }
+  .reference-ui .reference-page-header button { min-width: 44px; min-height: 44px; }
+}
+@media (max-width: 450px) {
+  .reference-ui .search-date-fields { flex-wrap: wrap; }
+  .reference-ui .search-date-fields > label { display: block; flex: 1; min-width: 0; }
+  .reference-ui .search-date-fields > label:first-child { flex-basis: 100%; }
+  .reference-ui .search-date-fields :is(input, select) { width: 100%; padding-inline: 10px; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .reference-ui { --glass-surface: #fff; --glass-chrome: #f7f8fb; }
+  .reference-ui :is(.reference-app-header, .reference-page-header, .desktop-navigation,
+    .reference-bottom-nav, [role='dialog'], .account-options, .search-controls, .glass-login > div:last-child) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .reference-ui .search-welcome { background: #fff; }
+  .reference-ui .search-room-photo > div:last-child > span { background: #222735; }
+}

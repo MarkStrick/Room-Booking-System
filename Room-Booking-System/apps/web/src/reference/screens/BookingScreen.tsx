@@ -1,5 +1,6 @@
 import { TimeSelect } from '../components/TimeSelect';
-import { useEffect, useState } from 'react';
+import { QuantityInput } from '../../components/QuantityInput';
+import { useEffect, useMemo, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { AppHeader } from '../components/PhoneFrame';
 import { Button } from '../components/ui';
@@ -8,26 +9,39 @@ import { useAsyncAction } from '../useAsyncAction';
 import { RoomImage } from '../components/RoomImage';
 import { useDemo } from '../../app/DemoProvider';
 import { searchSlotError } from '../../../../../packages/core/src/search';
+import { bookingTimeOptions } from '../../../../../packages/core/src/booking-times';
 import { addDays, availability, dateOf, stamp, time } from '../../lib/domain';
+import { useSessionDraft, clearSessionDrafts } from '../../lib/useSessionDraft';
 
 export function BookingScreen() {
   const { selectedRoom, addBooking, navigate, searchSlot, equipment, bookings, currentUser } = useApp();
-  const { state } = useDemo();
-  const [date, setDate] = useState(searchSlot.date || dateOf(state.now));
-  const [startTime, setStartTime] = useState(searchSlot.start);
-  const [endTime, setEndTime] = useState(searchSlot.end);
-  const [endNextDay,setEndNextDay]=useState(!!searchSlot.endDate&&searchSlot.endDate!==searchSlot.date);
-  const endDate=endNextDay?addDays(date,1):date;
+  const { state, mode } = useDemo();
+  const draftKey = `${mode}:${currentUser.id}:booking:${selectedRoom?.id ?? 'none'}`;
+  const [date, setDate] = useSessionDraft(`${draftKey}:date`, searchSlot.date || dateOf(state.now));
+  const [startTime, setStartTime] = useSessionDraft(`${draftKey}:start`, searchSlot.start);
+  const [endTime, setEndTime] = useSessionDraft(`${draftKey}:end`, searchSlot.end);
+  const [endNextDay,setEndNextDay]=useSessionDraft(`${draftKey}:overnight`, !!searchSlot.endDate&&searchSlot.endDate!==searchSlot.date);
   const room = state.rooms.find(r => String(r.id) === selectedRoom?.id);
-  const slotError = searchSlotError(state,date,startTime,endTime,endDate);
+  const canEndNextDay = !room?.hours || room.hours.end < room.hours.start;
+  const bookingNextDay = endNextDay && canEndNextDay;
+  const endDate=date && bookingNextDay?addDays(date,1):date;
+  const timeOptions = useMemo(() => bookingTimeOptions(state, room, date, bookingNextDay, startTime, [searchSlot.start, searchSlot.end]),
+    [state, room, date, bookingNextDay, startTime, searchSlot.start, searchSlot.end]);
+  const validStart = timeOptions.starts.includes(startTime) ? startTime : '';
+  const validEnd = validStart && timeOptions.ends.includes(endTime) ? endTime : '';
+  useEffect(() => {
+    if (startTime !== validStart) setStartTime(validStart);
+    if (endTime !== validEnd) setEndTime(validEnd);
+  }, [startTime, endTime, validStart, validEnd]);
+  const slotError = searchSlotError(state,date,validStart,validEnd,endDate);
   const available = room && !slotError ? availability(state,room,stamp(date,startTime),stamp(endDate,endTime)) : undefined;
   const timeIssue = slotError || (!room ? 'ไม่พบห้องที่เลือก' : available?.kind !== 'available' ? available?.reason || available?.label || 'กรุณาเลือกช่วงเวลาอื่น' : '');
   const reserved = state.bookings.filter(b => b.roomId === room?.id && ['PENDING','APPROVED','CHECKED_IN'].includes(b.status) && dateOf(b.start) <= endDate && dateOf(b.end) >= date).sort((a,b)=>Date.parse(a.start)-Date.parse(b.start));
-  const [participants, setParticipants] = useState(Math.min(10,selectedRoom?.capacity??10));
-  const [purpose, setPurpose] = useState('');
+  const [participants, setParticipants] = useSessionDraft(`${draftKey}:participants`, Math.max(1,Math.min(searchSlot.capacity??10,selectedRoom?.capacity??10)));
+  const [purpose, setPurpose] = useSessionDraft(`${draftKey}:purpose`, '');
 
-  const [participantEmails,setParticipantEmails]=useState('');
-  const [quantities,setQuantities]=useState<Record<number,number>>({});
+  const [participantEmails,setParticipantEmails]=useSessionDraft(`${draftKey}:emails`, '');
+  const [quantities,setQuantities]=useSessionDraft<Record<number,number>>(`${draftKey}:equipment`, {});
   const equipmentError = (id: number, remaining: number) => {
     const qty = quantities[id] ?? 0;
     if (qty > remaining) return 'ยืมได้สูงสุด ' + remaining + ' ชิ้น กรุณาลดจำนวน';
@@ -46,7 +60,7 @@ export function BookingScreen() {
   const handleSubmit = () => perform(async () => {
     if(timeIssue)throw new Error(timeIssue);
     if(hasEquipmentError)throw new Error('กรุณาแก้ไขจำนวนอุปกรณ์ก่อนส่งคำขอจอง');
-    if(!date || !startTime || !endTime || (!endNextDay&&endTime<=startTime))throw new Error('กรุณาเลือกวันที่และเวลาให้ถูกต้อง');
+    if(!date || !startTime || !endTime || (!bookingNextDay&&endTime<=startTime))throw new Error('กรุณาเลือกวันที่และเวลาให้ถูกต้อง');
     if(!purpose.trim())throw new Error('กรุณาระบุวัตถุประสงค์ของการจอง');
     if(!Number.isInteger(participants)||participants<1||participants>selectedRoom.capacity)throw new Error(`จำนวนผู้เข้าร่วมต้องอยู่ระหว่าง 1–${selectedRoom.capacity} ท่าน`);
     await addBooking({
@@ -62,7 +76,7 @@ export function BookingScreen() {
       equipment:Object.entries(quantities).filter(([,qty])=>qty>0).map(([id,qty])=>({id:Number(id),qty})),
       participantEmails:participantEmails.split(/[\s,;]+/).filter(Boolean),
     });
-  },()=>setSuccess(true));
+  },()=>{clearSessionDrafts(draftKey);setSuccess(true);});
 
   if (success) {
     return (
@@ -114,7 +128,7 @@ export function BookingScreen() {
 
         {/* Form */}
         <div className="booking-form-fields space-y-4">
-          <p className="text-sm text-gray-600">เลือกหรือเปลี่ยนวันและเวลาจองได้ที่นี่ ระบบจะตรวจห้องว่างตามช่วงที่เลือก</p>
+          <p className="text-sm text-gray-600">เลือกได้เฉพาะเวลาที่ห้องเปิดทำการและยังว่าง กรุณาเลือกเวลาเริ่มก่อนเวลาสิ้นสุด</p>
           {room?.hours && <p className="text-sm text-gray-600">เปิด {room.hours.start}–{room.hours.end} น. · {room.hours.weekdays.map(d=>['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'][d]).join(' ')}{room.hours.leadMinutes ? ` · จองล่วงหน้าอย่างน้อย ${room.hours.leadMinutes} นาที` : ''}</p>}
           <div>
             <label className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
@@ -140,8 +154,9 @@ export function BookingScreen() {
               </label>
               <TimeSelect
                 aria-label="เวลาเริ่ม"
-                value={startTime}
-                disabled={busy}
+                value={validStart}
+                allowedTimes={timeOptions.starts}
+                disabled={busy || timeOptions.starts.length === 0}
                 onChange={e=>setStartTime(e.target.value)}
                 aria-describedby="booking-time-feedback"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors"
@@ -153,8 +168,9 @@ export function BookingScreen() {
               </label>
               <TimeSelect
                 aria-label="เวลาสิ้นสุด"
-                value={endTime}
-                disabled={busy}
+                value={validEnd}
+                allowedTimes={validStart ? timeOptions.ends : []}
+                disabled={busy || !validStart || timeOptions.ends.length === 0}
                 onChange={e=>setEndTime(e.target.value)}
                 aria-describedby="booking-time-feedback"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors"
@@ -162,7 +178,8 @@ export function BookingScreen() {
             </div>
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-gray-700"><input type="checkbox" disabled={busy} checked={endNextDay} onChange={e=>setEndNextDay(e.target.checked)}/> สิ้นสุดในวันถัดไป {endNextDay?`(${endDate})`:''}</label>
+          <label className="flex items-center gap-2 text-sm text-gray-700"><input type="checkbox" disabled={busy || !canEndNextDay} checked={bookingNextDay} onChange={e=>setEndNextDay(e.target.checked)}/> สิ้นสุดในวันถัดไป {bookingNextDay?`(${endDate})`:''}</label>
+          {timeOptions.starts.length === 0 && <p role="status" className="text-sm text-gray-600">ไม่มีช่วงเวลาว่างที่จองได้ในวันที่เลือก กรุณาเลือกวันอื่น{room?.hours && room.hours.end < room.hours.start ? ' หรือเปลี่ยนตัวเลือกสิ้นสุดในวันถัดไป' : ''}</p>}
           <p id="booking-time-feedback" role="status" className={`text-sm ${timeIssue && startTime && endTime ? 'text-red-600' : 'text-gray-600'}`}>{timeIssue || 'ห้องว่างในช่วงที่เลือก พร้อมส่งคำขอจอง'}</p>
           {reserved.length > 0 && <div className="text-sm text-gray-600"><p className="font-semibold">ช่วงเวลาที่มีการจองแล้ว</p>{reserved.map(b=><p key={b.id}>{time(b.start)}–{time(b.end)} น.</p>)}</div>}
           <div>
@@ -176,13 +193,15 @@ export function BookingScreen() {
               >
                 –
               </button>
-              <input
-                type="number"
+              <QuantityInput
                 aria-label="จำนวนผู้เข้าร่วม"
                 min={1}
                 max={selectedRoom.capacity}
                 value={participants}
-                onChange={(e) => setParticipants(Math.max(1, parseInt(e.target.value) || 1))}
+                onChange={(e) => setParticipants(Number(e.target.value))}
+                onBlur={(e) => {
+                  if (e.target.value === '') setParticipants(1);
+                }}
                 className="w-full text-center px-3 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:border-kku-red"
               />
               <button
@@ -237,7 +256,7 @@ export function BookingScreen() {
                 return <div key={item.id}>
                   <label className="flex items-center gap-3 text-sm text-gray-700">
                     <span className="flex-1">{item.name} · เหลือ {item.remaining}</span>
-                    <input aria-label={'จำนวน ' + item.name} type="number" min={0} max={item.remaining} step={1}
+                    <QuantityInput aria-label={'จำนวน ' + item.name} min={0} max={item.remaining} step={1}
                       disabled={busy || item.remaining <= 0} value={quantities[item.id] ?? 0}
                       aria-invalid={!!message} aria-describedby={message ? feedbackId : undefined}
                       onChange={event => setQuantities(q => ({...q, [item.id]: Number(event.target.value)}))}

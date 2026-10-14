@@ -29,14 +29,16 @@ export function HistoryScreen() {
       <AppHeader showBack={false} />
 
       {/* Filter tabs */}
-      <div className="px-4 py-3 bg-white border-b border-gray-100 flex gap-2 shrink-0">
+      <div className="px-4 py-3 bg-white border-b border-gray-100 shrink-0">
+        <div className="flex flex-wrap gap-2">
         {([
-          { key: 'all', label: 'ทั้งหมด' },
-          { key: 'upcoming', label: 'กำลังจะมา' },
-          { key: 'completed', label: 'ที่ผ่านไป' },
+          { key: 'all', label: 'การจองทั้งหมด' },
+          { key: 'upcoming', label: 'การจองปัจจุบัน' },
+          { key: 'completed', label: 'ประวัติการจอง' },
         ] as const).map((tab) => (
           <button
             key={tab.key}
+            aria-pressed={filter === tab.key}
             onClick={() => setFilter(tab.key)}
             className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
               filter === tab.key ? 'bg-kku-red text-white' : 'bg-gray-100 text-gray-500'
@@ -45,6 +47,12 @@ export function HistoryScreen() {
             {tab.label}
           </button>
         ))}
+        </div>
+        <p className="mt-2 text-xs text-gray-600">
+          {filter === 'all' ? 'รายการจองห้องของคุณทุกสถานะ'
+            : filter === 'upcoming' ? 'รายการวันนี้และวันถัดไปที่รออนุมัติ อนุมัติแล้ว หรือกำลังใช้ห้อง'
+            : 'รายการที่ผ่านวันใช้งานแล้ว รวมถึงรายการที่เสร็จสิ้น ยกเลิก ถูกปฏิเสธ หรือไม่มาตามนัด'}
+        </p>
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-3">

@@ -59,13 +59,12 @@ export class PostgresStore implements Store {
   this.pool.on('error',e=>console.error(JSON.stringify({event:'database_pool_error',code:(e as {code?:string}).code??'CONNECTION_ERROR'})));
  }
  async read():Promise<Data> {
-  const client=await this.pool.connect();
-  try {await client.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY');await restrictTransaction(client);const data=await load(client);await client.query('COMMIT');return data;}
-  catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
+  return this.withClient(async client=>{
+  await client.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY');await restrictTransaction(client);const data=await load(client);await client.query('COMMIT');return data;
+  });
  }
  async transaction<T>(fn:(data:Data)=>T):Promise<T> {
-  const client=await this.pool.connect();
-  try {
+  return this.withClient(async client=>{
    await client.query('BEGIN');
    await restrictTransaction(client);
    // Serializes API, worker and administrative writes, including quota and stock.
@@ -88,7 +87,23 @@ export class PostgresStore implements Store {
     }else await client.query(`INSERT INTO ${tableIdentifier(table)}(key,payload) VALUES($1,$2::jsonb) ON CONFLICT(key) DO UPDATE SET payload=excluded.payload`,[rowKey,payload]);
    }
    await client.query('COMMIT');return result;
-  }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
+  });
+ }
+ private async withClient<T>(operation:(client:PoolClient)=>Promise<T>):Promise<T> {
+  const client=await this.pool.connect();
+  let broken=false;
+  // pg removes the pool's idle error listener while a client is checked out.
+  // Handle socket errors here too, so a dropped connection cannot kill the API.
+  const onError=()=>{broken=true;};
+  client.on?.('error',onError);
+  try {return await operation(client);}
+  catch(error) {
+   try {await client.query('ROLLBACK');}catch{broken=true;}
+   throw error;
+  }finally {
+   client.release(broken);
+   client.removeListener?.('error',onError);
+  }
  }
  async close(){await this.pool.end();}
 }

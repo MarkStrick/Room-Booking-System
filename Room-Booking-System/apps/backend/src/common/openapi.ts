@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { commandSchema, assignmentSchema } from "./validation";
+import { assistantRequestSchema } from './assistant-validation';
 export function openApi(cookie: string) {
   const auth = { security: [{ sessionCookie: [] }] };
   const get = (summary: string, secured = true) => ({
@@ -55,6 +56,7 @@ export function openApi(cookie: string) {
       },
       "/api/session": { get: get("บัญชี session และข้อมูลตามขอบเขต") },
       "/api/state": { get: get("ข้อมูลปัจจุบันตามขอบเขต") },
+      "/api/assistant": { post: { ...post('ผู้ช่วยตอบ FAQ และค้นห้องว่างจากฐานข้อมูล ไม่สร้างการจอง', z.toJSONSchema(assistantRequestSchema)), responses: { 201: { description: 'คำตอบพร้อมห้องว่างและเวลาที่ตรวจสอบ' }, 400: { description: 'ข้อมูลไม่ถูกต้อง' }, 401: { description: 'ต้องเข้าสู่ระบบ' }, 403: { description: 'CSRF หรือสิทธิ์ไม่ถูกต้อง' }, 429: { description: 'ส่งคำถามถี่เกินไป' } } } },
       "/api/commands": {
         post: {
           ...post("คำสั่งธุรกิจ", z.toJSONSchema(commandSchema)),

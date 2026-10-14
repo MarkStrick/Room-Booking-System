@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T14:59:39.984Z",
+  "title": "Design System: KKU Room Booking — Shared Glass UI",
+  "extensions": {
+    "colorMeta": {
+      "kku-red": {
+        "role": "primary",
+        "displayName": "KKU Burgundy",
+        "canonical": "#A4233B",
+        "tonalRamp": [
+          "oklch(15% 0.16 15)",
+          "oklch(25% 0.16 15)",
+          "oklch(35% 0.16 15)",
+          "oklch(45% 0.16 15)",
+          "oklch(55% 0.16 15)",
+          "oklch(70% 0.16 15)",
+          "oklch(85% 0.16 15)",
+          "oklch(95% 0.16 15)"
+        ]
+      },
+      "glass-text": {
+        "role": "neutral",
+        "displayName": "Cool Ink",
+        "canonical": "#222735",
+        "tonalRamp": [
+          "oklch(15% 0.02 270)",
+          "oklch(25% 0.02 270)",
+          "oklch(35% 0.02 270)",
+          "oklch(45% 0.02 270)",
+          "oklch(55% 0.02 270)",
+          "oklch(70% 0.02 270)",
+          "oklch(85% 0.02 270)",
+          "oklch(95% 0.02 270)"
+        ]
+      },
+      "stage-lavender": {
+        "role": "neutral",
+        "displayName": "Lavender Atmosphere",
+        "canonical": "#e1ddec",
+        "tonalRamp": [
+          "oklch(15% 0.02 300)",
+          "oklch(25% 0.02 300)",
+          "oklch(35% 0.02 300)",
+          "oklch(45% 0.02 300)",
+          "oklch(55% 0.02 300)",
+          "oklch(70% 0.02 300)",
+          "oklch(85% 0.02 300)",
+          "oklch(95% 0.02 300)"
+        ]
+      },
+      "stage-blue": {
+        "role": "neutral",
+        "displayName": "Blue Atmosphere",
+        "canonical": "#d8e8ed",
+        "tonalRamp": [
+          "oklch(15% 0.02 220)",
+          "oklch(25% 0.02 220)",
+          "oklch(35% 0.02 220)",
+          "oklch(45% 0.02 220)",
+          "oklch(55% 0.02 220)",
+          "oklch(70% 0.02 220)",
+          "oklch(85% 0.02 220)",
+          "oklch(95% 0.02 220)"
+        ]
+      }
+    },
+    "shadows": [
+      {
+        "name": "glass-shadow",
+        "value": "0 8px 28px rgb(37 48 75 / 7%)",
+        "purpose": "Shared card and chrome ambient depth."
+      },
+      {
+        "name": "frame",
+        "value": "0 20px 60px rgb(40 48 71 / 10%)",
+        "purpose": "Desktop outer frame."
+      },
+      {
+        "name": "room-hover",
+        "value": "0 12px 32px rgb(37 48 75 / 12%), inset 0 1px 0 white",
+        "purpose": "Interactive room card hover."
+      }
+    ],
+    "motion": [
+      {
+        "name": "room-card-state",
+        "value": "box-shadow 180ms ease-out, border-color 180ms ease-out",
+        "purpose": "Hover state; disabled under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-date-wrap",
+        "value": "450px"
+      },
+      {
+        "name": "desktop",
+        "value": "1024px"
+      },
+      {
+        "name": "wide-grid",
+        "value": "1600px"
+      }
+    ],
+    "materials": [
+      {
+        "name": "chrome",
+        "value": "blur(20px) saturate(140%)",
+        "purpose": "Headers, navigation, dialogs, account options, login panel."
+      },
+      {
+        "name": "search-controls",
+        "value": "blur(12px)",
+        "purpose": "Search control panel only."
+      }
+    ],
+    "accessibility": {
+      "focus": "3px solid #a4233b; outline-offset: 3px",
+      "reducedTransparency": "Opaque #fff surfaces and #f7f8fb chrome; shared backdrop filters disabled.",
+      "reducedMotion": "Animations and transitions disabled by reference.css."
+    },
+    "sources": [
+      "src/reference/glass.css",
+      "src/reference/reference.css",
+      "src/reference/desktop.css",
+      "src/reference/components/ui.tsx",
+      "src/main.tsx"
+    ],
+    "tonalRampNote": "Synthesized OKLCH ramps are preview metadata, not shipped CSS tokens."
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Existing medium primary action.",
+      "html": "<button class=\"ds-button\">จองห้อง</button>",
+      "css": ".ds-button{background:#A4233B;color:white;padding:10px 16px;border:0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background-color 150ms ease}.ds-button:hover{background:#8B1E32}.ds-button:active{transform:scale(.97)}.ds-button:disabled{opacity:.4;cursor:not-allowed}.ds-button:focus-visible,.ds-field:focus-visible,.ds-nav button:focus-visible,.ds-card:focus-visible{outline:3px solid #a4233b;outline-offset:3px}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Readable pale field with neutral border.",
+      "html": "<input class=\"ds-field\" aria-label=\"ค้นหาห้อง\" placeholder=\"ค้นหาห้อง\">",
+      "css": ".ds-field{background:rgb(255 255 255 / 76%);border:1px solid rgb(58 66 87 / 12%);border-radius:12px;color:#222735;box-shadow:inset 0 1px 2px rgb(36 43 64 / 3%);min-height:44px;padding:0 12px;font-family:inherit}.ds-field::placeholder{color:#596173}.ds-button:focus-visible,.ds-field:focus-visible,.ds-nav button:focus-visible,.ds-card:focus-visible{outline:3px solid #a4233b;outline-offset:3px}"
+    },
+    {
+      "name": "Desktop Navigation",
+      "kind": "nav",
+      "description": "Bright selected surface and burgundy active text.",
+      "html": "<nav class=\"ds-nav\"><button aria-current=\"page\">ค้นหาห้อง</button><button>ประวัติการจอง</button></nav>",
+      "css": ".ds-nav{background:#f7f8fb;padding:16px;max-width:248px}.ds-nav button{display:block;width:100%;min-height:48px;padding:10px 12px;margin-top:4px;text-align:left;border:1px solid transparent;border-radius:14px;background:transparent;color:#515c6c;font-family:inherit;font-size:14px;cursor:pointer}.ds-nav button:hover{background:rgb(255 255 255 / 62%)}.ds-nav button[aria-current]{background:rgb(255 255 255 / 88%);border-color:rgb(255 255 255 / 85%);color:#981f35;box-shadow:0 3px 12px rgb(42 48 66 / 7%),inset 0 1px 0 white;font-weight:600}.ds-button:focus-visible,.ds-field:focus-visible,.ds-nav button:focus-visible,.ds-card:focus-visible{outline:3px solid #a4233b;outline-offset:3px}"
+    },
+    {
+      "name": "Room Card Material",
+      "kind": "card",
+      "refersTo": "glass-panel",
+      "description": "Repeated content panel without individual backdrop blur.",
+      "html": "<button class=\"ds-card\">ห้องประชุม</button>",
+      "css": ".ds-card{background:#fff;color:#222735;border:1px solid rgb(255 255 255 / 85%);border-radius:16px;box-shadow:0 8px 28px rgb(37 48 75 / 7%),inset 0 1px 0 rgb(255 255 255 / 90%);padding:18px 20px;font-family:inherit;cursor:pointer;transition:box-shadow 180ms ease-out,border-color 180ms ease-out}.ds-card:hover{border-color:rgb(164 35 59 / 30%);box-shadow:0 12px 32px rgb(37 48 75 / 12%),inset 0 1px 0 white}.ds-card:disabled{opacity:.72}@supports(backdrop-filter:blur(1px)){.ds-card{background:rgb(255 255 255 / 65%)}}@media(prefers-reduced-transparency:reduce){.ds-card{background:#fff}}@media(prefers-reduced-motion:reduce){.ds-card{transition:none}}.ds-button:focus-visible,.ds-field:focus-visible,.ds-nav button:focus-visible,.ds-card:focus-visible{outline:3px solid #a4233b;outline-offset:3px}"
+    },
+    {
+      "name": "Pending Status",
+      "kind": "chip",
+      "description": "Incumbent semantic status badge.",
+      "html": "<span class=\"ds-chip\"><span></span>รออนุมัติ</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:6px;background:#fef3c7;color:#b45309;border-radius:9999px;padding:4px 10px;font-family:inherit;font-size:12px;font-weight:600}.ds-chip span{width:6px;height:6px;background:#f59e0b;border-radius:9999px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Quiet Glass Workspace",
+    "overview": "Apple-inspired translucent chrome sits over a soft lavender and blue neutral surface. Burgundy remains the action and selection accent, with Thai text and existing room-booking content preserved.",
+    "keyCharacteristics": [
+      "Cool neutral surfaces with restrained burgundy emphasis.",
+      "Translucent chrome, readable controls, and softly rounded containers.",
+      "Responsive desktop frame and mobile dock.",
+      "Opaque material fallback and reduced transparency support."
+    ],
+    "rules": [
+      {
+        "name": "The Accent Rule",
+        "body": "Preserve burgundy for action and selection; keep shared chrome neutral.",
+        "section": "colors"
+      },
+      {
+        "name": "The Bounded Blur Rule",
+        "body": "Apply blur to chrome, dialogs, account options, the login control panel, and search controls; leave repeated content cards without individual backdrop blur.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve Thai labels, burgundy identity, and existing booking layouts.",
+      "Do use the shared material tokens for recurring panels and chrome.",
+      "Do preserve visible keyboard focus, opaque fallback, and reduced transparency behavior."
+    ],
+    "donts": [
+      "Don't add individual backdrop blur to repeated room cards.",
+      "Don't use the glass treatment to replace semantic status colors or obscure text."
+    ]
+  }
+}

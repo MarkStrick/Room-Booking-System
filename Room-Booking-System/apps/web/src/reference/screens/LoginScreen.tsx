@@ -4,7 +4,7 @@ import { PhoneFrame } from '../components/PhoneFrame';
 export function LoginScreen({ loading, googleReady, error, retry, allowedDomains=[] }: { loading:boolean;googleReady:boolean;error:string;retry:()=>void;allowedDomains?:string[] }) {
 
   return (
-    <div className="reference-ui"><PhoneFrame><div className="flex flex-col bg-gradient-to-b from-kku-red to-kku-red-dark h-full">
+    <div className="reference-ui"><PhoneFrame><div className="glass-login flex flex-col bg-gradient-to-b from-kku-red to-kku-red-dark h-full">
       {/* Hero section */}
       <div className="flex-1 flex flex-col items-center justify-center px-8 text-white">
         <div className="w-24 h-24 bg-white/15 rounded-3xl flex items-center justify-center mb-6 backdrop-blur-sm border border-white/20">
@@ -39,6 +39,7 @@ export function LoginScreen({ loading, googleReady, error, retry, allowedDomains
         {error && <button onClick={retry} className="flex items-center justify-center gap-2 w-full mt-3 text-sm text-kku-red"><RefreshCw size={16}/>ลองเชื่อมต่ออีกครั้ง</button>}
 
 <button onClick={()=>{history.replaceState(null,'',location.pathname);location.hash='#/rooms';}} className="w-full text-sm text-kku-red mt-4">กลับไปค้นหาห้อง</button>
+        <a href="#/home" className="block text-center text-sm text-gray-500 mt-3">กลับหน้าแรก</a>
         <p className="text-[11px] text-gray-400 text-center mt-5 leading-relaxed">
           การเข้าสู่ระบบแสดงว่าคุณยอมรับ<br />ข้อกำหนดและเงื่อนไขการใช้งาน
         </p>

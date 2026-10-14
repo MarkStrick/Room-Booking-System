@@ -46,4 +46,4 @@ function Router() {
     </main>
   </div>;
 }
-export function ReferenceApp(){return <AppProvider><div className="reference-ui"><PhoneFrame><Router/></PhoneFrame></div></AppProvider>;}
+export function ReferenceApp(){const {user,mode}=useDemo();return <AppProvider key={`${mode}:${user.id}`}><div className="reference-ui"><PhoneFrame><Router/></PhoneFrame></div></AppProvider>;}

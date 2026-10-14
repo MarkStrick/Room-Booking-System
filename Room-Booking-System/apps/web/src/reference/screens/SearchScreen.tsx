@@ -2,11 +2,16 @@ import { TimeSelect } from '../components/TimeSelect';
 import { useDemo } from '../../app/DemoProvider';
 import { searchSlotError } from '../../../../../packages/core/src/search';
 import { addDays, availability, stamp } from '../../lib/domain';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { AppHeader } from '../components/PhoneFrame';
 import { Users, MapPin, Clock, Search as SearchIcon, SlidersHorizontal, CalendarDays, DoorOpen, ChevronRight } from 'lucide-react';
 import { RoomImage } from '../components/RoomImage';
+
+const searchTimes = Array.from({ length: 17 }, (_, index) => {
+  const minutes = 8 * 60 + 30 + index * 30;
+  return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+});
 
 export function SearchScreen() {
   const { rooms, navigate, setSelectedRoom, roomAvailable, searchSlot, setSearchSlot, currentUser } = useApp();
@@ -16,6 +21,11 @@ export function SearchScreen() {
   const [capacityFilter, setCapacityFilter] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const {date,start:time,end:endT}=searchSlot;
+  useEffect(() => {
+    const start = searchTimes.includes(time) ? time : '';
+    const end = searchTimes.includes(endT) ? endT : '';
+    if (start !== time || end !== endT) setSearchSlot({ ...searchSlot, start, end });
+  }, [searchSlot, setSearchSlot, time, endT]);
   const setDate=(date:string)=>setSearchSlot({...searchSlot,date,endDate:searchSlot.endDate&&searchSlot.endDate!==searchSlot.date?addDays(date,1):undefined});
   const setTime=(start:string)=>setSearchSlot({...searchSlot,start});
   const setEndT=(end:string)=>setSearchSlot({...searchSlot,end});
@@ -94,6 +104,7 @@ export function SearchScreen() {
           <label><span className="desktop-field-label">เวลาเริ่ม</span>
           <TimeSelect
             aria-label="เวลาเริ่ม"
+            allowedTimes={searchTimes}
             value={time}
             onChange={(e) => setTime(e.target.value)}
             className="w-24 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-kku-red"
@@ -102,6 +113,7 @@ export function SearchScreen() {
           <label><span className="desktop-field-label">เวลาสิ้นสุด</span>
           <TimeSelect
             aria-label="เวลาสิ้นสุด"
+            allowedTimes={searchTimes}
             value={endT}
             onChange={(e) => setEndT(e.target.value)}
             className="w-24 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-kku-red"

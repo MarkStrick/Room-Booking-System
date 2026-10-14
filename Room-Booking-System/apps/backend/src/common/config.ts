@@ -6,6 +6,7 @@ export interface Config {
  serverless:boolean;cronSecret:string;rateLimitSecret:string;
  devLogin:boolean;googleId:string;googleSecret:string;allowedDomains:string[];allowPublicGoogle:boolean;bootstrapAdmins:string[];
  smtpHost:string;smtpPort:number;smtpSecure:boolean;smtpUser:string;smtpPassword:string;mailFrom:string;
+ geminiApiKey:string;geminiModel:string;assistantDailyLimit:number;
 }
 export const mailConfigured=(c:Config)=>!!(c.smtpHost&&c.mailFrom&&(!c.smtpUser||c.smtpPassword));
 const list=(s:string|undefined)=>(s??'').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
@@ -20,7 +21,8 @@ export function readConfig(env:NodeJS.ProcessEnv=process.env):Config {
  trustProxy:list(env.TRUST_PROXY),
  dbFile:resolve(env.SQLITE_PATH??'../../var/kku-development.sqlite'),devLogin:env.DEV_LOGIN==='1',googleId:env.GOOGLE_CLIENT_ID??'',googleSecret:env.GOOGLE_CLIENT_SECRET??'',allowedDomains:list(env.ALLOWED_GOOGLE_DOMAINS??'kkumail.com,kku.ac.th'),allowPublicGoogle:env.ALLOW_PUBLIC_GOOGLE==='1',bootstrapAdmins:list(env.BOOTSTRAP_ADMIN_EMAILS),
  databaseUrl:env.DATABASE_URL??'',databaseCa:env.DATABASE_CA_PATH||undefined,databaseCaPem:env.DATABASE_CA_PEM?.replace(/\\n/g,'\n'),
- smtpHost:env.SMTP_HOST??'',smtpPort:z.coerce.number().int().min(1).max(65535).parse(env.SMTP_PORT??587),smtpSecure:env.SMTP_SECURE==='1',smtpUser:env.SMTP_USER??'',smtpPassword:env.SMTP_PASSWORD??'',mailFrom:env.MAIL_FROM??''};
+ smtpHost:env.SMTP_HOST??'',smtpPort:z.coerce.number().int().min(1).max(65535).parse(env.SMTP_PORT??587),smtpSecure:env.SMTP_SECURE==='1',smtpUser:env.SMTP_USER??'',smtpPassword:env.SMTP_PASSWORD??'',mailFrom:env.MAIL_FROM??'',
+ geminiApiKey:env.GEMINI_API_KEY?.trim()??'',geminiModel:env.GEMINI_MODEL?.trim()||'gemini-3.5-flash-lite',assistantDailyLimit:z.coerce.number().int().min(0).max(10000).parse(env.ASSISTANT_DAILY_LIMIT??100)};
  for(const proxy of config.trustProxy) {
   if(proxy==='loopback')continue;
   const [address,prefix,...rest]=proxy.split('/'),version=isIP(address);

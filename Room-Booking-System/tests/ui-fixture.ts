@@ -8,6 +8,8 @@ import { createSeed } from '../apps/web/src/lib/seed';
 import { resolve } from 'node:path';
 
 const data=emptyData();data.state={...createSeed(),now:new Date().toISOString()};
+// Opt-in hours for assistant browser checks; this remains an in-memory, loopback fixture.
+if(process.env.UI_FIXTURE_ASSISTANT==='1')data.state.rooms.forEach(room=>{room.hours={start:'08:00',end:'18:00',weekdays:[0,1,2,3,4,5,6],leadMinutes:0};});
 data.state.settings={contactEmail:'support@example.com',contactPhone:'',faqs:[]};
 // Known cookies exist only in this loopback-only, disposable browser fixture.
 for(const userId of [1,2,3])data.sessions.push({userId,hash:digest(`kku-ui-fixture-user-${userId}`),csrf:`kku-ui-fixture-csrf-${userId}`,expiresAt:new Date(Date.now()+3600000).toISOString()});

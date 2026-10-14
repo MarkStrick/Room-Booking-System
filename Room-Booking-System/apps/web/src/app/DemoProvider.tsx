@@ -22,6 +22,9 @@ import {
   type Session,
 } from "../lib/api";
 import { LoginScreen } from '../reference/screens/LoginScreen';
+import { LandingPage } from '../features/LandingPage';
+import { AppSkeleton } from '../components/AppSkeleton';
+import type { AssistantRequest, AssistantResponse } from '../../../../packages/contracts/src/assistant';
 
 interface DemoContextValue {
   state: AppState;
@@ -45,6 +48,7 @@ interface DemoContextValue {
   refresh: () => Promise<void>;
   canTest: boolean;
   openSandbox: () => Promise<void>;
+  askAssistant?: (input: AssistantRequest, signal?: AbortSignal) => Promise<AssistantResponse>;
 }
 export const DemoContext = createContext<DemoContextValue | null>(null);
 const subscribeHash=(cb:()=>void)=>{window.addEventListener('hashchange',cb);return ()=>window.removeEventListener('hashchange',cb);};
@@ -180,6 +184,21 @@ function ServerProvider({ children }: { children: ReactNode }) {
     location.hash="#/rooms";
     await load();
   }
+  async function askAssistant(input: AssistantRequest, signal?: AbortSignal) {
+    const current = sessionRef.current;
+    if (!current) throw new Error('กรุณาเข้าสู่ระบบก่อนถามผู้ช่วย');
+    try {
+      const result = await request<AssistantResponse>('/assistant', {
+        method: 'POST', headers: { 'x-csrf-token': current.csrfToken }, body: JSON.stringify(input),
+        signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(25000)]) : undefined,
+      });
+      if (sessionRef.current?.user.id !== current.user.id) throw new Error('บัญชีเปลี่ยนระหว่างทำรายการ กรุณาลองใหม่');
+      return result;
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) update(null);
+      throw error;
+    }
+  }
   async function manageAccess(
     userId: number,
     role: User["role"],
@@ -206,6 +225,12 @@ function ServerProvider({ children }: { children: ReactNode }) {
     setSandbox(true);
     location.hash = "#/rooms";
   }
+  if (loading) {
+    return <AppSkeleton variant={!hash || hash === '#/home' ? 'home' : hash === '#/login' ? 'login' : 'workspace'} />;
+  }
+  if ((!hash || hash === '#/home') && !new URLSearchParams(location.search).has('login_error')) {
+    return <LandingPage signedIn={Boolean(session)} />;
+  }
   if(!loading && !session && catalog && hash!=='#/login' && !new URLSearchParams(location.search).has('login_error')) {
     const login=()=>{location.hash='#/login';};
     const unavailable=async()=>{login();throw new Error('กรุณาเข้าสู่ระบบก่อนทำรายการ');};
@@ -219,11 +244,7 @@ function ServerProvider({ children }: { children: ReactNode }) {
   if (sandbox && session.user.role === "ADMIN")
     return (
       <Suspense
-        fallback={
-          <main className="session-page" role="status">
-            กำลังเปิดพื้นที่ทดสอบ…
-          </main>
-        }
+        fallback={<AppSkeleton />}
       >
         <AdminSandbox
           onExit={() => {
@@ -250,6 +271,7 @@ function ServerProvider({ children }: { children: ReactNode }) {
         refresh,
         canTest: session.user.role === "ADMIN",
         openSandbox,
+        askAssistant,
         switchUser: () => {
           throw new Error("ไม่รองรับการสลับบัญชีในระบบจริง");
         },

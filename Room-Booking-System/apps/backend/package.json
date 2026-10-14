@@ -17,9 +17,11 @@
     "esbuild": "^0.28.1"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.95",
     "@nestjs/common": "^12.1.2",
     "@nestjs/core": "^12.1.2",
     "@nestjs/platform-express": "^12.1.2",
+    "ai": "^7.0.140",
     "argon2": "^0.45.1",
     "cookie-parser": "^1.4.7",
     "express": "^5.2.1",

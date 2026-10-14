@@ -65,6 +65,7 @@ export interface ChatMessage {
   text: string;
   sender: 'user' | 'bot';
   timestamp: string;
+  response?: import('../../../../packages/contracts/src/assistant').AssistantResponse;
 }
 
 export type NotificationType = 'rejection' | 'cancellation' | 'general';

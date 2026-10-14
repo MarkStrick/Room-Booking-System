@@ -9,6 +9,8 @@ import "./server.css";
 import "./integrated-ui.css";
 import "./reference/reference.css";
 import "./reference/desktop.css";
+import "./reference/glass.css";
+import "./scrollbars.css";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AppErrorBoundary><DemoProvider>

@@ -12,6 +12,9 @@ import { assignmentSchema } from '../common/validation';
 import { openApi } from '../common/openapi';
 import { timingSafeEqual } from 'node:crypto';
 import { runJobCycle } from './job-runner';
+import { assistantRequestSchema } from '../common/assistant-validation';
+import { interpretAssistant, reserveAssistantBudget } from './assistant-service';
+import { answerAssistant, ownedBookingAnswer, emptyIntent } from '../../../../packages/core/src/assistant';
 export const STORE='STORE',CONFIG='CONFIG';
 @Catch()
 class Errors implements ExceptionFilter {
@@ -33,6 +36,28 @@ export class ApiController {
  @Get('openapi.json') docs(){return openApi(sessionCookie(this.c));}
  @Get('public/catalog') async catalog(){return this.store.transaction(data=>{const now=new Date().toISOString();runTimers(data,now);return projectState(data.state,{id:0,name:'ผู้เยี่ยมชม',email:'',phone:'',affiliation:'',role:'USER',active:false});});}
  @Get('health/live') live(){return {status:'ok'};}
+ @Post('assistant') async assistant(@Req()req:Request,@Res({passthrough:true})res:Response,@Body()body:unknown) {
+  const parsed=assistantRequestSchema.safeParse(body);
+  if(!parsed.success)throw new BadRequestException('กรุณาระบุคำถามไม่เกิน 1,000 ตัวอักษรและเงื่อนไขค้นหาที่ถูกต้อง');
+  const initial=await this.store.transaction(data=>{
+   const now=new Date().toISOString(),{user,session}=actor(data,req.cookies?.[sessionCookie(this.c)],now);
+   checkCsrf(req,session.csrf,this.c);
+   const budget=reserveAssistantBudget(data,user.id,this.c,now,!parsed.data.filters&&!/BK-\d{4}-\d+/i.test(parsed.data.question));
+   return {userId:user.id,budget,state:{...data.state,now}};
+  });
+  if(!initial.budget.allowed){res.setHeader('Retry-After',initial.budget.retryAfter);throw new HttpException('ส่งคำถามถี่เกินไป กรุณารอสักครู่แล้วลองใหม่',429);}
+  const {intent,mode,reason}=/BK-\d{4}-\d+/i.test(parsed.data.question) ? {intent:emptyIntent('status-help'),mode:'fallback' as const,reason:'owned_booking'} : await interpretAssistant(initial.state,parsed.data,this.c,initial.budget.useGemini);
+  const result=await this.store.transaction(data=>{
+   const now=new Date().toISOString(),{user}=actor(data,req.cookies?.[sessionCookie(this.c)],now);
+   if(user.id!==initial.userId)throw new ForbiddenException('บัญชีเปลี่ยนระหว่างทำรายการ กรุณาลองใหม่');
+   runTimers(data,now);
+   const latest={...data.state,now};
+   return ownedBookingAnswer(latest,user.id,parsed.data.question)??answerAssistant(latest,intent,mode);
+  });
+  const outcomeReason=reason==='provider_disabled' ? !this.c.geminiApiKey ? 'not_configured' : !this.c.assistantDailyLimit ? 'disabled' : 'budget_limit' : reason;
+  console.log(JSON.stringify({event:'assistant_response',requestId:res.getHeader('x-request-id'),mode:result.mode,reason:outcomeReason,source:result.source,model:this.c.geminiModel}));
+  return result;
+ }
  @Get('internal/jobs') async scheduledJobs(@Req()req:Request) {
   const expected=`Bearer ${this.c.cronSecret}`,provided=req.get('authorization')??'';
   if(this.c.cronSecret.length<32||Buffer.byteLength(provided)!==Buffer.byteLength(expected)||!timingSafeEqual(Buffer.from(provided),Buffer.from(expected)))throw new ForbiddenException('ไม่มีสิทธิ์เรียกงานอัตโนมัติ');
