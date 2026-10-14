@@ -33,6 +33,15 @@
   background: rgb(255 255 255 / 24%);
   border-color: var(--glass-line);
 }
+.reference-ui .reference-app-header .reference-account-menu {
+  background: #fff;
+  border-color: var(--glass-line);
+  box-shadow: 0 12px 32px rgb(37 48 75 / 16%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  opacity: 1;
+  z-index: 30;
+}
 .reference-ui :is(.search-controls, .search-room-card, .booking-room-summary,
   .legacy-page .panel, .legacy-page .metric-card, .legacy-page .profile-card,
   .legacy-page .help-card, .reference-main .bg-white.rounded-2xl,

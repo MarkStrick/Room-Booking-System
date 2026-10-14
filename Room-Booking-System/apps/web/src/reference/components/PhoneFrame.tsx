@@ -69,7 +69,7 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
               <ChevronDown size={16} className={`text-gray-500 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
             </button>
             {profileOpen && (
-              <div className="absolute right-0 top-12 w-64 max-h-[70dvh] overflow-y-auto scrollbar-hide rounded-2xl bg-white border border-gray-100 shadow-xl shadow-gray-900/10 p-2 animate-scale-in">
+              <div className="reference-account-menu absolute right-0 top-12 w-64 max-h-[70dvh] overflow-y-auto scrollbar-hide rounded-2xl bg-white border border-gray-100 shadow-xl shadow-gray-900/10 p-2">
                 <div className="px-3 py-2.5">
                   <p className="text-sm font-bold text-gray-900 truncate">{currentUser.name}</p>
                   <p className="text-xs text-gray-400 truncate">{currentUser.email}</p>
