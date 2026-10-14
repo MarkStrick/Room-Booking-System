@@ -163,6 +163,25 @@ export function createSeed(): AppState {
       { id: 3, name: "สาย HDMI", total: 10, remaining: 10 },
     ],
     bookings: [
+      ...[
+        { userId: 1, days: ["2026-09-10", "2026-09-11", "2026-09-14"] },
+        { userId: 1, days: ["2026-09-16", "2026-09-17", "2026-09-18"] },
+        { userId: 2, days: ["2026-10-01", "2026-10-02", "2026-10-05"] },
+      ].flatMap((group, groupIndex) =>
+        group.days.map((day, index) => ({
+          ...booking(
+            9 + groupIndex * 3 + index,
+            group.userId,
+            1,
+            day,
+            "09:00",
+            "10:00",
+            "NO_SHOW",
+            "ข้อมูลเดโม่: ประวัติไม่เช็คอินประกอบการพิจารณาบทลงโทษ",
+          ),
+          createdAt: `${day}T08:00:00+07:00`,
+        })),
+      ),
       booking(
         1,
         1,
@@ -262,14 +281,67 @@ export function createSeed(): AppState {
         attempts: 2,
       },
     ],
-    violations: [5, 6, 7].map((id, i) => ({
-      id: i + 1,
-      userId: 4,
-      bookingId: id,
-      type: "NO_SHOW",
-      at: `2026-10-0${6 - i}T09:31:00+07:00`,
-    })),
-    penalties: [],
+    violations: [
+      ...[5, 6, 7].map((id, i) => ({
+        id: i + 1,
+        userId: 4,
+        bookingId: id,
+        type: "NO_SHOW" as const,
+        at: `2026-10-0${6 - i}T${["09", "13", "10"][i]}:31:00+07:00`,
+      })),
+      ...[
+        "2026-09-10",
+        "2026-09-11",
+        "2026-09-14",
+        "2026-09-16",
+        "2026-09-17",
+        "2026-09-18",
+        "2026-10-01",
+        "2026-10-02",
+        "2026-10-05",
+      ].map((day, index) => ({
+        id: index + 4,
+        userId: index < 6 ? 1 : 2,
+        bookingId: index + 9,
+        type: "NO_SHOW" as const,
+        at: `${day}T09:31:00+07:00`,
+      })),
+    ],
+    penalties: [
+      {
+        id: 1,
+        userId: 1,
+        type: "WARNING",
+        start: "2026-09-15",
+        end: "2026-09-15",
+        reason:
+          "ข้อมูลเดโม่: ไม่เช็คอินภายในเวลาที่กำหนดครบ 3 ครั้ง จึงตักเตือนให้ปฏิบัติตามระเบียบ",
+        at: "2026-09-15T10:00:00+07:00",
+        actorId: 3,
+      },
+      {
+        id: 2,
+        userId: 2,
+        type: "SUSPENSION",
+        start: "2026-10-07",
+        end: "2026-10-14",
+        reason:
+          "ข้อมูลเดโม่: ไม่เช็คอินภายในเวลาที่กำหนดครบ 3 ครั้ง ระงับสิทธิ์จองห้องเป็นเวลา 8 วัน",
+        at: "2026-10-07T16:00:00+07:00",
+        actorId: 3,
+      },
+      {
+        id: 3,
+        userId: 1,
+        type: "SUSPENSION",
+        start: "2026-09-21",
+        end: "2026-09-27",
+        reason:
+          "ข้อมูลเดโม่: ไม่เช็คอินซ้ำครบ 3 ครั้งหลังได้รับคำเตือน ระงับสิทธิ์ 7 วัน และพ้นกำหนดแล้ว",
+        at: "2026-09-21T16:00:00+07:00",
+        actorId: 3,
+      },
+    ],
     closures: [],
     inspections: [],
     messages: [],

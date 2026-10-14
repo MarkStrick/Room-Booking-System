@@ -1,0 +1,1017 @@
+{
+  "dataKind": "synthetic",
+  "createdAt": "2026-10-12",
+  "description": "ข้อมูลห้อง อุปกรณ์ และเวลาทำการสมมติตามคำขอผู้ใช้ ไม่ใช่สถานที่จริงของมหาวิทยาลัย รูปเป็นภาพประกอบ AI",
+  "building": "โซนห้องประชุม (ข้อมูลจำลอง)",
+  "targetTotal": 25,
+  "rooms": [
+    {
+      "code": "DEMO-S01",
+      "name": "ห้องประชุมเล็ก S01",
+      "floor": 1,
+      "capacity": 6,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 6,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S02",
+      "name": "ห้องประชุมเล็ก S02",
+      "floor": 1,
+      "capacity": 6,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 6,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S03",
+      "name": "ห้องประชุมเล็ก S03",
+      "floor": 1,
+      "capacity": 8,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 8,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S04",
+      "name": "ห้องประชุมเล็ก S04",
+      "floor": 1,
+      "capacity": 8,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 8,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S05",
+      "name": "ห้องประชุมเล็ก S05",
+      "floor": 1,
+      "capacity": 8,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 8,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S06",
+      "name": "ห้องประชุมเล็ก S06",
+      "floor": 1,
+      "capacity": 10,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 10,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S07",
+      "name": "ห้องประชุมเล็ก S07",
+      "floor": 1,
+      "capacity": 10,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 10,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S08",
+      "name": "ห้องประชุมเล็ก S08",
+      "floor": 1,
+      "capacity": 10,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 10,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S09",
+      "name": "ห้องประชุมเล็ก S09",
+      "floor": 1,
+      "capacity": 12,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 12,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-S10",
+      "name": "ห้องประชุมเล็ก S10",
+      "floor": 1,
+      "capacity": 12,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "จอแสดงผล"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 12,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "จอแสดงผล",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/meeting-illustrative.png"
+    },
+    {
+      "code": "DEMO-M01",
+      "name": "ห้องประชุมกลาง M01",
+      "floor": 2,
+      "capacity": 16,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 16,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M02",
+      "name": "ห้องประชุมกลาง M02",
+      "floor": 2,
+      "capacity": 16,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 16,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M03",
+      "name": "ห้องประชุมกลาง M03",
+      "floor": 2,
+      "capacity": 20,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 20,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M04",
+      "name": "ห้องประชุมกลาง M04",
+      "floor": 2,
+      "capacity": 20,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 20,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M05",
+      "name": "ห้องประชุมกลาง M05",
+      "floor": 2,
+      "capacity": 24,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 24,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M06",
+      "name": "ห้องประชุมกลาง M06",
+      "floor": 2,
+      "capacity": 24,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 24,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M07",
+      "name": "ห้องประชุมกลาง M07",
+      "floor": 2,
+      "capacity": 28,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 28,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M08",
+      "name": "ห้องประชุมกลาง M08",
+      "floor": 2,
+      "capacity": 30,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 30,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M09",
+      "name": "ห้องประชุมกลาง M09",
+      "floor": 2,
+      "capacity": 32,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 32,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M10",
+      "name": "ห้องประชุมกลาง M10",
+      "floor": 2,
+      "capacity": 36,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 36,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    },
+    {
+      "code": "DEMO-M11",
+      "name": "ห้องประชุมกลาง M11",
+      "floor": 2,
+      "capacity": 40,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "Wi-Fi",
+        "เครื่องปรับอากาศ",
+        "กระดานไวท์บอร์ด",
+        "โปรเจคเตอร์"
+      ],
+      "inventory": [
+        {
+          "id": 1,
+          "name": "เก้าอี้",
+          "total": 40,
+          "damaged": 0
+        },
+        {
+          "id": 2,
+          "name": "กระดานไวท์บอร์ด",
+          "total": 1,
+          "damaged": 0
+        },
+        {
+          "id": 3,
+          "name": "โปรเจคเตอร์",
+          "total": 1,
+          "damaged": 0
+        }
+      ],
+      "hours": {
+        "start": "08:30",
+        "end": "20:00",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "leadMinutes": 30
+      },
+      "imageUrl": "/room-images/classroom-illustrative.png"
+    }
+  ]
+}

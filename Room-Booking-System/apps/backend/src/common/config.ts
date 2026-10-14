@@ -7,6 +7,7 @@ export interface Config {
  devLogin:boolean;googleId:string;googleSecret:string;allowedDomains:string[];allowPublicGoogle:boolean;bootstrapAdmins:string[];
  smtpHost:string;smtpPort:number;smtpSecure:boolean;smtpUser:string;smtpPassword:string;mailFrom:string;
 }
+export const mailConfigured=(c:Config)=>!!(c.smtpHost&&c.mailFrom&&(!c.smtpUser||c.smtpPassword));
 const list=(s:string|undefined)=>(s??'').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
 export function readConfig(env:NodeJS.ProcessEnv=process.env):Config {
  const serverless=env.VERCEL==='1';
@@ -30,7 +31,7 @@ export function readConfig(env:NodeJS.ProcessEnv=process.env):Config {
  if(production) {
   if(origin.protocol!=='https:') throw new Error('Production APP_ORIGIN requires HTTPS');
   if(store!=='postgres') throw new Error('SQLite is a local verification store, not the production database');
-  for(const key of ['databaseUrl','smtpHost','mailFrom'] as const) if(!config[key]) throw new Error(`Missing production configuration: ${key}`);
+  if(!config.databaseUrl) throw new Error('Missing production configuration: databaseUrl');
   if(!config.allowedDomains.length&&!config.allowPublicGoogle) throw new Error('Set verified university domains or explicitly ALLOW_PUBLIC_GOOGLE');
   if(serverless) {
    if(config.cronSecret.length<32||config.rateLimitSecret.length<32)throw new Error('Missing production configuration: CRON_SECRET and RATE_LIMIT_SECRET must be at least 32 characters');

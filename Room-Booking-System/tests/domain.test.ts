@@ -114,7 +114,7 @@ test("owner and assigned room boundaries enforced", () => {
     () => executeCommand(s, 1, { type: "CANCEL", bookingId: 1 }),
     errorCode("CANCELLATION_TOO_LATE"),
   );
-  assert.equal(s.violations.length, 3); // Commands never mutate their input state.
+  assert.deepEqual(s.violations, createSeed().violations); // Commands never mutate their input state.
 });
 
 test("late cancellation records one violation without cancelling or releasing equipment", () => {

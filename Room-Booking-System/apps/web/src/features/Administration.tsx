@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Building2,
   ClipboardCheck,
@@ -6,6 +7,7 @@ import {
   Plus,
   ShieldCheck,
 } from "lucide-react";
+import { FloorManager } from "./FloorManager";
 import { useDemo } from "../app/DemoProvider";
 import { RoomCover } from "../components/RoomCover";
 import { EquipmentHandovers } from "./OperationsControls";
@@ -119,12 +121,6 @@ export function ManageRooms({ open }: { open: OpenDialog }) {
                         }
                       >
                         {r.active === false ? "เปิดใช้งาน" : "เลิกใช้งาน"}
-                      </button>
-                      <button
-                        className="text-button danger"
-                        onClick={() => open({ kind: "room-delete", id: r.id })}
-                      >
-                        ลบห้อง
                       </button>
                     </>
                   ) : null}
@@ -248,21 +244,7 @@ export function Locations({ open }: { open: OpenDialog }) {
               {b.floors} ชั้น •{" "}
               {state.rooms.filter((r) => r.buildingId === b.id).length} ห้อง
             </p>
-            <div className="floors">
-              {Array.from({ length: b.floors }, (_, i) => (
-                <div key={i}>
-                  <span>ชั้น {i + 1}</span>
-                  <strong>
-                    {
-                      state.rooms.filter(
-                        (r) => r.buildingId === b.id && r.floor === i + 1,
-                      ).length
-                    }{" "}
-                    ห้อง
-                  </strong>
-                </div>
-              ))}
-            </div>
+            <FloorManager building={b}/>
             <button
               className="btn ghost"
               onClick={() => open({ kind: "building", id: b.id })}
@@ -281,12 +263,6 @@ export function Locations({ open }: { open: OpenDialog }) {
                 }
               >
                 {b.active === false ? "เปิดใช้งาน" : "เลิกใช้งาน"}
-              </button>
-              <button
-                className="btn ghost"
-                onClick={() => open({ kind: "building-delete", id: b.id })}
-              >
-                ลบอาคาร
               </button>
             </div>
             {b.active === false ? (
@@ -335,7 +311,8 @@ export function Locations({ open }: { open: OpenDialog }) {
   );
 }
 export function Equipment({ open }: { open: OpenDialog }) {
-  const { state } = useDemo();
+  const { state,run,showToast } = useDemo();
+  const [changing,setChanging]=useState<number|null>(null);
   return (
     <>
       <PageHeading
@@ -409,6 +386,11 @@ export function Equipment({ open }: { open: OpenDialog }) {
                     >
                       แก้ไข
                     </button>
+                    <button className="btn ghost small" disabled={changing!==null||(e.active!==false&&e.total!==e.remaining)} onClick={async()=>{
+                      setChanging(e.id);
+                      try{await run({type:'EQUIPMENT_ACTIVE',equipmentId:e.id,active:e.active===false},e.active===false?'เปิดใช้งานอุปกรณ์แล้ว':'เลิกใช้งานอุปกรณ์แล้ว');}
+                      catch(error){showToast((error as Error).message);}finally{setChanging(null);}
+                    }}>{changing===e.id?'กำลังบันทึก…':e.active===false?'เปิดใช้งาน':'เลิกใช้งาน'}</button>
                   </td>
                 </tr>
               ))}

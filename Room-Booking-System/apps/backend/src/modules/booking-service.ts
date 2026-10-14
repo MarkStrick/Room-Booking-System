@@ -23,10 +23,12 @@ export function applyCommand(data:Data,userId:number,raw:unknown,key:unknown,now
  if(command.type==='BOOK'&&command.participants.length)throw new BadRequestException('กรุณาระบุอีเมลผู้ร่วมใช้งานแทนหมายเลขบัญชี');
  // Workers own the clock and mail lifecycle. CLOCK/RUN_JOBS never enter this schema.
  const oldIds=new Set(data.state.notices.map(n=>n.id));
+ const oldAuditIds=new Set(data.state.audit.map(a=>a.id));
  try { data.state=executeCommand({...data.state,now},userId,command); }
  catch(e) {
   if(e instanceof RecordedRejection) {
    data.state=e.state;
+   data.state.audit.filter(a=>!oldAuditIds.has(a.id)).forEach(a=>{a.actionType=command.type;});
    const rejection={code:e.code,message:e.message};
    data.attempts.push({key,actorId:userId,hash,bookingId:command.type==='CANCEL'?command.bookingId:undefined,at:now,rejection});
    data.attempts=data.attempts.filter(a=>Date.parse(a.at)>Date.parse(now)-7*86400000);
@@ -38,7 +40,13 @@ export function applyCommand(data:Data,userId:number,raw:unknown,key:unknown,now
   }
   throw e;
  }
- data.state.notices.filter(n=>!oldIds.has(n.id)).forEach(n=>data.outbox.push({noticeId:n.id,status:'QUEUED',attempts:0,nextAt:now}));
+ data.state.notices.filter(n=>!oldIds.has(n.id)).forEach(n=>{
+  n.templateCode=command.type==='DECIDE'?(command.approve?'BOOKING_APPROVED':'BOOKING_REJECTED'):command.type;
+  const b=data.state.bookings.find(b=>b.id===n.bookingId);
+  n.params=b?{bookingId:b.id,reference:b.ref,roomId:b.roomId,start:b.start,end:b.end,status:b.status}:{};
+  data.outbox.push({noticeId:n.id,status:'QUEUED',attempts:0,nextAt:now});
+ });
+ data.state.audit.filter(a=>!oldAuditIds.has(a.id)).forEach(a=>{a.actionType=command.type;});
  if(command.type==='RETRY') {
   const delivery=data.outbox.find(o=>o.noticeId===command.noticeId);
   if(delivery){delivery.status='QUEUED';delivery.attempts=0;delivery.nextAt=now;delete delivery.leaseToken;delete delivery.leaseUntil;}

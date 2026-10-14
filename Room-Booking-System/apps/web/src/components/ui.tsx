@@ -13,7 +13,7 @@ import type {
   BookingStatus,
   Room,
 } from "../../../../packages/contracts/src/index";
-import { statusLabels, thaiDate, time } from "../lib/domain";
+import { dateOf, statusLabels, thaiDate, time } from "../lib/domain";
 import { useDemo } from "../app/DemoProvider";
 
 export interface DialogAction {
@@ -419,7 +419,7 @@ export function Schedule({ start, end }: { start: string; end: string }) {
       </span>
       <span>
         <Clock3 size={17} />
-        {time(start)}–{time(end)} น.
+          {time(start)}–{dateOf(start)!==dateOf(end)?thaiDate(end,true)+' ':''}{time(end)} น.
       </span>
     </div>
   );

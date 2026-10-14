@@ -1,5 +1,7 @@
 # ER Diagram และ Schema — KKU SPACE
 
+> อัปเดตหลังปรับ Term Project 12 ต.ค. 2569: ติดตั้ง `kku_booking` 18 ตารางสัมพันธ์และ 26 FK แล้ว พร้อม `kku_private.reports` และ audit columns แผนภาพด้านล่างเป็น snapshot ก่อน migration ดู [โครงสร้างล่าสุดและผลตรวจ](../TERM_PROJECT_COMPLIANCE.md) ก่อนใช้อ้างอิงงานส่ง
+
 ตรวจ PostgreSQL/Supabase จริงเมื่อ 2026-10-12 โดยอ่านเฉพาะ metadata ไม่อ่านข้อมูลผู้ใช้และไม่แก้ฐานข้อมูล
 
 ## ไฟล์และหน้า Draw.io

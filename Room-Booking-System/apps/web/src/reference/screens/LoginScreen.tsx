@@ -38,6 +38,7 @@ export function LoginScreen({ loading, googleReady, error, retry, allowedDomains
         {!loading && !googleReady && !error && <p role="status" className="text-xs text-gray-500 mt-3">ระบบเข้าสู่ระบบด้วย Google ยังไม่พร้อม กรุณาติดต่อผู้ดูแลระบบ</p>}
         {error && <button onClick={retry} className="flex items-center justify-center gap-2 w-full mt-3 text-sm text-kku-red"><RefreshCw size={16}/>ลองเชื่อมต่ออีกครั้ง</button>}
 
+<button onClick={()=>{history.replaceState(null,'',location.pathname);location.hash='#/rooms';}} className="w-full text-sm text-kku-red mt-4">กลับไปค้นหาห้อง</button>
         <p className="text-[11px] text-gray-400 text-center mt-5 leading-relaxed">
           การเข้าสู่ระบบแสดงว่าคุณยอมรับ<br />ข้อกำหนดและเงื่อนไขการใช้งาน
         </p>

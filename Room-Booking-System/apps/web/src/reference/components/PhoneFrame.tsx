@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, Building2, ChevronDown, ChevronLeft, ChevronRight, Grid2X2, LogOut, RefreshCw } from 'lucide-react';
+import { Bell, ChevronDown, ChevronLeft, ChevronRight, Grid2X2, LogOut, RefreshCw } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import type { Screen } from '../types';
 
@@ -47,9 +47,7 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
     <div className="reference-app-header relative bg-white border-b border-gray-100 shrink-0 z-20">
       <div className="h-[72px] px-4 flex items-center gap-3">
         <div className="reference-header-brand flex items-center gap-2.5 min-w-0">
-          <div className="w-10 h-10 rounded-xl bg-kku-red flex items-center justify-center shadow-sm shadow-red-900/20">
-            <Building2 size={23} className="text-white" />
-          </div>
+          <img className="reference-university-emblem" src="/brand/kku-emblem-th.png" width={32} height={56} alt="ตราสัญลักษณ์มหาวิทยาลัยขอนแก่น" />
           <span className="text-[25px] leading-none font-black tracking-tight text-gray-900">kku<span className="text-kku-red">.</span></span>
         </div>
         <div className="reference-header-divider h-9 w-px bg-gray-200" />
@@ -57,7 +55,8 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
           <p className="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-bold">พื้นที่ทำงาน</p>
           <p className="text-sm font-bold text-gray-800 truncate">ระบบจองห้องประชุม</p>
         </div>
-        {currentUser && (
+<button hidden={currentUser.id!=='0'} onClick={()=>navigate('login')} className="text-sm font-semibold text-kku-red">เข้าสู่ระบบ</button>
+        {currentUser.id!=='0' && (
           <div className="relative">
             <button
               onClick={() => setProfileOpen((open) => !open)}
@@ -105,7 +104,8 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
           <button onClick={()=>void refresh()} className="p-1.5 rounded-lg text-gray-400 hover:text-kku-red hover:bg-white transition-colors" aria-label="รีเฟรช">
             <RefreshCw size={18} />
           </button>
-          {currentUser && (
+  
+        {currentUser.id!=='0' && (
             <button onClick={() => navigate('notifications')} className={`${role==='USER'?'reference-user-notifications':''} relative p-1.5 rounded-lg text-gray-400 hover:text-kku-red hover:bg-white transition-colors`} aria-label="การแจ้งเตือน">
               <Bell size={19} />
               {unreadNotificationCount > 0 && <span className="absolute -top-0.5 -right-0.5 min-w-[15px] h-[15px] px-0.5 bg-kku-red text-white text-[9px] font-bold rounded-full flex items-center justify-center">{unreadNotificationCount > 9 ? '9+' : unreadNotificationCount}</span>}
@@ -133,6 +133,7 @@ import { Search, History, MessageCircle, ShieldCheck } from 'lucide-react';
 
 export function BottomNav() {
   const { screen, navigate, currentUser } = useApp();
+  if (currentUser.id==='0') return <div className="reference-bottom-nav p-3 bg-white border-t border-gray-100 text-center text-sm"><button className="text-kku-red font-semibold" onClick={()=>navigate('login')}>เข้าสู่ระบบเพื่อจองห้อง</button></div>;
   if (screen === 'login' || screen === 'booking' || screen === 'checklist' || screen === 'notifications' || screen === 'accessDenied') return null;
 
   const isAdmin = currentUser?.role === 'admin';

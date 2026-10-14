@@ -2,7 +2,7 @@ import { Body, Controller, Get, Inject, Module, Post, Req, Res, BadRequestExcept
 import { APP_FILTER } from '@nestjs/core';
 import type { Request, Response } from 'express';
 import type { Store } from '../infrastructure/store';
-import type { Config } from '../common/config';
+import { mailConfigured, type Config } from '../common/config';
 import { actor, checkCsrf, checkOrigin, cookieOptions, digest, issueSession, sessionCookie } from './session';
 import { GoogleAuth } from './auth-service';
 import { applyCommand } from './booking-service';
@@ -29,9 +29,9 @@ class Errors implements ExceptionFilter {
 export class ApiController {
  private google:GoogleAuth;
  constructor(@Inject(STORE) private store:Store,@Inject(CONFIG)private c:Config){this.google=new GoogleAuth(store,c);}
- @Get('config') config(){return {googleReady:this.google.ready(),passwordReady:false,registrationReady:false,allowedDomains:this.c.allowPublicGoogle?[]:this.c.allowedDomains};}
+ @Get('config') config(){return {googleReady:this.google.ready(),passwordReady:false,registrationReady:false,emailReady:mailConfigured(this.c),allowedDomains:this.c.allowPublicGoogle?[]:this.c.allowedDomains};}
  @Get('openapi.json') docs(){return openApi(sessionCookie(this.c));}
- @Get('public/catalog') async catalog(){const data=await this.store.read(),now=new Date().toISOString();return projectState({...data.state,now},{id:0,name:'ผู้เยี่ยมชม',email:'',phone:'',affiliation:'',role:'USER',active:false});}
+ @Get('public/catalog') async catalog(){return this.store.transaction(data=>{const now=new Date().toISOString();runTimers(data,now);return projectState(data.state,{id:0,name:'ผู้เยี่ยมชม',email:'',phone:'',affiliation:'',role:'USER',active:false});});}
  @Get('health/live') live(){return {status:'ok'};}
  @Get('internal/jobs') async scheduledJobs(@Req()req:Request) {
   const expected=`Bearer ${this.c.cronSecret}`,provided=req.get('authorization')??'';
@@ -53,7 +53,7 @@ export class ApiController {
   const checks=[
    {id:'database',label:'ฐานข้อมูลจริง',ready:this.c.store==='postgres',detail:this.c.store==='postgres'?'เชื่อมต่อและอ่านฐานข้อมูลได้':'กำลังใช้ฐานข้อมูลในเครื่อง'},
    {id:'origin',label:'เว็บไซต์ HTTPS',ready:this.c.production&&this.c.origin.startsWith('https:'),detail:this.c.production?'ตั้งค่าโหมดใช้งานจริงแล้ว':'กำลังใช้งานบนเครื่องพัฒนา'},
-   {id:'email',label:'อีเมลแจ้งผลการจอง',ready:!!(this.c.smtpHost&&this.c.mailFrom),detail:this.c.smtpHost&&this.c.mailFrom?'ตั้งค่าผู้ส่งอีเมลแล้ว ต้องยืนยันการรับอีเมลจริงก่อนเปิดบริการ':'ยังไม่ได้ตั้งค่าผู้ส่งอีเมล'},
+   {id:'email',label:'อีเมลแจ้งผลการจอง',ready:mailConfigured(this.c),detail:this.c.smtpHost&&this.c.mailFrom?'ตั้งค่าผู้ส่งอีเมลแล้ว ต้องยืนยันการรับอีเมลจริงก่อนเปิดบริการ':'ยังไม่ได้ตั้งค่าผู้ส่งอีเมล'},
    {id:'google',label:'เข้าสู่ระบบด้วย Google',ready:this.google.ready(),detail:this.google.ready()?'ตั้งค่าแล้ว ต้องทดสอบการเข้าสู่ระบบจริง':'ยังไม่ได้ตั้งค่า Google'},
    {id:'worker',label:'งานอัตโนมัติ',ready:!!data.state.settings?.workerAt&&Date.parse(now)-Date.parse(data.state.settings.workerAt)<120000,detail:data.state.settings?.workerAt?'รอบล่าสุด '+data.state.settings.workerAt:'ยังไม่มีรอบการทำงาน'},
    {id:'catalog',label:'ห้องที่พร้อมให้จอง',ready:data.state.rooms.some(r=>r.active!==false&&data.state.buildings.some(b=>b.id===r.buildingId&&b.active!==false)&&!!r.hours),detail:'ต้องตั้งข้อมูลห้องจริงและเวลาทำการก่อนรับผู้ใช้'},
@@ -63,19 +63,22 @@ export class ApiController {
   return {checkedAt:now,ready:checks.every(c=>c.ready),checks};
  }
  @Get('session') async session(@Req()req:Request) {
-  const data=await this.store.read(),now=new Date().toISOString();
+  return this.store.transaction(data=>{const now=new Date().toISOString();
   const {user,session}=actor(data,req.cookies?.[sessionCookie(this.c)],now);
-  return {user,csrfToken:session.csrf,hasPassword:data.credentials.some(c=>c.userId===user.id),state:projectState({...data.state,now},user)};
+  runTimers(data,now);
+  return {user,csrfToken:session.csrf,hasPassword:data.credentials.some(c=>c.userId===user.id),state:projectState(data.state,user)};});
  }
  @Get('state') async state(@Req()req:Request) {
-  const data=await this.store.read(),now=new Date().toISOString();
+  return this.store.transaction(data=>{const now=new Date().toISOString();
   const {user}=actor(data,req.cookies?.[sessionCookie(this.c)],now);
-  return projectState({...data.state,now},user);
+  runTimers(data,now);
+  return projectState(data.state,user);});
  }
  @Post('commands') async command(@Req()req:Request,@Body()body:unknown) {
   const result=await this.store.transaction(data=>{
    const now=new Date().toISOString(),{user,session}=actor(data,req.cookies?.[sessionCookie(this.c)],now);
    checkCsrf(req,session.csrf,this.c);runTimers(data,now);
+   if(typeof body==='object'&&body!==null&&'type' in body&&body.type==='SEND_NOTICE'&&!mailConfigured(this.c))throw new BadRequestException('ยังไม่ได้เชื่อมบริการอีเมล กรุณาตั้งค่า SMTP ก่อนส่ง');
    return applyCommand(data,user.id,body,req.get('idempotency-key'),now);
   });
   // The violation and rejected attempt are durable before HTTP 409 is raised.

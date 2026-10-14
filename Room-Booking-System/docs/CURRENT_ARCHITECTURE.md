@@ -1,5 +1,7 @@
 # สถาปัตยกรรมและข้อกำหนดปัจจุบัน — 11 ตุลาคม 2569
 
+อัปเดต Term Project 12 ต.ค. 2569: เพิ่ม schema `kku_booking` ครบ 18 entities, FK 26 จุด, deferred transaction projection, audit/soft delete และรายงาน snapshot ที่บันทึกจากเว็บได้ รองรับจองข้ามวันและเปิด Supabase scheduler ทุกนาทีแล้ว ดู [รายละเอียดและผลทดสอบ](TERM_PROJECT_COMPLIANCE.md) คำอธิบาย JSONB-only ด้านล่างเป็นสถานะก่อนเพิ่มตารางสัมพันธ์
+
 อัปเดต 12 ต.ค. 2569: เพิ่มและติดตั้ง SQL hardening migration แล้ว `kku_server` ใช้ DML ผ่าน RLS policy โดยไม่เป็นเจ้าของตาราง เพิ่ม JSONB constraints, room/building FK, immutable booking identity/slot และ guard สถานะ ส่วน adapter ใช้ parameterized values และรายการชื่อตารางตายตัว ดู [SQL_SECURITY.md](SQL_SECURITY.md) ข้อความคง schema/no migration ด้านล่างอธิบายงานวันที่ 11 ต.ค. ก่อนการแก้ครั้งนี้
 
 อัปเดต 11 ต.ค. 2569: client ใช้ ServerProvider เสมอ lazy-load AdminSandbox หลังตรวจ live ADMIN session ข้อมูลจำลองอยู่ใน memory ไม่ใช้ localStorage ไม่ออก session ให้ตัวอย่าง ปิด /auth/development ทุกโหมด และ startup ไม่สร้าง seed จาก DEV_LOGIN อีกต่อไป เพิ่ม readiness สำหรับ ADMIN, bootstrap ผู้ดูแลผ่าน operator CLI, API adapter สำหรับ Vercel และ bounded cron cycle ที่ป้องกันด้วย CRON_SECRET บน Vercel ใช้ auth rate counter ใน attempts ร่วมกันข้าม instances และรองรับ DATABASE_CA_PEM โดยยังตรวจ TLS certificate คง schema เดิม ไม่เพิ่ม migration ดู [Vercel](VERCEL_SETUP.md)

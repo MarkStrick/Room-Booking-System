@@ -9,6 +9,7 @@ import { useAsyncAction } from '../useAsyncAction';
 export function HistoryScreen() {
   const { bookings, currentUser, cancelBooking, checkIn, today } = useApp();
   const {busy,error,perform}=useAsyncAction();
+  const [detail,setDetail]=useState<Booking|null>(null);
   const [cancelTarget, setCancelTarget] = useState<Booking | null>(null);
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'completed'>('all');
 
@@ -16,8 +17,8 @@ export function HistoryScreen() {
 
   const visible = myBookings.filter((b) => {
     const terminal=['cancelled','rejected','completed','no_show'].includes(b.status);
-    if (filter === 'upcoming') return b.date >= today && !terminal;
-    if (filter === 'completed') return b.date < today || terminal;
+    if (filter === 'upcoming') return (b.endDate??b.date) >= today && !terminal;
+    if (filter === 'completed') return (b.endDate??b.date) < today || terminal;
     return true;
   });
 
@@ -72,7 +73,7 @@ export function HistoryScreen() {
                     </div>
                     <div className="flex items-center gap-1.5 text-gray-600">
                       <Clock size={14} className="text-kku-red" />
-                      <span>{booking.startTime}–{booking.endTime}</span>
+                      <span>{booking.startTime}–{booking.endDate&&booking.endDate!==booking.date?booking.endDate+' ':''}{booking.endTime}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-gray-600">
                       <Users size={14} className="text-kku-red" />
@@ -97,7 +98,9 @@ export function HistoryScreen() {
                     </div>
                   )}
 
-                  {booking.status === 'approved' && booking.date===today && <Button disabled={busy} className="mt-3 w-full" onClick={()=>perform(()=>checkIn(booking.id))}>เช็คอินเข้าห้อง</Button>}
+<button className="mt-3 text-sm font-semibold text-kku-red" onClick={()=>setDetail(booking)}>ดูรายละเอียด · {booking.ref}</button>
+                  {booking.archivedAt && <p className="text-xs text-gray-500 mt-2">ประวัติที่จัดเก็บแล้ว</p>}
+                  {booking.status === 'approved' && (booking.date===today||booking.endDate===today) && <Button disabled={busy} className="mt-3 w-full" onClick={()=>perform(()=>checkIn(booking.id))}>เช็คอินเข้าห้อง</Button>}
                   {['approved','pending'].includes(booking.status) && booking.date >= today && (
                     <button
                       onClick={() => setCancelTarget(booking)}
@@ -113,6 +116,22 @@ export function HistoryScreen() {
         )}
       </div>
 
+      <Modal title="รายละเอียดการจอง" open={!!detail} onClose={()=>setDetail(null)}>
+        {detail && <div className="space-y-3 text-sm text-gray-700">
+          <h2 className="text-lg font-bold text-gray-900">รายละเอียดการจอง {detail.ref}</h2>
+          <StatusBadge status={detail.status}/>
+          <p>{detail.roomName} · {detail.building}</p>
+          <p>{detail.date} · {detail.startTime}–{detail.endDate&&detail.endDate!==detail.date?detail.endDate+' ':''}{detail.endTime} น.</p>
+          <p>ผู้จอง: {detail.userName} · {detail.userEmail}</p>
+          <p>ผู้เข้าร่วม {detail.participants} ท่าน</p>
+          <p className="whitespace-pre-wrap">วัตถุประสงค์: {detail.purpose}</p>
+          <p>อีเมลผู้เข้าร่วม: {detail.participantEmails?.join(', ') || 'ไม่ได้ระบุ'}</p>
+          <p>อุปกรณ์เพิ่มเติม: {detail.equipment?.map(e=>`${e.name} ${e.qty} ชิ้น`).join(', ') || 'ไม่มี'}</p>
+          {detail.rejectionReason && <p>เหตุผล: {detail.rejectionReason}</p>}
+          <p>สร้างเมื่อ {new Date(detail.createdAt).toLocaleString('th-TH')}</p>
+          <Button onClick={()=>setDetail(null)} className="w-full">ปิดรายละเอียด</Button>
+        </div>}
+      </Modal>
       {/* Cancel confirmation modal */}
       <Modal open={!!cancelTarget} onClose={() => setCancelTarget(null)}>
         <div className="text-center">

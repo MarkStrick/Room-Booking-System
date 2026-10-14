@@ -32,6 +32,7 @@ export function Button({
   size = 'md',
   className = '',
   disabled = false,
+  type = "button",
 }: {
   children: ReactNode;
   onClick?: () => void | Promise<void>;
@@ -39,6 +40,7 @@ export function Button({
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   disabled?: boolean;
+  type?: "button" | "submit";
 }) {
   const variants = {
     primary: 'bg-kku-red text-white hover:bg-kku-red-dark shadow-sm shadow-red-900/20',
@@ -54,7 +56,7 @@ export function Button({
   };
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={`font-semibold transition-all active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}

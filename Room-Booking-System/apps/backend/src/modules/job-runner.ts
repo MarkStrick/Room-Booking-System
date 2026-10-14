@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import type { Config } from '../common/config';
+import { mailConfigured, type Config } from '../common/config';
 import type { Store } from '../infrastructure/store';
 import { claimMail, finishMail, runTimers } from './jobs';
 
@@ -11,7 +11,7 @@ export async function runJobCycle(store: Store, c: Config, budgetMs = 45000) {
   d.state.settings = { contactEmail: '', contactPhone: '', faqs: [], ...d.state.settings, workerAt: now };
  });
  let sent = 0, failed = 0;
- if (!c.smtpHost || !c.mailFrom) return { sent, failed, emailConfigured: false };
+ if (!mailConfigured(c)) return { sent, failed, emailConfigured: false };
  const transport = nodemailer.createTransport({
   host: c.smtpHost, port: c.smtpPort, secure: c.smtpSecure, requireTLS: !c.smtpSecure,
   auth: c.smtpUser ? { user: c.smtpUser, pass: c.smtpPassword } : undefined,
@@ -21,6 +21,11 @@ export async function runJobCycle(store: Store, c: Config, budgetMs = 45000) {
   for (let i = 0; i < 20 && Date.now() < deadline - 15000; i++) {
    const mail = await store.transaction(d => claimMail(d, new Date().toISOString()));
    if (!mail) break;
+   const domain=mail.to.split('@')[1]?.toLowerCase();
+   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.to)||(!c.allowPublicGoogle&&!c.allowedDomains.includes(domain??''))) {
+    await store.transaction(d=>finishMail(d,mail.notice.id,mail.token,new Date().toISOString(),false,'อีเมลผู้รับไม่อยู่ในโดเมนที่ระบบอนุญาต'));
+    failed++;continue;
+   }
    let success = false;
    try {
     const result = await transport.sendMail({ from: c.mailFrom, to: mail.to, subject: mail.notice.subject, text: mail.notice.content, messageId: `<kku-notice-${mail.notice.id}@${new URL(c.origin).hostname}>` });

@@ -14,7 +14,7 @@ import { createApplication } from '../../apps/backend/src/main';
 import { readConfig } from '../../apps/backend/src/common/config';
 import { testSession } from './session-fixture';
 
-const migrations=['202610080001_server_storage','202610090001_password_auth','20261009171230_audit_settings','20261011184944_sql_security_hardening'];
+const migrations=['202610080001_server_storage','202610090001_password_auth','20261009171230_audit_settings','20261011184944_sql_security_hardening','20261012050202_term_project_relational','20261012052406_term_project_booking_exclusion'];
 const attacks=["' OR '1'='1", "'); DROP TABLE kku_private.users; --", "'; SELECT pg_sleep(10); --", "O'Connor ภาษาไทย ; --"];
 async function fixture() {
  const db=await PGlite.create({extensions:{btree_gist}});
@@ -62,7 +62,7 @@ test('PostgreSQL runtime can use the adapter, but cannot own, truncate or change
   }
   await db.exec('RESET ROLE');
   const policy=await db.query<{n:number}>("SELECT count(*)::int AS n FROM pg_policies WHERE schemaname='kku_private' AND policyname='server_access' AND roles=ARRAY['kku_server']::name[]");
-  assert.equal(policy.rows[0].n,23);
+  assert.equal(policy.rows[0].n,24);
  } finally {await store.close();}
 });
 

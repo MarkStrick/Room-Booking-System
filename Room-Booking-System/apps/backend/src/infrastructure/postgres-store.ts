@@ -3,7 +3,7 @@ import { Pool, type PoolClient } from 'pg';
 import type { Config } from '../common/config';
 import type { Data, Store } from './store';
 import { emptyData } from './store';
-export const tables = Object.freeze(['users','buildings','rooms','equipment','bookings','notices','violations','penalties','closures','inspections','messages','audit','holidays','assignments','identities','sessions','attempts','outbox','flows','credentials','password_tokens','settings'] as const);
+export const tables = Object.freeze(['users','buildings','rooms','equipment','bookings','notices','violations','penalties','closures','inspections','messages','audit','holidays','assignments','identities','sessions','attempts','outbox','flows','credentials','password_tokens','settings','reports'] as const);
 type Table = typeof tables[number];
 const allowedTables = new Set<string>(tables);
 // SQL parameters protect values, not identifiers. Only these fixed application
@@ -17,11 +17,11 @@ async function restrictTransaction(client:PoolClient) {
  await client.query("SET LOCAL statement_timeout = '30s'");
  await client.query("SET LOCAL lock_timeout = '10s'");
 }
-const stateTables=new Set<string>(tables.slice(0,14));
+const stateTables=new Set<string>([...tables.slice(0,14),'reports']);
 function rows(data:Data,table:Table):unknown[] {
  if(table==='settings')return data.state.settings?[data.state.settings]:[];
  if(table==='password_tokens')return data.passwordTokens;
- return stateTables.has(table)?(data.state as unknown as Record<string,unknown[]>)[table]:(data as unknown as Record<string,unknown[]>)[table];
+ return (stateTables.has(table)?(data.state as unknown as Record<string,unknown[]>)[table]:(data as unknown as Record<string,unknown[]>)[table])??[];
 }
 function key(table:Table,row:unknown):string {
  if(table==='settings')return 'site';
@@ -44,6 +44,7 @@ async function load(client:PoolClient):Promise<Data> {
   (target as unknown as Record<string,unknown>)[table==='password_tokens'?'passwordTokens':table]=result.rows.map(r=>r.payload);
  }
  for(const name of ['bookings','notices','inspections','audit'] as const)data.state[name].sort((a,b)=>b.id-a.id);
+ data.state.reports?.sort((a,b)=>b.id-a.id);
  return data;
 }
 export class PostgresStore implements Store {

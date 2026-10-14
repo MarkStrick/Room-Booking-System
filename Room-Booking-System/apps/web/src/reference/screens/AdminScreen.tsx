@@ -117,7 +117,7 @@ export function AdminScreen() {
                   </p>
                   <div className="grid grid-cols-3 gap-2 text-xs text-gray-600">
                     <span className="flex items-center gap-1"><Calendar size={13} className="text-kku-red" />{booking.date}</span>
-                    <span className="flex items-center gap-1"><Clock size={13} className="text-kku-red" />{booking.startTime}–{booking.endTime}</span>
+                    <span className="flex items-center gap-1"><Clock size={13} className="text-kku-red" />{booking.startTime}–{booking.endDate&&booking.endDate!==booking.date?booking.endDate+' ':''}{booking.endTime}</span>
                     <span className="flex items-center gap-1"><Users size={13} className="text-kku-red" />{booking.participants} ท่าน</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-2 flex items-start gap-1">

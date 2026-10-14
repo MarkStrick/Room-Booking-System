@@ -26,8 +26,8 @@ const support = [
 ] as const;
 
 export function DesktopNav() {
-  const { screen, role, navigate, unreadNotificationCount } = useApp();
-  const groups = [
+  const { screen, role, currentUser, navigate, unreadNotificationCount } = useApp();
+  const groups = currentUser.id==='0' ? [{label:'ค้นหาพื้นที่',items:[personal[0]]}] : [
     { label: 'พื้นที่ของคุณ', items: personal },
     ...(role !== 'USER' ? [{ label: 'บริหารพื้นที่', items: management }] : []),
     ...(role === 'ADMIN' ? [{ label: 'จัดการระบบ', items: administration }] : []),
@@ -35,7 +35,7 @@ export function DesktopNav() {
   ];
   return <aside className="desktop-navigation">
     <a className="desktop-brand" href="#/rooms" aria-label="KKU Space หน้าค้นหาห้อง">
-      <span className="desktop-brand-symbol"><Building2 size={25} /></span>
+      <img className="reference-university-emblem" src="/brand/kku-emblem-th.png" width={32} height={56} alt="ตราสัญลักษณ์มหาวิทยาลัยขอนแก่น" />
       <span><strong>kku<span>.</span> space</strong><small>มหาวิทยาลัยขอนแก่น</small></span>
     </a>
     <nav aria-label="เมนูหลักสำหรับเดสก์ท็อป">

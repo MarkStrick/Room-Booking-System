@@ -4,7 +4,7 @@ const nextId = (rows: { id: number }[]) =>
   Math.max(0, ...rows.map((r) => r.id)) + 1;
 export function bookingSummary(s: AppState, b: Booking) {
   const room = s.rooms.find((r) => r.id === b.roomId);
-  return `${b.ref} • ${room?.name ?? "ห้อง"} (${room?.code ?? ""}) • ${thaiDate(b.start)} ${time(b.start)}–${time(b.end)} น. (เวลาประเทศไทย)`;
+  return `${b.ref} • ${room?.name ?? "ห้อง"} (${room?.code ?? ""}) • ${thaiDate(b.start)} ${time(b.start)}–${dateOf(b.start)!==dateOf(b.end)?thaiDate(b.end)+' ':''}${time(b.end)} น. (เวลาประเทศไทย)`;
 }
 export function releaseReservation(s: AppState, b: Booking) {
   for (const item of b.equipment) {
@@ -38,6 +38,7 @@ export function advanceLifecycle(s: AppState, now: string) {
     s.audit.unshift({
       id: nextId(s.audit),
       actorId: null,
+      actionType:`SYSTEM_${b.status}`,
       bookingId: b.id,
       at: now,
       text: `${text} ${b.ref}`,

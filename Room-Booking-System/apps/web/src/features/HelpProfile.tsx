@@ -251,6 +251,7 @@ export function Profile() {
         <section className="panel profile-card">
           <div className="profile-avatar">{user.name[0]}</div>
           <h2>{user.name}</h2>
+          <p>รหัสผู้ใช้: {user.id}</p>
           <p>{user.email}</p>
           <span className="badge warm">{roleLabels[user.role]}</span>
           <div className="profile-status">

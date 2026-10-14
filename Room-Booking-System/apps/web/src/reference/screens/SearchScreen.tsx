@@ -1,26 +1,40 @@
+import { TimeSelect } from '../components/TimeSelect';
+import { useDemo } from '../../app/DemoProvider';
+import { searchSlotError } from '../../../../../packages/core/src/search';
+import { addDays, availability, stamp } from '../../lib/domain';
 import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { AppHeader } from '../components/PhoneFrame';
-import { Users, MapPin, Clock, Search as SearchIcon, SlidersHorizontal, CalendarDays, Sparkles, ChevronRight } from 'lucide-react';
+import { Users, MapPin, Clock, Search as SearchIcon, SlidersHorizontal, CalendarDays, DoorOpen, ChevronRight } from 'lucide-react';
 import { RoomImage } from '../components/RoomImage';
 
 export function SearchScreen() {
-  const { rooms, navigate, setSelectedRoom, roomAvailable, searchSlot, setSearchSlot } = useApp();
+  const { rooms, navigate, setSelectedRoom, roomAvailable, searchSlot, setSearchSlot, currentUser } = useApp();
+  const {state}=useDemo();
+  const [buildingId,setBuildingId]=useState('');
   const [searchText, setSearchText] = useState('');
   const [capacityFilter, setCapacityFilter] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const {date,start:time,end:endT}=searchSlot;
-  const setDate=(date:string)=>setSearchSlot({...searchSlot,date});
+  const setDate=(date:string)=>setSearchSlot({...searchSlot,date,endDate:searchSlot.endDate&&searchSlot.endDate!==searchSlot.date?addDays(date,1):undefined});
   const setTime=(start:string)=>setSearchSlot({...searchSlot,start});
   const setEndT=(end:string)=>setSearchSlot({...searchSlot,end});
 
+  const slotError=searchSlotError(state,date,time,endT,searchSlot.endDate??date);
+  const needsTime = !date || !time || !endT;
+  const canSelect = (room: typeof rooms[0]) => needsTime
+    ? state.rooms.some(r => String(r.id) === room.id && r.status === 'AVAILABLE')
+    : roomAvailable(room,date,time,endT,searchSlot.endDate);
   const filtered = rooms.filter((room) => {
     const matchText = !searchText || room.name.includes(searchText) || room.building.includes(searchText);
     const matchCap = !capacityFilter || room.capacity >= capacityFilter;
-    return matchText && matchCap && roomAvailable(room,date,time,endT);
+    return matchText && matchCap && (!buildingId || state.rooms.find(r=>String(r.id)===room.id)?.buildingId===Number(buildingId));
   });
 
+  const availableCount=filtered.filter(r=>roomAvailable(r,date,time,endT,searchSlot.endDate)).length;
+  const statusFor=(id:string)=>{const r=state.rooms.find(r=>String(r.id)===id)!;return r.status!=='AVAILABLE'?{label:r.status==='MAINTENANCE'?'ปิดปรับปรุง':'ปิดให้บริการ',reason:r.reason}:slotError?{label:'รอเลือกช่วงเวลา',reason:''}:availability(state,r,stamp(date,time),stamp(searchSlot.endDate??date,endT));};
   const handleSelect = (room: typeof rooms[0]) => {
+    if(currentUser.id==='0')sessionStorage.setItem('kku-booking-intent',JSON.stringify({roomId:room.id,slot:searchSlot}));
     setSelectedRoom(room);
     navigate('booking');
   };
@@ -29,20 +43,19 @@ export function SearchScreen() {
     <div className="search-screen flex flex-col h-full bg-gray-50">
       <AppHeader showBack={false} />
 
-      <div className="search-overview px-4 pt-5 pb-4 bg-gradient-to-br from-red-50 via-white to-amber-50 border-b border-red-100/70 shrink-0">
-        <p className="reference-mobile-overview text-[11px] uppercase tracking-[0.16em] text-kku-red font-bold">Daily overview</p>
-        <h2 className="mt-1 text-[27px] leading-tight font-black tracking-tight text-gray-900">ภาพรวมการจองวันนี้<span className="text-kku-red">.</span></h2>
-        <p className="text-sm text-gray-500 mt-1 flex items-center gap-1.5"><CalendarDays size={15} className="text-kku-red" />{new Intl.DateTimeFormat('th-TH', { dateStyle: 'full' }).format(new Date())}</p>
-        <div className="search-welcome mt-4 rounded-2xl bg-kku-red px-4 py-3.5 text-white shadow-lg shadow-red-900/15 flex items-center gap-3 overflow-hidden relative">
-          <div className="absolute -right-6 -top-8 w-28 h-28 rounded-full bg-white/10" />
-          <Sparkles size={22} className="shrink-0 text-kku-gold" />
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-white/75">พร้อมให้บริการ</p>
-            <p className="text-base font-bold truncate">ค้นหาห้องที่เหมาะกับการประชุมของคุณ</p>
+      <div className="search-content flex-1 min-h-0 overflow-y-auto">
+      <section className="search-overview" aria-labelledby="search-overview-title">
+        <h2 id="search-overview-title">ภาพรวมการจองวันนี้</h2>
+        <p className="search-overview-date"><CalendarDays size={16} aria-hidden="true" />{new Intl.DateTimeFormat('th-TH', { dateStyle: 'full' }).format(new Date())}</p>
+        <div className="search-welcome">
+          <span className="search-welcome-icon"><DoorOpen size={24} strokeWidth={1.75} aria-hidden="true" /></span>
+          <div className="search-welcome-copy">
+            <p>พร้อมให้บริการ</p>
+            <p>ค้นหาห้องที่เหมาะกับการประชุมของคุณ</p>
           </div>
-          <span className="text-2xl font-black">{rooms.length}</span>
+          <span className="search-availability"><strong>{slotError ? '—' : availableCount}</strong><span>{slotError ? 'เลือกเวลา' : 'ห้องว่าง'}</span></span>
         </div>
-      </div>
+      </section>
 
       {/* Search controls */}
       <div className="search-controls px-4 py-3 bg-white border-b border-gray-100 shrink-0">
@@ -67,6 +80,7 @@ export function SearchScreen() {
           </button>
         </div>
 
+<label className="block text-sm text-gray-700 mt-3">อาคาร<select aria-label="อาคาร" value={buildingId} onChange={e=>setBuildingId(e.target.value)} className="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg"><option value="">ทุกอาคาร</option>{state.buildings.filter(b=>b.active!==false).map(b=><option key={b.id} value={b.id}>{b.name}</option>)}</select></label>
         <div className="search-date-fields flex gap-2 mt-2.5">
           <label><span className="desktop-field-label">วันที่ต้องการจอง</span>
           <input
@@ -78,8 +92,7 @@ export function SearchScreen() {
           />
           </label>
           <label><span className="desktop-field-label">เวลาเริ่ม</span>
-          <input
-            type="time"
+          <TimeSelect
             aria-label="เวลาเริ่ม"
             value={time}
             onChange={(e) => setTime(e.target.value)}
@@ -87,8 +100,7 @@ export function SearchScreen() {
           />
           </label>
           <label><span className="desktop-field-label">เวลาสิ้นสุด</span>
-          <input
-            type="time"
+          <TimeSelect
             aria-label="เวลาสิ้นสุด"
             value={endT}
             onChange={(e) => setEndT(e.target.value)}
@@ -96,6 +108,8 @@ export function SearchScreen() {
           />
           </label>
         </div>
+
+        <label className="flex items-center gap-2 mt-3 text-sm text-gray-700"><input type="checkbox" checked={!!searchSlot.endDate&&searchSlot.endDate!==date} onChange={e=>setSearchSlot({...searchSlot,endDate:e.target.checked?addDays(date,1):undefined})}/> สิ้นสุดในวันถัดไป (เฉพาะห้องที่เปิดข้ามคืน)</label>
 
         {showFilters && (
           <div className="mt-3 animate-slide-up">
@@ -118,16 +132,18 @@ export function SearchScreen() {
       </div>
 
       {/* Results */}
-      <div className="search-results flex-1 overflow-y-auto scrollbar-hide px-4 py-3">
-        {time && endT && endT<=time && <p role="alert" className="text-sm text-red-600 mb-3">เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่ม</p>}
+      <div className="search-results px-4 py-3">
+        {slotError && <p role="status" className="text-sm text-gray-600 mb-3">{needsTime ? 'กดแบนเนอร์ห้องเพื่อเลือกวันและเวลาจอง หรือเลือกเวลาที่ด้านบนเพื่อเช็คห้องว่าง' : slotError}</p>}
         <p className="text-sm font-semibold text-gray-700 mb-3">
-          พบ {filtered.length} ห้องว่าง
+          พบ {filtered.length} ห้อง{!slotError && ` · ว่าง ${availableCount} ห้องในช่วงเวลาที่เลือก`}
         </p>
 
-        <div className="search-room-grid space-y-3">
+        <div className="search-room-grid">
           {filtered.map((room) => (
             <button
               key={room.id}
+              disabled={!canSelect(room)}
+              aria-label={`เลือกวันและเวลาจอง ${room.name}`}
               onClick={() => handleSelect(room)}
               className="search-room-card w-full bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-kku-red/30 hover:shadow-lg transition-all text-left active:scale-[0.99] group"
             >
@@ -162,7 +178,8 @@ export function SearchScreen() {
                     </span>
                   )}
                 </div>
-                <span className="desktop-room-action">ดูรายละเอียดและจอง <ChevronRight size={16}/></span>
+<p className="text-sm text-gray-700 mt-3">{statusFor(room.id).label}{statusFor(room.id).reason ? ` · ${statusFor(room.id).reason}` : ""}</p>
+                {canSelect(room) && <span className="desktop-room-action">{needsTime ? 'เลือกเวลาจอง' : 'ดูรายละเอียดและจอง'} <ChevronRight size={16}/></span>}
               </div>
             </button>
           ))}
@@ -174,6 +191,7 @@ export function SearchScreen() {
             <p className="mt-3 text-sm">ไม่พบห้องที่ตรงกับเงื่อนไข</p>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

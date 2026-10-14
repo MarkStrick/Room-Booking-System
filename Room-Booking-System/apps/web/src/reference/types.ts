@@ -36,6 +36,10 @@ export interface Room {
 }
 
 export interface Booking {
+  ref?: string;
+  archivedAt?: string;
+  equipment?: {name:string;qty:number}[];
+  participantEmails?: string[];
   id: string;
   roomId: string;
   roomName: string;
@@ -44,6 +48,7 @@ export interface Booking {
   userName: string;
   userEmail: string;
   date: string;
+  endDate?: string;
   startTime: string;
   endTime: string;
   purpose: string;
@@ -65,6 +70,12 @@ export interface ChatMessage {
 export type NotificationType = 'rejection' | 'cancellation' | 'general';
 
 export interface Notification {
+  userId?: number;
+  userEmail?: string;
+  status?: 'QUEUED'|'SENT'|'FAILED';
+  attempts?: number;
+  sentAt?: string;
+  deliveryError?: string;
   id: string;
   type: NotificationType;
   bookingId: string;

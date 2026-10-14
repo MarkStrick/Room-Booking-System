@@ -5,3 +5,9 @@ docs/verification/
 apps/web/figma-*.html
 tests/
 .git/
+tmp/
+tmp
+docs/
+scripts/
+.github/
+supabase/

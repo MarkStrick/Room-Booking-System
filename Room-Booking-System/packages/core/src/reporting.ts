@@ -39,8 +39,8 @@ export function reportData(
     ? s.bookings.filter(
         (b) =>
           rooms.some((r) => r.id === b.roomId) &&
-          dateOf(b.start) >= from &&
-          dateOf(b.start) <= to,
+          ms(b.start) < ms(stamp(addDays(to,1),'00:00')) &&
+          ms(b.end) > ms(stamp(from,'00:00')),
       )
     : [];
   const begin = ms(stamp(from, "00:00")),
@@ -66,9 +66,9 @@ export function reportData(
     if (!valid || !r.hours)
       return { room: r, openHours: null, usedHours: null, rate: null };
     const intervals: { start: number; end: number }[] = [];
-    for (let day = from; day <= to; day = addDays(day, 1)) {
+    const overnight=r.hours.end<r.hours.start;
+    for (let day = overnight?addDays(from,-1):from; day <= to; day = addDays(day, 1)) {
       if (
-        s.holidays.includes(day) ||
         !r.hours.weekdays.includes(
           new Date(`${day}T12:00:00+07:00`).getUTCDay(),
         )
@@ -76,11 +76,12 @@ export function reportData(
         continue;
       let slots = [
         {
-          start: ms(stamp(day, r.hours.start)),
-          end: Math.min(ms(stamp(day, r.hours.end)), end),
+          start: Math.max(ms(stamp(day, r.hours.start)),begin),
+          end: Math.min(ms(stamp(overnight?addDays(day,1):day, r.hours.end)), end),
         },
       ].filter((i) => i.end > i.start);
-      for (const closure of s.closures.filter((c) => c.roomId === r.id))
+      const blocked=[...s.closures.filter((c)=>c.roomId===r.id),...s.holidays.map(day=>({start:stamp(day,'00:00'),end:stamp(addDays(day,1),'00:00')}))];
+      for (const closure of blocked)
         slots = slots.flatMap((i) =>
           ms(closure.end) <= i.start || ms(closure.start) >= i.end
             ? [i]

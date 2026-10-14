@@ -12,7 +12,13 @@ import {
 import { Empty, Metric, PageHeading } from "../components/ui";
 import { reportData, encodeCsv } from "../../../../packages/core/src/reporting";
 export function Reports() {
-  const { state, user, showToast } = useDemo();
+  const { state, user, showToast, run } = useDemo();
+  const [saving,setSaving]=useState(false);
+  const [saveError,setSaveError]=useState("");
+  const [reportPage,setReportPage]=useState(0);
+  const savedReports=state.reports??[];
+  const lastPage=Math.max(0,Math.ceil(savedReports.length/30)-1);
+  const currentPage=Math.min(reportPage,lastPage);
   const [from, setFrom] = useState(() => dateOf(state.now).slice(0, 7) + "-01");
   const [to, setTo] = useState(() => dateOf(state.now));
   const [building, setBuilding] = useState("");
@@ -41,8 +47,9 @@ export function Reports() {
         "รหัส",
         "ห้อง",
         "ผู้จอง",
-        "วันที่",
+        "วันที่เริ่ม",
         "เริ่ม",
+        "วันที่สิ้นสุด",
         "สิ้นสุด",
         "สถานะ",
         "จำนวนคน",
@@ -53,6 +60,7 @@ export function Reports() {
         state.users.find((u) => u.id === b.userId)?.name,
         thaiDate(b.start, true),
         time(b.start),
+        thaiDate(b.end, true),
         time(b.end),
         statusLabels[b.status],
         b.attendees,
@@ -69,6 +77,13 @@ export function Reports() {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     showToast("ส่งออกข้อมูลตามช่วงและอาคารที่เลือกแล้ว");
   }
+  async function saveReport(){
+    if(saving)return;
+    setSaving(true);setSaveError("");
+    try{await run({type:'REPORT_SAVE',from,to,buildingId:building?Number(building):undefined},'บันทึกรายงานแล้ว');setReportPage(0);}
+    catch(error){setSaveError((error as Error).message);}
+    finally{setSaving(false);}
+  }
   return (
     <>
       <PageHeading
@@ -76,6 +91,9 @@ export function Reports() {
         title="รายงานการใช้งาน"
         description="เข้าใจการใช้พื้นที่ ผ่านข้อมูลการจองและการเข้าใช้จริง"
       >
+        <button className="btn" disabled={saving||!report.valid||!rooms.length} onClick={()=>void saveReport()}>
+          {saving?'กำลังบันทึก…':'บันทึกรายงาน'}
+        </button>
         <button
           className="btn"
           disabled={!rows.length || !report.valid}
@@ -126,6 +144,15 @@ export function Reports() {
       {from > to ? (
         <p className="form-error">วันที่สิ้นสุดต้องไม่น้อยกว่าวันเริ่มต้น</p>
       ) : null}
+      {saveError?<p className="form-error" role="alert">{saveError}</p>:null}
+      <section className="panel" aria-label="รายงานที่บันทึกไว้">
+        <div className="section-heading"><h2>รายงานที่บันทึกไว้</h2><span className="subtle">ยอด ณ เวลาบันทึก</span></div>
+        {(state.reports??[]).length?<div className="table-scroll"><table>
+          <thead><tr><th>เลขที่</th><th>ช่วงวันที่</th><th>คำขอ</th><th>ชั่วโมง</th><th>ยกเลิก</th><th>บันทึกเมื่อ</th></tr></thead>
+          <tbody>{savedReports.slice(currentPage*30,(currentPage+1)*30).map(r=><tr key={r.id}><td>R-{r.id}</td><td>{thaiDate(r.from,true)} – {thaiDate(r.to,true)}</td><td>{r.totalBookings}</td><td>{r.totalHours.toFixed(2)}</td><td>{r.canceledCount}</td><td>{thaiDate(r.createdAt,true)} {time(r.createdAt)}</td></tr>)}</tbody>
+        </table></div>:<Empty title="ยังไม่มีรายงานที่บันทึก">เลือกช่วงวันที่และอาคาร แล้วกดบันทึกรายงานเพื่อเก็บยอดสำหรับตรวจสอบย้อนหลัง</Empty>}
+        {savedReports.length>30?<div className="table-actions" aria-label="หน้ารายงานย้อนหลัง"><button className="btn ghost small" disabled={currentPage===0} onClick={()=>setReportPage(currentPage-1)}>ก่อนหน้า</button><span>หน้า {currentPage+1} / {lastPage+1}</span><button className="btn ghost small" disabled={currentPage===lastPage} onClick={()=>setReportPage(currentPage+1)}>ถัดไป</button></div>:null}
+      </section>
       <div className="metrics-grid four">
         <Metric
           label="คำขอจองทั้งหมด"

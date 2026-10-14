@@ -69,7 +69,8 @@ test("audit API: static files, private participants, inventory, settings, lifecy
         headers: headers(who),
         body: JSON.stringify(body),
       });
-    const tomorrow = addDays(dateOf(new Date().toISOString()), 1);
+    let tomorrow = addDays(dateOf(new Date().toISOString()), 1);
+    while(sample.holidays.includes(tomorrow))tomorrow=addDays(tomorrow,1);
     await t.test(
       "static homepage/assets precede fallback, API still authenticates",
       async () => {
@@ -127,6 +128,10 @@ test("audit API: static files, private participants, inventory, settings, lifecy
           (await store.read()).state.inspections[0].items![0].damaged,
           1,
         );
+        assert.equal((await store.read()).state.rooms.find(r=>r.id===1)!.status, 'MAINTENANCE');
+        // Repair and inspect again before the following booking flow.
+        assert.equal((await command(staff, {type:'INSPECT',roomId:1,condition:'พร้อมใช้งาน',note:'repaired',items:[{id:1,damaged:0}]})).status,201);
+        assert.equal((await store.read()).state.rooms.find(r=>r.id===1)!.status, 'AVAILABLE');
       },
     );
     await t.test(

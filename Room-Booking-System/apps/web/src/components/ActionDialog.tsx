@@ -12,7 +12,9 @@ import { useDemo } from "../app/DemoProvider";
 import { RoomCover } from "./RoomCover";
 import {
   addDays,
+  availability,
   dateOf,
+  ms,
   overlaps,
   stamp,
   thaiDate,
@@ -41,8 +43,8 @@ const titles: Record<DialogAction["kind"], string> = {
   "holiday-delete": "ยืนยันลบวันหยุด",
   "room-active": "เปลี่ยนการใช้งานห้อง",
   "building-active": "เปลี่ยนการใช้งานอาคาร",
-  "room-delete": "ยืนยันลบห้อง",
-  "building-delete": "ยืนยันลบอาคาร",
+  "room-delete": "ยืนยันเลิกใช้งานห้อง",
+  "building-delete": "ยืนยันเลิกใช้งานอาคาร",
   equipment: "อุปกรณ์ส่วนกลาง",
   penalty: "พิจารณาบทลงโทษ",
   clock: "ทดลองเวลาและงานอัตโนมัติ",
@@ -190,6 +192,7 @@ export function ActionDialog({
             type: "INSPECT",
             roomId: room!.id,
             condition: text(data, "condition"),
+            closeAffected:data.get("closeAffected")==="on",
             note: text(data, "note"),
             items: room?.inventory?.map((i) => ({
               id: i.id,
@@ -478,7 +481,7 @@ export function ActionDialog({
               <p>อุปกรณ์ประจำห้องมีให้แล้ว เลือกส่วนนี้เมื่อต้องการยืมเพิ่ม</p>
               <fieldset>
                 <legend className="sr-only">อุปกรณ์ที่ขอยืม</legend>
-                {state.equipment.map((e) => (
+                {state.equipment.filter(e=>e.active!==false).map((e) => (
                   <label className="equipment-choice" key={e.id}>
                     <div>
                       <strong>{e.name}</strong>
@@ -676,10 +679,10 @@ export function ActionDialog({
               <input name="reason" defaultValue={room?.reason} />
             </label>
             <label>
-              ลิงก์รูปห้อง (HTTPS)
+              รูปห้อง (ลิงก์ HTTPS หรือรูปที่ติดตั้งในเว็บ)
               <input
                 name="imageUrl"
-                type="url"
+                type="text"
                 maxLength={2000}
                 defaultValue={room?.imageUrl}
                 placeholder="https://..."
@@ -908,6 +911,7 @@ export function ActionDialog({
             <h3>{room?.name}</h3>
             <label>
               ความพร้อม
+              <label className="check-label"><input type="checkbox" name="closeAffected"/>ยืนยันยกเลิกการจองที่ได้รับผลกระทบเมื่อปิดปรับปรุง และแจ้งผู้จอง</label>
               <select name="condition">
                 <option>พร้อมใช้งาน</option>
                 <option>พบอุปกรณ์ชำรุด</option>

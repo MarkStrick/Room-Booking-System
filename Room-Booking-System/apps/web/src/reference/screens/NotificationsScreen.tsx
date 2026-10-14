@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useDemo } from '../../app/DemoProvider';
+import { EmailComposer } from "../components/EmailComposer";
 import { useApp } from '../context/AppContext';
 import { AppHeader } from '../components/PhoneFrame';
 import { EmptyState } from '../components/ui';
@@ -7,9 +10,11 @@ import { useAsyncAction } from '../useAsyncAction';
 
 export function NotificationsScreen() {
   const { notifications, markNotificationRead, markAllNotificationsRead } = useApp();
+  const {run,user}=useDemo();
+  const [deliveryFilter,setDeliveryFilter]=useState('ALL');
   const {busy,error,perform}=useAsyncAction();
 
-  const sorted = [...notifications].sort(
+  const sorted = notifications.filter(n=>deliveryFilter==='ALL'||n.status===deliveryFilter).sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -58,6 +63,8 @@ export function NotificationsScreen() {
       )}
 
       <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-3">
+        <EmailComposer/>
+        <label className="block text-sm text-gray-700 mb-4">สถานะอีเมล<select aria-label="กรองสถานะอีเมล" className="w-full border rounded-lg p-2 mt-1" value={deliveryFilter} onChange={e=>setDeliveryFilter(e.target.value)}><option value="ALL">ทั้งหมด</option><option value="QUEUED">รอส่ง</option><option value="SENT">บริการอีเมลรับแล้ว</option><option value="FAILED">ส่งไม่สำเร็จ</option></select></label>
         {error && <p role="alert" className="text-sm text-red-600 mb-3">{error}</p>}
         {sorted.length === 0 ? (
           <EmptyState
@@ -73,6 +80,8 @@ export function NotificationsScreen() {
                 notif={notif}
                 formatTime={formatTime}
                 formatDateTime={formatDateTime}
+                retry={user.role==='ADMIN'&&notif.status==='FAILED'?()=>{void perform(async()=>{await run({type:'RETRY',noticeId:Number(notif.id)},'นำกลับเข้าคิวแล้ว');});}:undefined}
+                busy={busy}
                 onMarkRead={() => {if(!busy)void perform(()=>markNotificationRead(notif.id));}}
               />
             ))}
@@ -87,9 +96,11 @@ function NotificationCard({
   notif,
   formatTime,
   formatDateTime,
-  onMarkRead,
+  onMarkRead, retry, busy,
 }: {
   notif: Notification;
+  retry?:()=>void;
+  busy:boolean;
   formatTime: (iso: string) => string;
   formatDateTime: (iso: string) => string;
   onMarkRead: () => void;
@@ -128,7 +139,11 @@ function NotificationCard({
           }`} />
         )}
       </div>
+<p className="text-xs text-gray-600 mb-2">ผู้รับ: {notif.userEmail}</p>
+      {retry&&<button disabled={busy} className="text-sm text-kku-red mb-2" onClick={retry}>ลองส่งอีกครั้ง</button>}
       <p className="text-sm text-gray-600 mb-3">{notif.content}</p>
+      <p className="text-xs text-gray-600 mb-3">สถานะอีเมล: {notif.status==='SENT'?'บริการอีเมลรับแล้ว':notif.status==='FAILED'?'ส่งไม่สำเร็จ':'รอส่ง'} · พยายาม {notif.attempts??0} ครั้ง{notif.sentAt&&` · ${formatDateTime(notif.sentAt)}`}</p>
+      {notif.deliveryError&&<p className="text-xs text-red-600 mb-3">{notif.deliveryError}</p>}
       <div className="bg-white/80 rounded-xl p-3 mb-2">
         <p className="font-bold text-sm text-gray-900 mb-1.5">{notif.roomName}</p>
         <div className="space-y-1 text-xs text-gray-500">
@@ -173,6 +188,7 @@ function NotificationCard({
 
       {!notif.read && (
         <button
+          disabled={busy}
           onClick={onMarkRead}
           className="mt-2.5 w-full py-2 bg-gray-100 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-200 transition-colors"
         >

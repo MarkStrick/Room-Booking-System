@@ -6,6 +6,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import type {
@@ -46,11 +47,15 @@ interface DemoContextValue {
   openSandbox: () => Promise<void>;
 }
 export const DemoContext = createContext<DemoContextValue | null>(null);
+const subscribeHash=(cb:()=>void)=>{window.addEventListener('hashchange',cb);return ()=>window.removeEventListener('hashchange',cb);};
+const currentHash=()=>location.hash;
 const AdminSandbox = lazy(() => import("./AdminSandbox"));
 export function DemoProvider({ children }: { children: ReactNode }) {
   return <ServerProvider>{children}</ServerProvider>;
 }
 function ServerProvider({ children }: { children: ReactNode }) {
+  const hash=useSyncExternalStore(subscribeHash,currentHash);
+  const [catalog,setCatalog]=useState<AppState|null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [config, setConfig] = useState<PublicConfig | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,6 +65,7 @@ function ServerProvider({ children }: { children: ReactNode }) {
   const [sandbox, setSandbox] = useState(false);
   const mounted = useRef(true),
     generation = useRef(0),
+    pendingWrites = useRef(0),
     sessionRef = useRef<Session | null>(null);
   function update(value: Session | null) {
     if (value?.user.role !== "ADMIN") setSandbox(false);
@@ -80,6 +86,7 @@ function ServerProvider({ children }: { children: ReactNode }) {
       if (!mounted.current) return;
       setConfig(publicConfig);
       update(current);
+      if(!current)setCatalog(await request<AppState>("/public/catalog"));
     } catch (e) {
       if (mounted.current) setError((e as Error).message);
     } finally {
@@ -99,7 +106,13 @@ function ServerProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(timer);
   }, [toast]);
   async function refresh() {
-    if (!sessionRef.current) return;
+    // A focus/poll refresh must not supersede an in-flight command response.
+    if(pendingWrites.current>0)return;
+    if (!sessionRef.current) {
+      try {setCatalog(await request<AppState>("/public/catalog"));}
+      catch(e){showToast((e as Error).message);}
+      return;
+    }
     const version = ++generation.current;
     try {
       const current = await request<Session>("/session");
@@ -117,7 +130,7 @@ function ServerProvider({ children }: { children: ReactNode }) {
     }
   }
   useEffect(() => {
-    if (!session) return;
+    if (!session && !catalog) return;
     const timer = setInterval(() => {
       void refresh();
     }, 15000);
@@ -129,11 +142,13 @@ function ServerProvider({ children }: { children: ReactNode }) {
       clearInterval(timer);
       window.removeEventListener("focus", focus);
     };
-  }, [session?.user.id]);
+  }, [session?.user.id, Boolean(catalog)]);
   async function run(command: Command, message = "บันทึกสำเร็จ") {
     const current = sessionRef.current;
     if (!current) throw new Error("กรุณาเข้าสู่ระบบ");
     const version = ++generation.current;
+    pendingWrites.current++;
+    let recover=false;
     try {
       const state = await sendCommand(command, current.csrfToken);
       if (mounted.current && version === generation.current)
@@ -147,8 +162,11 @@ function ServerProvider({ children }: { children: ReactNode }) {
       setConnectionIssue("");
     } catch (e) {
       if (e instanceof ApiError && e.status === 401) update(null);
-      else void refresh();
+      else recover=true;
       throw e;
+    } finally {
+      pendingWrites.current--;
+      if(recover&&pendingWrites.current===0)void refresh();
     }
   }
   async function logout() {
@@ -159,6 +177,8 @@ function ServerProvider({ children }: { children: ReactNode }) {
     });
     generation.current++;
     update(null);
+    location.hash="#/rooms";
+    await load();
   }
   async function manageAccess(
     userId: number,
@@ -185,6 +205,11 @@ function ServerProvider({ children }: { children: ReactNode }) {
     await request("/admin/test-tools");
     setSandbox(true);
     location.hash = "#/rooms";
+  }
+  if(!loading && !session && catalog && hash!=='#/login' && !new URLSearchParams(location.search).has('login_error')) {
+    const login=()=>{location.hash='#/login';};
+    const unavailable=async()=>{login();throw new Error('กรุณาเข้าสู่ระบบก่อนทำรายการ');};
+    return <DemoContext.Provider value={{state:catalog,user:{id:0,name:'ผู้เยี่ยมชม',email:'',phone:'',affiliation:'',role:'USER',active:false},run:unavailable,toast,showToast,persistent:true,mode:'server',logout:async()=>login(),manageAccess:unavailable,refresh,canTest:false,openSandbox:unavailable,switchUser:login,reset:login}}>{children}</DemoContext.Provider>;
   }
   if (loading || !session) {
     const loginError=new URLSearchParams(location.search).get('login_error');

@@ -1,0 +1,62 @@
+{
+  "checkedAt": "2026-10-12",
+  "notes": "ชื่อ ชั้น และความจุอ้างอิงเว็บไซต์ทางการ รหัส KKU-* เป็นรหัสภายในเว็บนี้ จำนวนชั้นของอาคารกำหนดถึงชั้นสูงสุดที่ใช้ในชุดข้อมูล ไม่ใช่การยืนยันจำนวนชั้นทั้งหมด ไม่เชื่อมตารางการจองภายนอก ไม่ตั้งรูปหรือเวลาทำการที่ยังยืนยันไม่ได้",
+  "rooms": [
+    {
+      "code": "KKU-ED-1507",
+      "name": "ห้องประชุม 1507",
+      "building": "คณะศึกษาศาสตร์",
+      "floor": 5,
+      "capacity": 70,
+      "type": "ห้องประชุม",
+      "amenities": [],
+      "source": "https://sites.google.com/kku.ac.th/plan-ed-kku/การใหบรการคณะศกษาศาสตร/บรการจองหอง",
+      "imageUrl": "/room-images/meeting-illustrative.png",
+      "imageSource": "AI-generated illustrative image; not an actual photograph of this room."
+    },
+    {
+      "code": "KKU-ED-TEAL",
+      "name": "ห้องปฏิบัติการ ED-TEAL",
+      "building": "คณะศึกษาศาสตร์",
+      "floor": 4,
+      "capacity": 65,
+      "type": "ห้องปฏิบัติการ",
+      "amenities": [],
+      "source": "https://sites.google.com/kku.ac.th/plan-ed-kku/การใหบรการคณะศกษาศาสตร/บรการจองหอง",
+      "imageUrl": "/room-images/classroom-illustrative.png",
+      "imageSource": "AI-generated illustrative image; not an actual photograph of this room."
+    },
+    {
+      "code": "KKU-ODT-M1",
+      "name": "ห้องประชุม ชั้น 1",
+      "building": "สำนักเทคโนโลยีดิจิทัล",
+      "floor": 1,
+      "capacity": 30,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "อินเทอร์เน็ต"
+      ],
+      "source": "https://bucket.kku.ac.th/odt/web/WYGcbh2CL2er_odt%202598-2567.pdf",
+      "sourcePage": 4,
+      "publishedUsePeriod": "08:30–16:30 (ช่วงเต็มวันตามประกาศ ไม่ได้ยืนยันวันเปิดบริการรายสัปดาห์)",
+      "imageUrl": "/room-images/meeting-illustrative.png",
+      "imageSource": "AI-generated illustrative image; not an actual photograph of this room."
+    },
+    {
+      "code": "KKU-ODT-M3",
+      "name": "ห้องประชุม 3 ชั้น 4",
+      "building": "สำนักเทคโนโลยีดิจิทัล",
+      "floor": 4,
+      "capacity": 80,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "อินเทอร์เน็ต"
+      ],
+      "source": "https://bucket.kku.ac.th/odt/web/WYGcbh2CL2er_odt%202598-2567.pdf",
+      "sourcePage": 4,
+      "publishedUsePeriod": "08:30–16:30 (ช่วงเต็มวันตามประกาศ ไม่ได้ยืนยันวันเปิดบริการรายสัปดาห์)",
+      "imageUrl": "/room-images/meeting-illustrative.png",
+      "imageSource": "AI-generated illustrative image; not an actual photograph of this room."
+    }
+  ]
+}

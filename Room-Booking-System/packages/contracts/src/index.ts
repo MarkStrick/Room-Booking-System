@@ -20,6 +20,7 @@ export interface Building {
   id: number;
   name: string;
   floors: number;
+  levels?: { id: string; number: number; name: string }[];
   active?: boolean;
 }
 export interface Room {
@@ -49,6 +50,20 @@ export interface Equipment {
   name: string;
   total: number;
   remaining: number;
+  active?: boolean;
+  createdBy?: number;
+}
+export interface SavedReport {
+  id: number;
+  userId: number;
+  from: string;
+  to: string;
+  buildingId?: number;
+  roomIds: number[];
+  totalBookings: number;
+  totalHours: number;
+  canceledCount: number;
+  createdAt: string;
 }
 export interface Booking {
   id: number;
@@ -83,6 +98,10 @@ export interface Notice {
   createdAt: string;
   attempts: number;
   readAt?: string;
+  sentAt?: string;
+  deliveryError?: string;
+  templateCode?: string;
+  params?: Record<string, string | number>;
 }
 export interface Violation {
   id: number;
@@ -130,6 +149,7 @@ export interface Audit {
   actorId: number | null;
   text: string;
   bookingId?: number;
+  actionType?: string;
 }
 export interface AppState {
   schema: 1;
@@ -147,6 +167,7 @@ export interface AppState {
   messages: Message[];
   audit: Audit[];
   holidays: string[];
+  reports?: SavedReport[];
   assignments: {
     userId: number;
     roomIds: number[];
@@ -172,6 +193,8 @@ export interface SearchFilter {
   floor?: string;
 }
 export type Command =
+  | { type: "REPORT_SAVE"; from: string; to: string; buildingId?: number }
+  | { type: "EQUIPMENT_ACTIVE"; equipmentId: number; active: boolean }
   | {
       type: "BOOK";
       roomId: number;
@@ -199,8 +222,11 @@ export type Command =
       condition: string;
       note: string;
       items?: { id: number; damaged: number }[];
+      closeAffected?: boolean;
     }
   | { type: "BUILDING_SAVE"; id?: number; name: string; floors: number }
+  | { type: "FLOOR_SAVE"; buildingId: number; number: number; name: string }
+  | { type: "SEND_NOTICE"; recipientEmail: string; notificationType: "BOOKING" | "CANCELLATION" | "REMINDER" | "GENERAL"; bookingId?: number; message?: string }
   | { type: "HOLIDAY_SAVE"; date: string; previousDate?: string }
   | { type: "HOLIDAY_DELETE"; date: string }
   | { type: "ROOM_ACTIVE"; roomId: number; active: boolean }

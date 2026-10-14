@@ -1,6 +1,6 @@
 import type { AppState, Command, User } from '../../../../packages/contracts/src/index';
 export interface Session {user:User;csrfToken:string;state:AppState;hasPassword?:boolean}
-export interface PublicConfig {googleReady:boolean;passwordReady:boolean;registrationReady:boolean;allowedDomains:string[]}
+export interface PublicConfig {emailReady?:boolean;googleReady:boolean;passwordReady:boolean;registrationReady:boolean;allowedDomains:string[]}
 export class ApiError extends Error {constructor(message:string,public status:number){super(message);}}
 export async function request<T>(path:string,options:RequestInit={}):Promise<T> {
  let response:Response;

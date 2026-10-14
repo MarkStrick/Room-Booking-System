@@ -1,3 +1,5 @@
+import { isLocalRoomImage } from './media';
+import { reportData } from './reporting';
 import type {
   AppState,
   Booking,
@@ -98,11 +100,14 @@ export function availability(
       reason: "พื้นที่นี้เลิกใช้งานแล้ว",
     };
   if (room.hours) {
-    const weekday = new Date(`${dateOf(start)}T12:00:00+07:00`).getUTCDay();
+    const overnight=room.hours.end<room.hours.start;
+    const openingDay=overnight&&time(start)<room.hours.end?addDays(dateOf(start),-1):dateOf(start);
+    const closingDay=overnight?addDays(openingDay,1):openingDay;
+    const weekday = new Date(`${openingDay}T12:00:00+07:00`).getUTCDay();
     if (
       !room.hours.weekdays.includes(weekday) ||
-      time(start) < room.hours.start ||
-      time(end) > room.hours.end ||
+      ms(start) < ms(stamp(openingDay,room.hours.start)) ||
+      ms(end) > ms(stamp(closingDay,room.hours.end)) ||
       ms(start) < ms(state.now) + room.hours.leadMinutes * 60000
     )
       return {
@@ -122,7 +127,7 @@ export function availability(
   );
   if (closure)
     return { label: "ปิดชั่วคราว", kind: "closed", reason: closure.reason };
-  if (state.holidays.includes(dateOf(start)))
+  if (state.holidays.includes(dateOf(start))||state.holidays.includes(dateOf(new Date(ms(end)-1).toISOString())))
     return {
       label: "วันหยุด",
       kind: "closed",
@@ -274,6 +279,27 @@ export function executeCommand(
     return b;
   };
   switch (c.type) {
+    case "REPORT_SAVE": {
+      requireRule(actor.role === "STAFF" || actor.role === "ADMIN", "เฉพาะเจ้าหน้าที่และผู้ดูแลระบบ", "FORBIDDEN_REPORT");
+      if(c.buildingId!==undefined)requireRule(s.buildings.some(b=>b.id===c.buildingId), "ไม่พบอาคาร");
+      const rooms=s.rooms.filter(r=>canManage(s,actor,r.id)&&(c.buildingId===undefined||r.buildingId===c.buildingId));
+      requireRule(rooms.length>0,"ไม่มีห้องในขอบเขตที่เลือก");
+      const result=reportData(s,rooms,c.from,c.to);
+      requireRule(result.valid,"กรุณาตรวจวันที่ ช่วงรายงานต้องไม่เกิน 366 วัน");
+      const reports=s.reports??(s.reports=[]);
+      reports.unshift({id:nextId(reports),userId:actor.id,from:c.from,to:c.to,buildingId:c.buildingId,roomIds:rooms.map(r=>r.id),totalBookings:result.rows.length,totalHours:Math.round(result.hours*100)/100,canceledCount:result.rows.filter(b=>b.status==='CANCELLED').length,createdAt:s.now});
+      log(`บันทึกรายงาน ${c.from} ถึง ${c.to}`);
+      break;
+    }
+    case "EQUIPMENT_ACTIVE": {
+      admin();
+      const item=s.equipment.find(e=>e.id===c.equipmentId);
+      requireRule(item,"ไม่พบอุปกรณ์");
+      requireRule(c.active || item.total===item.remaining,"อุปกรณ์ยังมีการจองหรือค้างคืน");
+      item.active=c.active;
+      log(`${c.active?'เปิด':'เลิก'}ใช้งานอุปกรณ์ ${item.name}`);
+      break;
+    }
     case "BOOK": {
       const r = s.rooms.find((r) => r.id === c.roomId);
       requireRule(r, "ไม่พบห้อง");
@@ -291,10 +317,6 @@ export function executeCommand(
       requireRule(
         dateOf(c.start) <= addDays(dateOf(s.now), 15),
         "จองล่วงหน้าได้ไม่เกิน 15 วัน",
-      );
-      requireRule(
-        dateOf(c.start) === dateOf(c.end),
-        "รองรับการจองภายในวันเดียวกัน",
       );
       requireRule(
         availability(s, r, c.start, c.end).kind === "available",
@@ -342,6 +364,7 @@ export function executeCommand(
         const e = s.equipment.find((e) => e.id === item.id);
         requireRule(
           e &&
+            e.active !== false &&
             Number.isInteger(item.qty) &&
             item.qty > 0 &&
             e.remaining >= item.qty,
@@ -520,8 +543,8 @@ export function executeCommand(
       );
       requireRule(building?.active !== false, "อาคารเลิกใช้งานแล้ว");
       requireRule(
-        !r.imageUrl || /^https:\/\//.test(r.imageUrl),
-        "รูปห้องต้องเป็นลิงก์ HTTPS",
+        !r.imageUrl || /^https:\/\//.test(r.imageUrl) || isLocalRoomImage(r.imageUrl),
+        "รูปห้องต้องเป็นลิงก์ HTTPS หรือรูปในโฟลเดอร์ room-images ของเว็บ",
       );
       requireRule(
         (r.inventory ?? []).every(
@@ -543,7 +566,7 @@ export function executeCommand(
         !r.hours ||
           (/^([01]\d|2[0-3]):[0-5]\d$/.test(r.hours.start) &&
             /^([01]\d|2[0-3]):[0-5]\d$/.test(r.hours.end) &&
-            r.hours.end > r.hours.start &&
+            r.hours.end !== r.hours.start &&
             r.hours.weekdays.length > 0 &&
             r.hours.weekdays.every(
               (d) => Number.isInteger(d) && d >= 0 && d <= 6,
@@ -687,6 +710,21 @@ export function executeCommand(
         !inventory.some((i) => i.damaged > 0) || c.condition !== "พร้อมใช้งาน",
         "พบอุปกรณ์ชำรุด กรุณาเลือกผลตรวจให้ตรงกับสภาพจริง",
       );
+      const maintenance = c.condition !== "พร้อมใช้งาน";
+      const affected = maintenance ? s.bookings.filter(b => b.roomId === c.roomId && activeStatuses.includes(b.status) && ms(b.end) > ms(s.now)) : [];
+      requireRule(!affected.some(b => b.status === "CHECKED_IN"), "มีผู้กำลังใช้ห้อง กรุณาจัดการการใช้งานก่อนปิดปรับปรุง");
+      requireRule(!affected.length || c.closeAffected === true, "มีการจองได้รับผลกระทบ กรุณายืนยันการยกเลิกก่อนปิดปรับปรุง");
+      affected.forEach(b => {
+        b.status = "CANCELLED";
+        b.reason = `ปิดปรับปรุงจากผลตรวจ: ${c.condition}${c.note ? " • " + c.note : ""}`;
+        release(b); log(`ยกเลิกจากผลตรวจ ${b.ref}`, b.id);
+        notify(b.userId, "ห้องปิดชั่วคราว", `${b.ref} ถูกยกเลิก • ${b.reason}`, b.id);
+      });
+      // An inspection may reopen maintenance, but must not override a deliberate closure.
+      if (maintenance || inspectedRoom.status === "MAINTENANCE") {
+        inspectedRoom.status = maintenance ? "MAINTENANCE" : "AVAILABLE";
+        inspectedRoom.reason = maintenance ? `${c.condition}${c.note ? " • " + c.note : ""}` : "";
+      }
       s.inspections.unshift({
         id: nextId(s.inspections),
         roomId: c.roomId,
@@ -720,10 +758,41 @@ export function executeCommand(
           id,
           name: c.name.trim(),
           floors: c.floors,
+          levels: s.buildings.find(b => b.id === id)?.levels?.filter(f => f.number <= c.floors),
           active: s.buildings.find((b) => b.id === id)?.active,
         },
       ];
       log(`บันทึกอาคาร ${c.name}`);
+      break;
+    }
+    case "FLOOR_SAVE": {
+      admin();
+      const building = s.buildings.find(b => b.id === c.buildingId);
+      requireRule(building && building.active !== false, "ไม่พบอาคารที่เปิดใช้งาน");
+      requireRule(Number.isInteger(c.number) && c.number > 0 && c.number <= building.floors + 1 && c.name.trim(), "กรุณาระบุชื่อชั้นและเลขชั้นถัดจากชั้นที่มีอยู่");
+      const levels = Array.from({length:building.floors}, (_, i) => building.levels?.find(f => f.number === i + 1) ?? {id:`floor-${building.id}-${i+1}`,number:i+1,name:`ชั้น ${i+1}`});
+      requireRule(!levels.some(f => f.number !== c.number && f.name === c.name.trim()), "ชื่อชั้นในอาคารนี้ซ้ำ");
+      building.levels = [...levels.filter(f => f.number !== c.number), {id:`floor-${building.id}-${c.number}`,number:c.number,name:c.name.trim()}].sort((a,b)=>a.number-b.number);
+      building.floors = Math.max(building.floors, c.number);
+      log(`บันทึกชั้น ${c.number} อาคาร ${building.name}`);
+      break;
+    }
+    case "SEND_NOTICE": {
+      const recipient = s.users.find(u => u.active && u.email.toLowerCase() === c.recipientEmail.trim().toLowerCase());
+      requireRule(recipient && (recipient.id === actor.id || actor.role === "ADMIN"), "ส่งได้เฉพาะอีเมลบัญชีของคุณ หรือบัญชีที่ผู้ดูแลเลือก", "FORBIDDEN");
+      requireRule(s.notices.filter(n => n.userId === recipient.id && ms(n.createdAt) > ms(s.now)-600000 && n.subject.startsWith("ส่งซ้ำ:")).length < 3, "ส่งได้ไม่เกิน 3 ครั้งต่อผู้รับใน 10 นาที");
+      if(c.notificationType === "GENERAL") {
+        admin(); requireRule(c.message?.trim(), "กรุณาระบุข้อความแจ้งเตือน");
+          notify(recipient.id, "ส่งซ้ำ: แจ้งข้อความจากผู้ดูแล", c.message!.trim());
+      } else {
+        const b = getBooking(c.bookingId ?? 0);
+        requireRule(b.userId === recipient.id && (b.userId === actor.id || canManage(s,actor,b.roomId)), "ไม่มีสิทธิ์ส่งรายละเอียดการจองนี้", "FORBIDDEN");
+        requireRule(c.notificationType !== "CANCELLATION" || b.status === "CANCELLED", "รายการนี้ยังไม่ได้ยกเลิก");
+        requireRule(c.notificationType !== "REMINDER" || b.status === "APPROVED", "ส่งเตือนได้เฉพาะรายการที่อนุมัติแล้ว");
+        const title = c.notificationType === "CANCELLATION" ? "ยืนยันการยกเลิก" : c.notificationType === "REMINDER" ? "แจ้งเตือนการใช้ห้อง" : "ยืนยันสถานะการจอง";
+        notify(recipient.id, `ส่งซ้ำ: ${title}`, `${statusLabels[b.status]}${b.reason ? " • " + b.reason : ""}`, b.id);
+      }
+      log(`เข้าคิวอีเมลตามคำขอ ${recipient.id}`, c.bookingId);
       break;
     }
     case "ROOM_ACTIVE": {
@@ -776,11 +845,11 @@ export function executeCommand(
           !s.closures.some((i) => i.roomId === c.roomId),
         "ห้องมีประวัติ กรุณาใช้เลิกใช้งานแทนลบ",
       );
-      s.rooms = s.rooms.filter((r) => r.id !== c.roomId);
+      s.rooms.find((r) => r.id === c.roomId)!.active = false;
       s.assignments.forEach(
         (a) => (a.roomIds = a.roomIds.filter((id) => id !== c.roomId)),
       );
-      log(`ลบห้อง ${c.roomId}`);
+      log(`เลิกใช้งานห้อง ${c.roomId} โดยเก็บข้อมูลย้อนหลัง`);
       break;
     }
     case "BUILDING_DELETE": {
@@ -793,8 +862,8 @@ export function executeCommand(
         !s.rooms.some((r) => r.buildingId === c.buildingId),
         "อาคารยังมีห้อง กรุณาใช้เลิกใช้งานหรือจัดการห้องก่อน",
       );
-      s.buildings = s.buildings.filter((b) => b.id !== c.buildingId);
-      log(`ลบอาคาร ${c.buildingId}`);
+      s.buildings.find((b) => b.id === c.buildingId)!.active = false;
+      log(`เลิกใช้งานอาคาร ${c.buildingId} โดยเก็บข้อมูลย้อนหลัง`);
       break;
     }
     case "EQUIPMENT_HANDOVER": {
@@ -876,7 +945,7 @@ export function executeCommand(
         const affected = s.bookings.filter(
           (b) =>
             ["PENDING", "APPROVED", "CHECKED_IN"].includes(b.status) &&
-            dateOf(b.start) === c.date,
+            overlaps(b.start,b.end,stamp(c.date,'00:00'),stamp(addDays(c.date,1),'00:00')),
         );
         requireRule(
           !affected.length,
@@ -919,7 +988,7 @@ export function executeCommand(
       const id = c.id ?? nextId(s.equipment);
       s.equipment = [
         ...s.equipment.filter((e) => e.id !== id),
-        { id, name: c.name.trim(), total: c.total, remaining: c.total - held },
+        { id, name: c.name.trim(), total: c.total, remaining: c.total - held, active: old?.active??true, createdBy:old?old.createdBy:actor.id },
       ];
       log(`บันทึกอุปกรณ์ ${c.name}`);
       break;

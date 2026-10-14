@@ -12,7 +12,7 @@
     }
   },
   "rewrites": [{ "source": "/api/:path*", "destination": "/api/index" }],
-  "crons": [{ "path": "/api/internal/jobs", "schedule": "* * * * *" }],
+  "crons": [{ "path": "/api/internal/jobs", "schedule": "0 0 * * *" }],
   "headers": [
     {
       "source": "/(.*)",

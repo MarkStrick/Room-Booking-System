@@ -82,3 +82,13 @@
   .reference-ui .search-date-fields input[type="date"] { padding-inline: 6px; }
 }
 @media (prefers-reduced-motion: reduce) { .reference-ui *, .reference-ui ::before, .reference-ui ::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+.reference-ui .floor-edit { display:flex; align-items:center; justify-content:center; min-width:36px; min-height:36px; border:0; background:transparent; color:#64748b; border-radius:8px; cursor:pointer; }
+.reference-ui .floor-edit:hover { background:#fdf2f4; color:#a51c30; }
+.reference-ui .floor-edit:focus-visible { outline:2px solid #a51c30; outline-offset:2px; }
+.reference-ui .floor-form { margin-block:12px; }
+.reference-ui .floor-form label { display:block; font-size:14px; }
+.reference-ui .floor-form input { width:100%; margin-top:6px; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; }
+.reference-ui .floor-form .holiday-actions { margin-top:12px; flex-wrap:wrap; }
+.reference-ui .search-room-card:disabled { opacity:1; cursor:default; }
+.reference-ui .email-composer select, .reference-ui .email-composer textarea { max-width:100%; }

@@ -15,13 +15,15 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export function ChecklistScreen() {
-  const { selectedBookingForChecklist, navigate, completeChecklist, rooms } = useApp();
+  const { selectedBookingForChecklist, navigate, completeChecklist, rooms, bookings, today } = useApp();
   const room=rooms.find(r=>r.id===selectedBookingForChecklist?.roomId);
   const [damaged,setDamaged]=useState<Record<number,number>>(()=>Object.fromEntries(room?.inventory.map(i=>[i.id,i.damaged])??[]));
   const {busy,error,perform}=useAsyncAction();
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [note, setNote] = useState('');
+  const [closeAffected,setCloseAffected]=useState(false);
+  const affected=bookings.filter(b=>b.roomId===room?.id&&b.date>=today&&['pending','approved','checked_in'].includes(b.status));
   const [condition,setCondition]=useState('พร้อมใช้งาน');
 
   useEffect(()=>{if(!selectedBookingForChecklist)navigate('admin');},[selectedBookingForChecklist]);
@@ -33,7 +35,7 @@ export function ChecklistScreen() {
   const allChecked = checklistItems.every((item) => checked[item.id]);
   const checkedCount = Object.values(checked).filter(Boolean).length;
 
-  const handleSubmit = () => perform(()=>completeChecklist(selectedBookingForChecklist.id,note,checked,damaged,condition),()=>setShowSuccess(true));
+  const handleSubmit = () => perform(()=>completeChecklist(selectedBookingForChecklist.id,note,checked,damaged,condition,closeAffected),()=>setShowSuccess(true));
 
   if (showSuccess) {
     return (
@@ -116,6 +118,7 @@ export function ChecklistScreen() {
         </button>
         {room?.inventory.length ? <div className="space-y-3 mb-4"><h3 className="text-sm font-semibold text-gray-700">จำนวนอุปกรณ์ที่เสียหาย</h3>{room.inventory.map(i=><label key={i.id} className="flex items-center gap-3 text-sm text-gray-700"><span className="flex-1">{i.name} · ทั้งหมด {i.total}</span><input aria-label={`จำนวนเสียหาย ${i.name}`} type="number" min={0} max={i.total} value={damaged[i.id]??i.damaged} onChange={e=>setDamaged(v=>({...v,[i.id]:Number(e.target.value)}))} className="w-20 px-3 py-2 bg-white border border-gray-200 rounded-xl"/></label>)}</div>:null}
 
+        {(condition!=='พร้อมใช้งาน'||Object.values(damaged).some(v=>v>0)) && <div className="mb-4 text-sm text-amber-800 bg-amber-50 p-3 rounded-xl"><p>ผลตรวจนี้จะปิดห้องเพื่อปรับปรุง จนกว่าจะตรวจว่าพร้อมใช้งาน</p>{affected.length>0 && <label className="flex gap-2 mt-2"><input type="checkbox" checked={closeAffected} onChange={e=>setCloseAffected(e.target.checked)}/>ยืนยันยกเลิกการจองที่ได้รับผลกระทบและแจ้งผู้จอง ({affected.length} รายการ)</label>}</div>}
         {/* Notes */}
         <div className="mb-4">
           <label className="text-sm font-semibold text-gray-700 mb-1.5 block">หมายเหตุ / ปัญหาที่พบ</label>
