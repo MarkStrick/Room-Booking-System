@@ -55,7 +55,7 @@
 .password-settings form {max-width:480px;margin-top:24px;}
 .password-login .session-error,.password-settings .session-error {margin:0;font-size:14px;line-height:1.8;}
 .password-login .session-google {margin-top:20px;}
-.password-login input:focus-visible,.password-settings input:focus-visible {outline:2px solid #a73b24;outline-offset:3px;}
+.password-login input:focus-visible,.password-settings input:focus-visible {outline:2px solid #0776bc;outline-offset:3px;}
 @media(max-width:700px){.session-page{padding:28px 20px;}.session-content .brand{margin-bottom:28px;}.password-login{margin-top:24px;}.password-settings{padding:20px;}}
 .sandbox-banner {position:sticky;z-index:40;justify-content:space-between;flex-wrap:wrap;min-height:68px;}
 .sandbox-frame .sidebar {top:68px;}

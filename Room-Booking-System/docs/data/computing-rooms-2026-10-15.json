@@ -1,0 +1,404 @@
+{
+  "checkedAt": "2026-10-15",
+  "source": "https://me.computing.kku.ac.th/calendar",
+  "notes": "ความจุ ประเภท และอุปกรณ์มาจากหัวตาราง ชั้นของห้องรหัสตัวเลขอนุมานจากหลักที่สองของรหัสและต้องยืนยันหน้างาน จำนวนชั้นอาคารคือชั้นสูงสุดในชุดข้อมูล ไม่ยืนยันจำนวนชั้นจริงทั้งหมด รหัสห้องที่ไม่มีเลขเป็นรหัสภายใน ไม่ได้นำเข้ารายการจองหรือเวลาทำการ",
+  "buildings": [
+    {
+      "externalId": 1,
+      "name": "อาคารวิทยวิภาส (SC.09) · วิทยาลัยการคอมพิวเตอร์",
+      "floors": 6
+    },
+    {
+      "externalId": 2,
+      "name": "อาคาร SC.06 · วิทยาลัยการคอมพิวเตอร์",
+      "floors": 6
+    }
+  ],
+  "rooms": [
+    {
+      "code": "9126-6",
+      "name": "9126-6",
+      "capacity": 20,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "คอม 1 เครื่อง",
+        "โปรเจกเตอร์",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 1,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9127",
+      "name": "9127",
+      "capacity": 200,
+      "type": "ห้องบรรยาย",
+      "amenities": [
+        "คอม 1 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 1,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9127-5",
+      "name": "9127-5 ห้องสตูดิโอ",
+      "capacity": 5,
+      "type": "ห้องสตูดิโอ",
+      "amenities": [],
+      "externalBuildingId": 1,
+      "floor": 1,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9226",
+      "name": "9226",
+      "capacity": 50,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 30 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 2,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9227",
+      "name": "9227",
+      "capacity": 50,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 54 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 2,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9228",
+      "name": "9228",
+      "capacity": 50,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 54 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 2,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9231",
+      "name": "9231",
+      "capacity": 20,
+      "type": "ห้องประชุม",
+      "amenities": [],
+      "externalBuildingId": 1,
+      "floor": 2,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9421",
+      "name": "9421",
+      "capacity": 65,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 66 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 4,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9422",
+      "name": "9422",
+      "capacity": 65,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 68 เครื่อง",
+        "โปรเจกเตอร์ 4",
+        "ไมค์ลอย 2"
+      ],
+      "externalBuildingId": 1,
+      "floor": 4,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9427",
+      "name": "9427",
+      "capacity": 36,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 32 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 4,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9428",
+      "name": "9428",
+      "capacity": 20,
+      "type": "ห้องประชุม",
+      "amenities": [],
+      "externalBuildingId": 1,
+      "floor": 4,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9524",
+      "name": "9524",
+      "capacity": 45,
+      "type": "ห้องปฏิบัติการเครือข่าย",
+      "amenities": [
+        "คอม 60 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 5,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9525",
+      "name": "9525",
+      "capacity": 120,
+      "type": "ห้องบรรยาย",
+      "amenities": [
+        "คอม 1 เครื่อง",
+        "โปรเจกเตอร์ 4",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 5,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9527",
+      "name": "9527",
+      "capacity": 20,
+      "type": "ห้องบรรยาย",
+      "amenities": [
+        "คอม 32 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 5,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9603",
+      "name": "9603",
+      "capacity": 30,
+      "type": "ห้องปฏิบัติการเครือข่าย",
+      "amenities": [
+        "คอม 56 เครื่อง",
+        "โปรเจกเตอร์ 2"
+      ],
+      "externalBuildingId": 1,
+      "floor": 6,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "9604",
+      "name": "9604",
+      "capacity": 30,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 32 เครื่อง",
+        "โปรเจกเตอร์ 2",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 1,
+      "floor": 6,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "SC09-AUDIO-LAB",
+      "name": "audio lab (ชั้น 5 วิทยวิภาส)",
+      "capacity": 5,
+      "type": "ห้องปฏิบัติการทางเสียง",
+      "amenities": [],
+      "externalBuildingId": 1,
+      "floor": 5,
+      "floorEvidence": "explicit-in-room-name",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1"
+    },
+    {
+      "code": "SC09-MEETING-3",
+      "name": "ห้องประชุมวิทยวิภาส 3",
+      "capacity": 45,
+      "type": "ห้องประชุม",
+      "amenities": [],
+      "externalBuildingId": 1,
+      "floor": 3,
+      "floorEvidence": "official-admissions-document",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=1",
+      "floorSource": "https://app.gs.kku.ac.th/images/img/admissions/2023-2/3801236.pdf"
+    },
+    {
+      "code": "6201",
+      "name": "6201",
+      "capacity": 90,
+      "type": "ห้องบรรยาย",
+      "amenities": [
+        "คอม 1 เครื่อง",
+        "โปรเจกเตอร์",
+        "ทีวี 2"
+      ],
+      "externalBuildingId": 2,
+      "floor": 2,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "6201D",
+      "name": "6201D",
+      "capacity": 10,
+      "type": "ห้องประชุม",
+      "amenities": [],
+      "externalBuildingId": 2,
+      "floor": 2,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "6201E",
+      "name": "6201E",
+      "capacity": 10,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "โปรเจกเตอร์"
+      ],
+      "externalBuildingId": 2,
+      "floor": 2,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "6204",
+      "name": "6204",
+      "capacity": 60,
+      "type": "ห้องบรรยาย",
+      "amenities": [
+        "คอม 1 เครื่อง",
+        "โปรเจกเตอร์"
+      ],
+      "externalBuildingId": 2,
+      "floor": 2,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "6308D",
+      "name": "6308D",
+      "capacity": 3,
+      "type": "ห้องปฏิบัติการทางเสียง",
+      "amenities": [],
+      "externalBuildingId": 2,
+      "floor": 3,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "6323",
+      "name": "6323",
+      "capacity": 25,
+      "type": "ห้องประชุม",
+      "amenities": [
+        "คอม 1 เครื่อง",
+        "โปรเจกเตอร์",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 2,
+      "floor": 3,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "6601A",
+      "name": "6601A",
+      "capacity": 62,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 62 เครื่อง",
+        "โปรเจกเตอร์",
+        "ทีวี 4"
+      ],
+      "externalBuildingId": 2,
+      "floor": 6,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "6601B",
+      "name": "6601B",
+      "capacity": 47,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 48 เครื่อง",
+        "โปรเจกเตอร์",
+        "ทีวี"
+      ],
+      "externalBuildingId": 2,
+      "floor": 6,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "6601C",
+      "name": "6601C",
+      "capacity": 40,
+      "type": "ห้องปฏิบัติการคอมพิวเตอร์",
+      "amenities": [
+        "คอม 40 เครื่อง",
+        "โปรเจกเตอร์",
+        "ไมค์ลอย"
+      ],
+      "externalBuildingId": 2,
+      "floor": 6,
+      "floorEvidence": "inferred-from-room-code",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    },
+    {
+      "code": "SC06-MEETING-F3",
+      "name": "ห้องประชุมเล็กชั้น 3",
+      "capacity": 6,
+      "type": "ห้องประชุม",
+      "amenities": [],
+      "externalBuildingId": 2,
+      "floor": 3,
+      "floorEvidence": "explicit-in-room-name",
+      "source": "https://me.computing.kku.ac.th/calendar?view=day&date=2026-10-15&buildingId=2"
+    }
+  ]
+}

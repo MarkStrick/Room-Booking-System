@@ -6,14 +6,15 @@ export function LandingPage({ signedIn = false }: { signedIn?: boolean }) {
   const [duration, setDuration] = useState(2);
   return <div className="landing">
     <header className="landing-nav">
-      <a href="#/home" className="landing-brand" aria-label="KKU Space หน้าแรก"><img src="/brand/kku-emblem-th.png" alt="ตรามหาวิทยาลัยขอนแก่น" width="30" height="52"/><span>kku<span className="landing-brand-dot">.</span> space<small>มหาวิทยาลัยขอนแก่น</small></span></a>
+      <a href="#/home" className="landing-brand" aria-label="CP SPACE หน้าแรก"><img src="/brand/cp-logo.png" alt="โลโก้วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น" width={305} height={89}/><span>cp<span className="landing-brand-dot">.</span> space<small>วิทยาลัยการคอมพิวเตอร์ · มข.</small></span></a>
       <nav aria-label="เมนูหน้าแรก"><a href="#/rooms">ค้นหาห้อง</a><a className="landing-nav-action" href={signedIn ? '#/history' : '#/login'}>{signedIn ? 'การจองของฉัน' : 'เข้าสู่ระบบ'}<ArrowRight size={16}/></a></nav>
     </header>
     <main>
       <section className="landing-hero" aria-labelledby="landing-title">
         <div className="landing-intro">
+          <p className="landing-eyebrow">CP SPACE · COLLEGE OF COMPUTING</p>
           <h1 id="landing-title">พื้นที่ดี ๆ<br/>สำหรับ<span>ไอเดียต่อไป</span></h1>
-          <p>ประชุม ทำงานกลุ่ม หรือแบ่งปันไอเดีย<br className="landing-desktop-break"/> ค้นหาห้องในมหาวิทยาลัย แล้วเลือกเวลาที่ใช่สำหรับคุณ</p>
+          <p>ประชุม ทำงานกลุ่ม หรือแบ่งปันไอเดีย<br className="landing-desktop-break"/> ค้นหาห้องในวิทยาลัยการคอมพิวเตอร์ แล้วเลือกเวลาที่ใช่สำหรับคุณ</p>
           <div className="landing-actions"><a className="landing-primary" href="#/rooms">ค้นหาห้องว่าง <ArrowRight size={19}/></a><a className="landing-secondary" href="#booking-guide" onClick={e=>{e.preventDefault();document.getElementById('booking-guide')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}}>รู้ก่อนจอง <ArrowDown size={17}/></a></div>
           <div className="landing-hero-rule"><Clock3 size={18}/><span>จองได้ <strong>30 นาที–4 ชั่วโมง</strong> ต่อครั้ง</span></div>
         </div>
@@ -30,10 +31,10 @@ export function LandingPage({ signedIn = false }: { signedIn?: boolean }) {
       </section>
       <section className="landing-guide" id="booking-guide" aria-labelledby="landing-guide-title">
         <div className="landing-guide-title"><h2 id="landing-guide-title">รู้ก่อนจอง<br/><span>แล้วเริ่มได้เลย</span></h2><p>เช็กเงื่อนไขสักนิด เพื่อให้ทุกคน<br/>ใช้พื้นที่ร่วมกันได้อย่างราบรื่น</p></div>
-        <dl className="landing-rules"><div><dt><Clock3 size={21}/> ระยะเวลาต่อครั้ง</dt><dd><strong>30 นาที — 4 ชั่วโมง</strong><p>เลือกช่วงเวลาต่อเนื่องที่ยังว่าง ไม่ทับกับการจองอื่น</p></dd></div><div><dt><CalendarDays size={21}/> วางแผนล่วงหน้า</dt><dd><strong>จองล่วงหน้าได้ไม่เกิน 15 วัน</strong><p>ตรวจเวลาทำการของแต่ละห้อง และวันหยุดก่อนจอง</p></dd></div><div><dt><Users size={21}/> บัญชีสำหรับการจอง</dt><dd><strong>ใช้บัญชี Google ของมหาวิทยาลัย</strong><p>เข้าสู่ระบบก่อนส่งคำขอ และติดตามผลการอนุมัติได้ในระบบ</p></dd></div></dl>
+        <dl className="landing-rules"><div><dt><Clock3 size={21}/> ระยะเวลาต่อครั้ง</dt><dd><strong>30 นาที — 4 ชั่วโมง</strong><p>เลือกช่วงเวลาต่อเนื่องที่ยังว่าง ไม่ทับกับการจองอื่น</p></dd></div><div><dt><CalendarDays size={21}/> วางแผนล่วงหน้า</dt><dd><strong>จองล่วงหน้าได้ไม่เกิน 15 วัน</strong><p>ตรวจเวลาทำการของแต่ละห้อง และวันหยุดก่อนจอง</p></dd></div><div><dt><Users size={21}/> บัญชีสำหรับการจอง</dt><dd><strong>ใช้บัญชี Google ของมหาวิทยาลัย</strong><p>สำหรับนักศึกษา อาจารย์ และบุคลากรวิทยาลัยการคอมพิวเตอร์</p></dd></div></dl>
       </section>
-      <section className="landing-flow" aria-labelledby="landing-flow-title"><div><h2 id="landing-flow-title">จากไอเดีย สู่พื้นที่ของคุณ</h2><p>ค้นหา เลือกเวลา แล้วส่งคำขอจอง</p></div><ol><li><Search size={21}/><span><strong>ค้นหาห้อง</strong><small>เลือกอาคารและขนาดที่เหมาะสม</small></span><ChevronRight size={19}/></li><li><Clock3 size={21}/><span><strong>เลือกช่วงเวลา</strong><small>ตรวจช่วงที่ห้องเปิดและยังว่าง</small></span><ChevronRight size={19}/></li><li><ShieldCheck size={21}/><span><strong>ส่งคำขอจอง</strong><small>ติดตามผลในหน้าการจองของฉัน</small></span></li></ol><a href="#/rooms" className="landing-primary">เริ่มค้นหาห้อง <ArrowRight size={18}/></a></section>
+      <section className="landing-flow" aria-labelledby="landing-flow-title"><div><h2 id="landing-flow-title">จากไอเดีย สู่พื้นที่ของคุณ</h2><p>ค้นหา เลือกเวลา แล้วส่งคำขอจอง</p></div><ol><li><Search size={21}/><span><strong>ค้นหาห้อง</strong><small>เลือกพื้นที่ภายในวิทยาลัยและขนาดห้องที่เหมาะสม</small></span><ChevronRight size={19}/></li><li><Clock3 size={21}/><span><strong>เลือกช่วงเวลา</strong><small>ตรวจช่วงที่ห้องเปิดและยังว่าง</small></span><ChevronRight size={19}/></li><li><ShieldCheck size={21}/><span><strong>ส่งคำขอจอง</strong><small>ติดตามผลในหน้าการจองของฉัน</small></span></li></ol><a href="#/rooms" className="landing-primary">เริ่มค้นหาห้อง <ArrowRight size={18}/></a></section>
     </main>
-    <footer className="landing-footer"><span>kku. space <small>ระบบจองห้องประชุม มหาวิทยาลัยขอนแก่น</small></span><a href="#/rooms">ไปยังหน้าค้นหาห้อง <ArrowRight size={16}/></a></footer>
+    <footer className="landing-footer"><span>cp. space <small>ระบบจองห้องประชุม วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น</small></span><a href="#/rooms">ไปยังหน้าค้นหาห้อง <ArrowRight size={16}/></a></footer>
   </div>;
 }

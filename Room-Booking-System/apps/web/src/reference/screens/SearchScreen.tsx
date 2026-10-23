@@ -1,13 +1,15 @@
+import { computingCatalog } from '../../../../../packages/core/src/space-scope';
 import { HolidayBookingWarning } from '../../components/HolidayBookingWarning';
 import { TimeSelect } from '../components/TimeSelect';
 import { useDemo } from '../../app/DemoProvider';
 import { searchSlotError } from '../../../../../packages/core/src/search';
 import { availability, stamp } from '../../lib/domain';
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { AppHeader } from '../components/PhoneFrame';
 import { Users, MapPin, Clock, Search as SearchIcon, SlidersHorizontal, CalendarDays, DoorOpen, ChevronRight } from 'lucide-react';
 import { RoomImage } from '../components/RoomImage';
+const RoomSchedule = lazy(() => import('../components/RoomSchedule').then(module => ({ default: module.RoomSchedule })));
 
 const searchTimes = Array.from({ length: 17 }, (_, index) => {
   const minutes = 8 * 60 + 30 + index * 30;
@@ -17,19 +19,23 @@ const searchTimes = Array.from({ length: 17 }, (_, index) => {
 export function SearchScreen() {
   const { rooms, navigate, setSelectedRoom, roomAvailable, searchSlot, setSearchSlot, currentUser } = useApp();
   const {state}=useDemo();
+  const catalog = computingCatalog(state);
+  const roomIds = new Set(catalog.rooms.map(room => String(room.id)));
   const [buildingId,setBuildingId]=useState('');
   const [searchText, setSearchText] = useState('');
   const [capacityFilter, setCapacityFilter] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [view, setView] = useState<'rooms' | 'schedule'>('schedule');
   const {date,start:time,end:endT}=searchSlot;
   const dateInput = useRef<HTMLInputElement>(null);
   const isHoliday = state.holidays.includes(date);
   const chooseDate = () => { dateInput.current?.focus(); try { dateInput.current?.showPicker(); } catch {} };
   useEffect(() => {
+    if (view === 'schedule') return;
     const start = searchTimes.includes(time) ? time : '';
     const end = searchTimes.includes(endT) ? endT : '';
     if (start !== time || end !== endT || searchSlot.endDate) setSearchSlot({ ...searchSlot, start, end, endDate: undefined });
-  }, [searchSlot, setSearchSlot, time, endT]);
+  }, [searchSlot, setSearchSlot, time, endT, view]);
   const setDate=(date:string)=>setSearchSlot({...searchSlot,date,endDate:undefined});
   const setTime=(start:string)=>setSearchSlot({...searchSlot,start});
   const setEndT=(end:string)=>setSearchSlot({...searchSlot,end});
@@ -40,6 +46,7 @@ export function SearchScreen() {
     ? state.rooms.some(r => String(r.id) === room.id && r.status === 'AVAILABLE')
     : roomAvailable(room,date,time,endT));
   const filtered = rooms.filter((room) => {
+    if (!roomIds.has(room.id)) return false;
     const matchText = !searchText || room.name.includes(searchText) || room.building.includes(searchText);
     const matchCap = !capacityFilter || room.capacity >= capacityFilter;
     return matchText && matchCap && (!buildingId || state.rooms.find(r=>String(r.id)===room.id)?.buildingId===Number(buildingId));
@@ -65,7 +72,7 @@ export function SearchScreen() {
           <span className="search-welcome-icon"><DoorOpen size={24} strokeWidth={1.75} aria-hidden="true" /></span>
           <div className="search-welcome-copy">
             <p>{isHoliday ? 'ปิดให้บริการในวันที่เลือก' : 'พร้อมให้บริการ'}</p>
-            <p>{isHoliday ? 'วันหยุดมหาวิทยาลัย กรุณาเปลี่ยนวันที่จอง' : 'ค้นหาห้องที่เหมาะกับการประชุมของคุณ'}</p>
+            <p>{isHoliday ? 'วันหยุดมหาวิทยาลัย กรุณาเปลี่ยนวันที่จอง' : 'ค้นหาพื้นที่ของวิทยาลัยการคอมพิวเตอร์'}</p>
           </div>
           <span className="search-availability"><strong>{slotError ? '—' : availableCount}</strong><span>{isHoliday ? 'วันหยุด' : slotError ? 'เลือกเวลา' : 'ห้องว่าง'}</span></span>
         </div>
@@ -81,20 +88,20 @@ export function SearchScreen() {
               aria-label="ค้นหาชื่อห้องหรืออาคาร"
               onChange={(e) => setSearchText(e.target.value)}
               placeholder="ค้นหาชื่อห้อง / อาคาร..."
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red focus:bg-white transition-colors"
+              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-cp-blue focus:bg-white transition-colors"
             />
           </div>
           <button
             onClick={() => setShowFilters((v) => !v)}
             aria-label="ตัวกรองจำนวนผู้เข้าร่วม"
             aria-expanded={showFilters}
-            className={`px-3 rounded-xl border transition-colors ${showFilters ? 'bg-kku-red text-white border-kku-red' : 'bg-gray-50 text-gray-500 border-gray-200'}`}
+            className={`px-3 rounded-xl border transition-colors ${showFilters ? 'bg-cp-blue text-white border-cp-blue' : 'bg-gray-50 text-gray-500 border-gray-200'}`}
           >
             <SlidersHorizontal size={18} />
           </button>
         </div>
 
-<label className="block text-sm text-gray-700 mt-3">อาคาร<select aria-label="อาคาร" value={buildingId} onChange={e=>setBuildingId(e.target.value)} className="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg"><option value="">ทุกอาคาร</option>{state.buildings.filter(b=>b.active!==false).map(b=><option key={b.id} value={b.id}>{b.name}</option>)}</select></label>
+{view === 'rooms' && <><label className="block text-sm text-gray-700 mt-3">อาคาร<select aria-label="อาคาร" value={buildingId} onChange={e=>setBuildingId(e.target.value)} className="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg"><option value="">ทุกอาคาร</option>{catalog.buildings.filter(b=>b.active!==false).map(b=><option key={b.id} value={b.id}>{b.name}</option>)}</select></label>
         <div className="search-date-fields flex gap-2 mt-2.5">
           <label><span className="desktop-field-label">วันที่ต้องการจอง</span>
           <input
@@ -105,7 +112,7 @@ export function SearchScreen() {
             aria-label="วันที่ต้องการจอง"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="reference-date flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-kku-red"
+            className="reference-date flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-cp-blue"
           />
           </label>
           <label><span className="desktop-field-label">เวลาเริ่ม</span>
@@ -115,7 +122,7 @@ export function SearchScreen() {
             allowedTimes={searchTimes}
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            className="w-24 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-kku-red"
+            className="w-24 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-cp-blue"
           />
           </label>
           <label><span className="desktop-field-label">เวลาสิ้นสุด</span>
@@ -125,12 +132,13 @@ export function SearchScreen() {
             allowedTimes={searchTimes}
             value={endT}
             onChange={(e) => setEndT(e.target.value)}
-            className="w-24 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-kku-red"
+            className="w-24 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-cp-blue"
           />
           </label>
         </div>
 
 
+        </>}
         {isHoliday && <HolidayBookingWarning date={date} onChooseDate={chooseDate} />}
 
         {showFilters && (
@@ -142,7 +150,7 @@ export function SearchScreen() {
                   key={cap ?? 'all'}
                   onClick={() => setCapacityFilter(cap)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                    capacityFilter === cap ? 'bg-kku-red text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    capacityFilter === cap ? 'bg-cp-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   {cap === null ? 'ทั้งหมด' : `${cap}+ ท่าน`}
@@ -155,6 +163,11 @@ export function SearchScreen() {
 
       {/* Results */}
       <div className="search-results px-4 py-3">
+        <div className="room-view-switch" role="group" aria-label="รูปแบบการแสดงห้อง">
+          <button type="button" aria-pressed={view === 'rooms'} onClick={() => setView('rooms')}><DoorOpen size={17} />รายการห้อง</button>
+          <button type="button" aria-pressed={view === 'schedule'} onClick={() => setView('schedule')}><CalendarDays size={17} />ตารางคิว</button>
+        </div>
+        {view === 'schedule' ? <Suspense fallback={<p role="status">กำลังโหลดตารางคิว…</p>}><RoomSchedule rooms={filtered} buildingId={buildingId} setBuildingId={setBuildingId} dateInputRef={dateInput} /></Suspense> : <>
         {!isHoliday && slotError && <p role="status" className="text-sm text-gray-600 mb-3">{needsTime ? 'กดแบนเนอร์ห้องเพื่อเลือกวันและเวลาจอง หรือเลือกเวลาที่ด้านบนเพื่อเช็คห้องว่าง' : slotError}</p>}
         <p className="text-sm font-semibold text-gray-700 mb-3">
           พบ {filtered.length} ห้อง{!slotError && ` · ว่าง ${availableCount} ห้องในช่วงเวลาที่เลือก`}
@@ -167,7 +180,7 @@ export function SearchScreen() {
               disabled={!canSelect(room)}
               aria-label={`เลือกวันและเวลาจอง ${room.name}`}
               onClick={() => handleSelect(room)}
-              className="search-room-card w-full bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-kku-red/30 hover:shadow-lg transition-all text-left active:scale-[0.99] group"
+              className="search-room-card w-full bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-cp-blue/30 hover:shadow-lg transition-all text-left active:scale-[0.99] group"
             >
               <div className="search-room-photo relative h-36 overflow-hidden">
                 <RoomImage key={room.imageUrl} src={room.imageUrl} name={room.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -190,7 +203,7 @@ export function SearchScreen() {
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {room.amenities.slice(0, 4).map((a) => (
-                    <span key={a} className="text-[11px] px-2 py-0.5 bg-red-50 text-kku-red rounded-full font-medium">
+                    <span key={a} className="text-[11px] px-2 py-0.5 bg-cp-blue/10 text-cp-blue rounded-full font-medium">
                       {a}
                     </span>
                   ))}
@@ -210,9 +223,10 @@ export function SearchScreen() {
         {filtered.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-gray-400">
             <SearchIcon size={48} strokeWidth={1.5} />
-            <p className="mt-3 text-sm">ไม่พบห้องที่ตรงกับเงื่อนไข</p>
+            <p className="mt-3 text-sm">ไม่พบห้องของ CP ที่ตรงกับเงื่อนไข</p>
           </div>
         )}
+        </>}
       </div>
       </div>
     </div>

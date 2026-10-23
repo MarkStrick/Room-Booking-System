@@ -1,8 +1,12 @@
-# KKU Space — ระบบจองห้องมหาวิทยาลัยขอนแก่น
+# CP SPACE — ระบบจองห้องวิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น
+
+ปรับขอบเขตเป็น CP SPACE: หน้าค้นหาและผู้ช่วยแนะนำเฉพาะพื้นที่วิทยาลัยการคอมพิวเตอร์ ฐานใช้งานเหลือข้อมูลจริง 28 ห้องใน 2 อาคาร หลังลบชุดห้องตัวอย่างและข้อมูลเก่าตามคำขอเจ้าของระบบ ดู [แหล่งข้อมูลและการนำเข้า](docs/COMPUTING_ROOM_IMPORT.md)
+
+นำเข้าห้องจริงจากปฏิทินวิทยาลัยแล้ว 28 ห้องใน SC.09 และ SC.06 พร้อมประเภท ความจุ และอุปกรณ์ ดู [แหล่งข้อมูล ข้อจำกัดเรื่องชั้น และวิธีนำเข้า](docs/COMPUTING_ROOM_IMPORT.md)
 
 อัปเดตตาม Term Project: ฐานจริงมี schema `kku_booking` 18 ตารางและ Foreign Key 26 จุด บันทึกพร้อม command data ใน Transaction เดียวกัน เพิ่มบันทึกรายงานย้อนหลังและเลิกใช้งานอุปกรณ์โดยรักษาประวัติ ดู [ผลเทียบข้อกำหนดและการทดสอบ](docs/TERM_PROJECT_COMPLIANCE.md)
 
-เว็บ React + TypeScript + Vite เชื่อม NestJS API และ worker ใช้ Google OpenID Connect เป็นช่องทางเข้าสู่ระบบเดียว หน้ามือถือยึดต้นแบบ `Ui News/booking_room_kku` ใช้สี `#A4233B` และฟอนต์ Sarabun ดู [รายละเอียด Mobile UI และ Google Login](docs/MOBILE_UI_GOOGLE_LOGIN.md)
+เว็บ React + TypeScript + Vite เชื่อม NestJS API และ worker ใช้ Google OpenID Connect เป็นช่องทางเข้าสู่ระบบเดียว หน้ามือถือยึดต้นแบบ `Ui News/booking_room_kku` ใช้สีน้ำเงิน CP `#0776BC` และฟอนต์ Sarabun ดู [รายละเอียด Mobile UI และ Google Login](docs/MOBILE_UI_GOOGLE_LOGIN.md)
 
 เวอร์ชันวันที่ **11 ต.ค. 2569** ใช้การเข้าสู่ระบบจริงเสมอ ปิดบัญชีทดสอบแบบเลือกบัญชีโดยตรง พื้นที่จำลองเปิดหลังตรวจ ADMIN session และแยกข้อมูลในหน่วยความจำ ไม่มีการเขียนฐานจริง เตรียม API/cron/security headers สำหรับ Vercel แล้ว แต่ยังไม่ Deploy ตามคำสั่งผู้ใช้ ดู [คู่มือ Vercel และรายการที่ยังต้องตั้ง](docs/VERCEL_SETUP.md)
 

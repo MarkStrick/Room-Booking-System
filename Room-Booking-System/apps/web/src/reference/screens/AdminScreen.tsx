@@ -78,7 +78,7 @@ export function AdminScreen() {
             key={tab.key}
             onClick={() => setFilter(tab.key)}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors whitespace-nowrap ${
-              filter === tab.key ? 'bg-kku-red text-white' : 'bg-gray-100 text-gray-500'
+              filter === tab.key ? 'bg-cp-blue text-white' : 'bg-gray-100 text-gray-500'
             }`}
           >
             {tab.label}
@@ -97,7 +97,7 @@ export function AdminScreen() {
               <div key={booking.id} className="bg-white rounded-2xl border border-gray-100 p-4 animate-slide-up">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-kku-red to-kku-red-dark flex items-center justify-center text-white font-bold text-xs shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cp-blue to-cp-blue-dark flex items-center justify-center text-white font-bold text-xs shrink-0">
                       {booking.userName.charAt(0)}
                     </div>
                     <div>
@@ -116,9 +116,9 @@ export function AdminScreen() {
                     <MapPin size={12} /> {booking.building}
                   </p>
                   <div className="grid grid-cols-3 gap-2 text-xs text-gray-600">
-                    <span className="flex items-center gap-1"><Calendar size={13} className="text-kku-red" />{booking.date}</span>
-                    <span className="flex items-center gap-1"><Clock size={13} className="text-kku-red" />{booking.startTime}–{booking.endDate&&booking.endDate!==booking.date?booking.endDate+' ':''}{booking.endTime}</span>
-                    <span className="flex items-center gap-1"><Users size={13} className="text-kku-red" />{booking.participants} ท่าน</span>
+                    <span className="flex items-center gap-1"><Calendar size={13} className="text-cp-blue" />{booking.date}</span>
+                    <span className="flex items-center gap-1"><Clock size={13} className="text-cp-blue" />{booking.startTime}–{booking.endDate&&booking.endDate!==booking.date?booking.endDate+' ':''}{booking.endTime}</span>
+                    <span className="flex items-center gap-1"><Users size={13} className="text-cp-blue" />{booking.participants} ท่าน</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-2 flex items-start gap-1">
                     <FileText size={13} className="text-gray-400 mt-0.5 shrink-0" />
@@ -193,7 +193,7 @@ export function AdminScreen() {
               onClick={() => setRejectReason(reason)}
               className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm border transition-colors ${
                 rejectReason === reason
-                  ? 'border-kku-red bg-red-50 text-kku-red font-semibold'
+                  ? 'border-cp-blue bg-cp-blue/10 text-cp-blue font-semibold'
                   : 'border-gray-200 text-gray-600 hover:border-gray-300'
               }`}
             >
@@ -208,7 +208,7 @@ export function AdminScreen() {
             onChange={(e) => setRejectReason(e.target.value)}
             placeholder="หรือระบุเหตุผลอื่นๆ..."
             rows={2}
-            className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red resize-none"
+            className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-cp-blue resize-none"
           />
         </div>
 

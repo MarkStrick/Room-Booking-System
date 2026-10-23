@@ -88,7 +88,7 @@ export function BookingScreen() {
             <CheckCircle2 size={44} className="text-green-600" />
           </div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">ส่งคำขอจองแล้ว</h2>
-          <p className="text-sm font-semibold text-kku-red mb-3">เลขที่จอง {bookings.filter(b=>b.userId===currentUser.id&&b.roomId===selectedRoom.id&&b.date===date&&b.startTime===startTime).sort((a,b)=>Number(b.id)-Number(a.id))[0]?.ref}</p>
+          <p className="text-sm font-semibold text-cp-blue mb-3">เลขที่จอง {bookings.filter(b=>b.userId===currentUser.id&&b.roomId===selectedRoom.id&&b.date===date&&b.startTime===startTime).sort((a,b)=>Number(b.id)-Number(a.id))[0]?.ref}</p>
           <p className="text-sm text-gray-500 mb-1">คำขอของคุณถูกส่งไปยังผู้ดูแลแล้ว</p>
           <p className="text-sm text-gray-500 mb-8">ติดตามผลการพิจารณาได้ที่ประวัติการจอง</p>
           <Button onClick={() => navigate('history')} size="lg" className="w-full">
@@ -133,7 +133,7 @@ export function BookingScreen() {
           {room?.hours && <p className="text-sm text-gray-600">เปิด {room.hours.start}–{room.hours.end} น. · {room.hours.weekdays.map(d=>['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'][d]).join(' ')}{room.hours.leadMinutes ? ` · จองล่วงหน้าอย่างน้อย ${room.hours.leadMinutes} นาที` : ''}</p>}
           <div>
             <label className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
-              <Calendar size={16} className="text-kku-red" /> วันที่ต้องการจอง
+              <Calendar size={16} className="text-cp-blue" /> วันที่ต้องการจอง
             </label>
             <input
               ref={dateInput}
@@ -146,7 +146,7 @@ export function BookingScreen() {
               disabled={busy}
               onChange={e=>setDate(e.target.value)}
               aria-describedby={isHoliday ? "holiday-booking-warning" : "booking-time-feedback"}
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors"
+              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-cp-blue transition-colors"
             />
           </div>
 
@@ -155,7 +155,7 @@ export function BookingScreen() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
-                <Clock size={16} className="text-kku-red" /> เวลาเริ่ม
+                <Clock size={16} className="text-cp-blue" /> เวลาเริ่ม
               </label>
               <TimeSelect
                 aria-label="เวลาเริ่ม"
@@ -164,12 +164,12 @@ export function BookingScreen() {
                 disabled={busy || isHoliday || timeOptions.starts.length === 0}
                 onChange={e=>setStartTime(e.target.value)}
                 aria-describedby={isHoliday ? "holiday-booking-warning" : "booking-time-feedback"}
-                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors"
+                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-cp-blue transition-colors"
               />
             </div>
             <div>
               <label className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
-                <Clock size={16} className="text-kku-red" /> เวลาสิ้นสุด
+                <Clock size={16} className="text-cp-blue" /> เวลาสิ้นสุด
               </label>
               <TimeSelect
                 aria-label="เวลาสิ้นสุด"
@@ -178,7 +178,7 @@ export function BookingScreen() {
                 disabled={busy || isHoliday || !validStart || timeOptions.ends.length === 0}
                 onChange={e=>setEndTime(e.target.value)}
                 aria-describedby={isHoliday ? "holiday-booking-warning" : "booking-time-feedback"}
-                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors"
+                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-cp-blue transition-colors"
               />
             </div>
           </div>
@@ -188,7 +188,7 @@ export function BookingScreen() {
           {reserved.length > 0 && <div className="text-sm text-gray-600"><p className="font-semibold">ช่วงเวลาที่มีการจองแล้ว</p>{reserved.map(b=><p key={b.id}>{time(b.start)}–{time(b.end)} น.</p>)}</div>}
           <div>
             <label className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
-              <Users size={16} className="text-kku-red" /> จำนวนผู้เข้าร่วม
+              <Users size={16} className="text-cp-blue" /> จำนวนผู้เข้าร่วม
             </label>
             <div className="flex items-center gap-3">
               <button
@@ -206,7 +206,7 @@ export function BookingScreen() {
                 onBlur={(e) => {
                   if (e.target.value === '') setParticipants(1);
                 }}
-                className="w-full text-center px-3 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:border-kku-red"
+                className="w-full text-center px-3 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:border-cp-blue"
               />
               <button
                 onClick={() => setParticipants((v) => v + 1)}
@@ -224,7 +224,7 @@ export function BookingScreen() {
 
           <div>
             <label className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
-              <FileText size={16} className="text-kku-red" /> วัตถุประสงค์ / หัวข้อประชุม
+              <FileText size={16} className="text-cp-blue" /> วัตถุประสงค์ / หัวข้อประชุม
             </label>
             <textarea
               value={purpose}
@@ -233,13 +233,13 @@ export function BookingScreen() {
               onChange={(e) => setPurpose(e.target.value)}
               placeholder="ระบุหัวข้อหรือวัตถุประสงค์ของการประชุม..."
               rows={3}
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red transition-colors resize-none"
+              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-cp-blue transition-colors resize-none"
             />
           </div>
 
           <div>
             <label className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
-              <ImageIcon size={16} className="text-kku-red" /> เอกสารแนบ (ถ้ามี)
+              <ImageIcon size={16} className="text-cp-blue" /> เอกสารแนบ (ถ้ามี)
             </label>
             <button
               disabled
@@ -264,7 +264,7 @@ export function BookingScreen() {
                       disabled={busy || item.remaining <= 0} value={quantities[item.id] ?? 0}
                       aria-invalid={!!message} aria-describedby={message ? feedbackId : undefined}
                       onChange={event => setQuantities(q => ({...q, [item.id]: Number(event.target.value)}))}
-                      className={'w-20 px-3 py-2 bg-white border rounded-xl focus:outline-none ' + (message ? 'border-red-600 focus:border-red-600' : 'border-gray-200 focus:border-kku-red')} />
+                      className={'w-20 px-3 py-2 bg-white border rounded-xl focus:outline-none ' + (message ? 'border-red-600 focus:border-red-600' : 'border-gray-200 focus:border-cp-blue')} />
                   </label>
                   {message && <p id={feedbackId} role="alert" className="mt-1 text-sm text-red-600">{message}</p>}
                 </div>;

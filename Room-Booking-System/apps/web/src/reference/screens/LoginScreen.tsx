@@ -7,20 +7,20 @@ export function LoginScreen({ loading, googleReady, error, retry, allowedDomains
     <div className="reference-ui login-page-shell">
       <main className="login-scene">
         <header className="login-topbar">
-          <a href="#/home" className="login-wordmark">kku<span>.</span> space</a>
+          <a href="#/home" className="login-wordmark">cp<span>.</span> space</a>
           <a href="#/rooms" className="login-browse">ค้นหาห้อง <ArrowUpRight size={16} aria-hidden="true" /></a>
         </header>
         <div className="login-layout">
           <section className="login-brand" aria-labelledby="login-brand-title">
-            <div className="login-emblem"><img src="/brand/kku-emblem-th.png" width="82" height="146" alt="ตราสัญลักษณ์มหาวิทยาลัยขอนแก่น" /></div>
-            <p className="login-eyebrow">KHON KAEN UNIVERSITY</p>
+            <div className="login-emblem"><img src="/brand/cp-logo.png" width={305} height={89} alt="โลโก้วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น" /></div>
+            <p className="login-eyebrow">COLLEGE OF COMPUTING · KKU</p>
             <h1 id="login-brand-title">พื้นที่สำหรับทุกไอเดีย<span>เริ่มต้นที่นี่</span></h1>
-            <p className="login-brand-description">ระบบจองห้องประชุม มหาวิทยาลัยขอนแก่น</p>
+            <p className="login-brand-description">ระบบจองห้องประชุม วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น</p>
           </section>
           <section className="login-glass-card" aria-labelledby="login-title" aria-busy={loading}>
-            <p className="login-card-eyebrow">ยินดีต้อนรับสู่ KKU Space</p>
+            <p className="login-card-eyebrow">ยินดีต้อนรับสู่ CP SPACE</p>
             <h2 id="login-title">เข้าสู่ระบบ</h2>
-            <p className="login-intro">เข้าสู่ระบบเพื่อจองห้องและจัดการการจองของคุณ</p>
+            <p className="login-intro">สำหรับนักศึกษา อาจารย์ และบุคลากรวิทยาลัยการคอมพิวเตอร์</p>
             <p className="login-domains">{allowedDomains.length ? `ใช้บัญชี Google ${allowedDomains.map(domain=>`@${domain}`).join(' หรือ ')}` : 'ใช้บัญชี Google ของคุณ'}</p>
             {error && <p role="alert" className="login-message login-error">{error}</p>}
 
@@ -46,7 +46,7 @@ export function LoginScreen({ loading, googleReady, error, retry, allowedDomains
             <p className="login-terms">การเข้าสู่ระบบแสดงว่าคุณยอมรับ<br />ข้อกำหนดและเงื่อนไขการใช้งาน</p>
           </section>
         </div>
-        <footer className="login-footer"><span>มหาวิทยาลัยขอนแก่น</span><span>KKU Space · ระบบจองห้องประชุม</span></footer>
+        <footer className="login-footer"><span>วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น</span><span>CP SPACE · ระบบจองห้องประชุม</span></footer>
       </main>
     </div>
   );

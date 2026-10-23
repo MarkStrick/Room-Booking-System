@@ -1,12 +1,12 @@
-/* KKU red-earth primary follows https://www.kku.ac.th/en/about/emblem. */
+/* CP blue sampled from the official College of Computing logo. */
 :root {
   font-family: "Sarabun", "Noto Sans Thai", "Inter", system-ui, sans-serif;
   color: #302c29;
   background: #f8f7f4;
   font-synthesis: none;
-  --primary: #a73b24;
-  --primary-dark: #852c1a;
-  --primary-soft: #f6eae5;
+  --primary: #0776bc;
+  --primary-dark: #055a91;
+  --primary-soft: #e8f4fc;
   --ink: #302c29;
   --muted: #756c62;
   --line: #e9e5de;
@@ -843,7 +843,7 @@ tbody tr:hover {
   position: absolute;
   width: 37px;
   height: 45px;
-  background: #a73b24;
+  background: #0776bc;
   border-radius: 8px 8px 2px 2px;
   box-shadow: 2px 14px 0 -9px #5f4d3c;
   transform: skewY(7deg);
@@ -3463,16 +3463,18 @@ tbody tr:hover {
   box-shadow: 0 6px 24px rgba(20, 28, 45, .14);
   font-size: 15px; font-weight: 600; line-height: 1.5; cursor: pointer;
 }
-.holiday-poster-dismiss input { width: 18px; height: 18px; flex-shrink: 0; accent-color: #a4233b; }
+.holiday-poster-dismiss input { width: 18px; height: 18px; flex-shrink: 0; accent-color: #0776bc; }
 .holiday-upload > label { display: block; }
 .holiday-upload input[type="file"] { display: block; width: 100%; margin-top: 8px; }
 .holiday-booking-warning,
-.reference-ui .holiday-booking-warning { display: flex; gap: 12px; margin-top: 12px; padding: 16px; border: 1px solid #e7acb5; border-left: 4px solid #a4233b; border-radius: 14px; background: #fff0f2; color: #811c30; }
+.reference-ui .holiday-booking-warning { display: flex; gap: 12px; margin-top: 12px; padding: 16px; border: 1px solid #e7acb5; border-left: 4px solid #b4233b; border-radius: 14px; background: #fff0f2; color: #811c30; }
 .holiday-booking-warning > svg { flex-shrink: 0; margin-top: 2px; }
 .holiday-booking-warning strong { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
 .holiday-booking-warning p { margin: 6px 0 10px; font-size: 14px; line-height: 1.6; color: #811c30; }
 .reference-ui .holiday-booking-warning button,
-.holiday-booking-warning button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px; border: 1px solid #a4233b; border-radius: 8px; background: #a4233b; color: #fff; font-size: 14px; font-weight: 600; }
+.holiday-booking-warning button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px; border: 1px solid #0776bc; border-radius: 8px; background: #0776bc; color: #fff; font-size: 14px; font-weight: 600; }
 .reference-ui .search-controls input[type="date"][aria-invalid="true"],
-.reference-ui .booking-form-fields input[type="date"][aria-invalid="true"] { border: 2px solid #a4233b; background: #fff0f2; color: #811c30; }
+.reference-ui .booking-form-fields input[type="date"][aria-invalid="true"] { border: 2px solid #b4233b; background: #fff0f2; color: #811c30; }
 .reference-ui .search-date-fields select:disabled { opacity: .55; cursor: not-allowed; }
+
+.university-brand img { width: 112px; height: auto; padding: 8px; background: #103b64; border-radius: 8px; }

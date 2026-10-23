@@ -104,7 +104,7 @@ export function Help() {
               <HelpCircle size={21} />
             </div>
             <div>
-              <strong>KKU Space Assistant</strong>
+              <strong>CP SPACE Assistant</strong>
               <small>ค้นหาคำตอบจากคำถามที่พบบ่อย</small>
             </div>
             <span className="online-dot" />

@@ -52,7 +52,7 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
   if (showBack) {
     return (
       <div className="reference-page-header flex items-center gap-3 px-4 h-14 bg-white border-b border-gray-100 shrink-0 z-10">
-        <button onClick={goBack} aria-label="กลับหน้าก่อนหน้า" className="p-1 -ml-1 text-gray-700 hover:text-kku-red transition-colors">
+        <button onClick={goBack} aria-label="กลับหน้าก่อนหน้า" className="p-1 -ml-1 text-gray-700 hover:text-cp-blue transition-colors">
           <ChevronLeft size={24} />
         </button>
         <h1 className="text-lg font-bold text-gray-900 flex-1 truncate">
@@ -66,15 +66,15 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
     <div className="reference-app-header relative bg-white border-b border-gray-100 shrink-0 z-20">
       <div className="h-[72px] px-4 flex items-center gap-3">
         <div className="reference-header-brand flex items-center gap-2.5 min-w-0">
-          <img className="reference-university-emblem" src="/brand/kku-emblem-th.png" width={32} height={56} alt="ตราสัญลักษณ์มหาวิทยาลัยขอนแก่น" />
-          <span className="text-[25px] leading-none font-black tracking-tight text-gray-900">kku<span className="text-kku-red">.</span></span>
+          <img className="reference-university-emblem" src="/brand/cp-logo.png" width={305} height={89} alt="โลโก้วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น" />
+          <span className="text-[25px] leading-none font-black tracking-tight text-gray-900">cp<span className="text-cp-blue">.</span></span>
         </div>
         <div className="reference-header-divider h-9 w-px bg-gray-200" />
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-bold">พื้นที่ทำงาน</p>
+          <p className="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-bold">CP SPACE</p>
           <p className="text-sm font-bold text-gray-800 truncate">ระบบจองห้องประชุม</p>
         </div>
-<button hidden={currentUser.id!=='0'} onClick={()=>navigate('login')} className="text-sm font-semibold text-kku-red">เข้าสู่ระบบ</button>
+<button hidden={currentUser.id!=='0'} onClick={()=>navigate('login')} className="text-sm font-semibold text-cp-blue">เข้าสู่ระบบ</button>
         {currentUser.id!=='0' && (
           <div className="relative">
             <button
@@ -83,7 +83,7 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
               aria-label="เปิดเมนูบัญชี"
               aria-expanded={profileOpen}
             >
-              <span className="w-9 h-9 rounded-full bg-red-50 text-kku-red flex items-center justify-center font-bold ring-2 ring-red-50">{currentUser.name.charAt(0)}</span>
+              <span className="w-9 h-9 rounded-full bg-cp-blue/10 text-cp-blue flex items-center justify-center font-bold ring-2 ring-cp-blue/10">{currentUser.name.charAt(0)}</span>
               <span className="reference-account-name">{currentUser.name}</span>
               <ChevronDown size={16} className={`text-gray-500 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -107,7 +107,7 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
                   onClick={() => void signOut()}
                   disabled={loggingOut}
                   aria-busy={loggingOut}
-                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-red-50 text-kku-red text-sm font-semibold hover:bg-red-100 transition-colors"
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-cp-blue/10 text-cp-blue text-sm font-semibold hover:bg-cp-blue/20 transition-colors"
                 >
                   <LogOut size={17} /> {loggingOut ? 'กำลังออกจากระบบ…' : 'ออกจากระบบ'}
                 </button>
@@ -118,19 +118,19 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
       </div>
       <div className="h-11 px-4 flex items-center gap-2 bg-gray-50/80 border-t border-gray-100">
         <Grid2X2 size={17} className="text-gray-400" />
-        <span className="text-sm text-gray-500"><span className="reference-mobile-copy">Workspace</span><span className="reference-desktop-copy">พื้นที่มหาวิทยาลัย</span></span>
+        <span className="text-sm text-gray-500"><span className="reference-mobile-copy">CP SPACE</span><span className="reference-desktop-copy">พื้นที่วิทยาลัยการคอมพิวเตอร์</span></span>
         <ChevronRight size={15} className="text-gray-300" />
         <span className="text-sm font-bold text-gray-800 truncate">{title ?? screenLabels[screen]}</span>
         <div className="ml-auto flex items-center gap-1">
           <span className="reference-refresh-status" role="status">{refreshing ? 'กำลังอัปเดต…' : ''}</span>
-          <button onClick={()=>void refreshData()} disabled={refreshing} aria-busy={refreshing} className="reference-refresh-button p-1.5 rounded-lg text-gray-400 hover:text-kku-red hover:bg-white transition-colors" aria-label={refreshing ? 'กำลังรีเฟรชข้อมูล' : 'รีเฟรช'} title={refreshing ? 'กำลังอัปเดตข้อมูล' : 'อัปเดตข้อมูลล่าสุด'}>
+          <button onClick={()=>void refreshData()} disabled={refreshing} aria-busy={refreshing} className="reference-refresh-button p-1.5 rounded-lg text-gray-400 hover:text-cp-blue hover:bg-white transition-colors" aria-label={refreshing ? 'กำลังรีเฟรชข้อมูล' : 'รีเฟรช'} title={refreshing ? 'กำลังอัปเดตข้อมูล' : 'อัปเดตข้อมูลล่าสุด'}>
             <RefreshCw size={18} className={refreshing ? 'reference-refresh-spin' : ''} aria-hidden="true" />
           </button>
   
         {currentUser.id!=='0' && (
-            <button onClick={() => navigate('notifications')} className={`${role==='USER'?'reference-user-notifications':''} relative p-1.5 rounded-lg text-gray-400 hover:text-kku-red hover:bg-white transition-colors`} aria-label="การแจ้งเตือน">
+            <button onClick={() => navigate('notifications')} className={`${role==='USER'?'reference-user-notifications':''} relative p-1.5 rounded-lg text-gray-400 hover:text-cp-blue hover:bg-white transition-colors`} aria-label="การแจ้งเตือน">
               <Bell size={19} />
-              {unreadNotificationCount > 0 && <span className="absolute -top-0.5 -right-0.5 min-w-[15px] h-[15px] px-0.5 bg-kku-red text-white text-[9px] font-bold rounded-full flex items-center justify-center">{unreadNotificationCount > 9 ? '9+' : unreadNotificationCount}</span>}
+              {unreadNotificationCount > 0 && <span className="absolute -top-0.5 -right-0.5 min-w-[15px] h-[15px] px-0.5 bg-cp-blue text-white text-[9px] font-bold rounded-full flex items-center justify-center">{unreadNotificationCount > 9 ? '9+' : unreadNotificationCount}</span>}
             </button>
           )}
         </div>
@@ -155,7 +155,7 @@ import { Search, History, MessageCircle, ShieldCheck } from 'lucide-react';
 
 export function BottomNav() {
   const { screen, navigate, currentUser } = useApp();
-  if (currentUser.id==='0') return <div className="reference-bottom-nav p-3 bg-white border-t border-gray-100 text-center text-sm"><button className="text-kku-red font-semibold" onClick={()=>navigate('login')}>เข้าสู่ระบบเพื่อจองห้อง</button></div>;
+  if (currentUser.id==='0') return <div className="reference-bottom-nav p-3 bg-white border-t border-gray-100 text-center text-sm"><button className="text-cp-blue font-semibold" onClick={()=>navigate('login')}>เข้าสู่ระบบเพื่อจองห้อง</button></div>;
   if (screen === 'login' || screen === 'booking' || screen === 'checklist' || screen === 'notifications' || screen === 'accessDenied') return null;
 
   const isAdmin = currentUser?.role === 'admin';
@@ -171,10 +171,10 @@ export function BottomNav() {
             key={item.screen}
             onClick={() => navigate(item.screen)}
             aria-current={active ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0.5 px-3 py-1.5 transition-colors ${active ? 'text-kku-red' : 'text-gray-400'}`}
+            className={`flex flex-col items-center gap-0.5 px-3 py-1.5 transition-colors ${active ? 'text-cp-blue' : 'text-gray-400'}`}
           >
             <Icon size={22} strokeWidth={active ? 2.5 : 2} />
-            <span className={`text-[11px] font-semibold ${active ? 'text-kku-red' : 'text-gray-400'}`}>
+            <span className={`text-[11px] font-semibold ${active ? 'text-cp-blue' : 'text-gray-400'}`}>
               {item.label}
             </span>
           </button>

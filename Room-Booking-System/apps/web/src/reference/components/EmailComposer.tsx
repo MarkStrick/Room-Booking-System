@@ -17,7 +17,7 @@ export function EmailComposer() {
   const owner=recipients.find(u=>u.email===recipient);
   const bookings=state.bookings.filter(b=>b.userId===owner?.id && (kind!=='CANCELLATION'||b.status==='CANCELLED') && (kind!=='REMINDER'||b.status==='APPROVED'));
   return <section className="email-composer mb-4 bg-white border border-gray-200 rounded-xl p-4">
-    <button className="flex items-center gap-2 text-sm font-semibold text-kku-red" aria-expanded={open} onClick={()=>setOpen(v=>!v)}><Mail size={18}/>ส่งอีเมลแจ้งเตือน</button>
+    <button className="flex items-center gap-2 text-sm font-semibold text-cp-blue" aria-expanded={open} onClick={()=>setOpen(v=>!v)}><Mail size={18}/>ส่งอีเมลแจ้งเตือน</button>
     {open&&<form className="space-y-3 mt-4 text-sm text-gray-700" onSubmit={e=>{e.preventDefault();void perform(async()=>{await run({type:'SEND_NOTICE',recipientEmail:recipient,notificationType:kind,bookingId:kind==='GENERAL'?undefined:Number(bookingId),message:kind==='GENERAL'?message:undefined},'เพิ่มอีเมลลงคิวแล้ว');},()=>setOpen(false));}}>
       <p role="status">{mode==='demo'?'พื้นที่ทดสอบ: จำลองการเข้าคิวอีเมล':loadError||ready===null?'กำลังตรวจการเชื่อมต่ออีเมล…':ready?'พร้อมเข้าคิวส่งผ่านบริการอีเมล':'ยังไม่ได้เชื่อมบริการอีเมล กรุณาติดต่อผู้ดูแลระบบ'}{loadError&&` ${loadError}`}</p>
       <label className="block">อีเมลผู้รับ<select className="w-full border rounded-lg p-2 mt-1" aria-label="อีเมลผู้รับ" value={recipient} onChange={e=>{setRecipient(e.target.value);setBookingId('');}}>{recipients.map(u=><option key={u.id} value={u.email}>{u.email}</option>)}</select></label>

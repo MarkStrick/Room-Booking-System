@@ -55,6 +55,7 @@ export const DemoContext = createContext<DemoContextValue | null>(null);
 const subscribeHash=(cb:()=>void)=>{window.addEventListener('hashchange',cb);return ()=>window.removeEventListener('hashchange',cb);};
 const currentHash=()=>location.hash;
 const AdminSandbox = lazy(() => import("./AdminSandbox"));
+const AUTO_REFRESH_MS = 60_000;
 export function DemoProvider({ children }: { children: ReactNode }) {
   return <ServerProvider>{children}</ServerProvider>;
 }
@@ -80,7 +81,9 @@ function ServerProvider({ children }: { children: ReactNode }) {
   const refreshAbort = useRef<AbortController | null>(null);
   const logoutPending = useRef<Promise<void> | null>(null);
   const loadAbort = useRef<AbortController | null>(null);
+  const lastUpdatedAt = useRef(0);
   function update(value: Session | null) {
+    if (value) lastUpdatedAt.current = Date.now();
     if (value?.user.role !== "ADMIN") setSandbox(false);
     sessionRef.current = value;
     setSession(value);
@@ -106,7 +109,10 @@ function ServerProvider({ children }: { children: ReactNode }) {
       update(current);
       if(!current) {
         const publicCatalog = await request<AppState>("/public/catalog", options);
-        if (mounted.current && version === generation.current) setCatalog(publicCatalog);
+        if (mounted.current && version === generation.current) {
+          setCatalog(publicCatalog);
+          lastUpdatedAt.current = Date.now();
+        }
       }
     } catch (e) {
       if (mounted.current && version === generation.current && !controller.signal.aborted) setError((e as Error).message);
@@ -150,6 +156,7 @@ function ServerProvider({ children }: { children: ReactNode }) {
         const catalog = await request<AppState>("/public/catalog", options);
         if (!mounted.current || version !== generation.current) return;
         setCatalog(catalog);
+        lastUpdatedAt.current = Date.now();
         if (manual) showToast('อัปเดตข้อมูลล่าสุดแล้ว', 'success');
       }
       catch(e){if (mounted.current && version === generation.current && !controller.signal.aborted && manual) showToast((e as Error).message, 'error');}
@@ -177,12 +184,10 @@ function ServerProvider({ children }: { children: ReactNode }) {
   }
   useEffect(() => {
     if (!session && !catalog) return;
-    const timer = setInterval(() => {
-      if (document.visibilityState === 'visible') void refresh();
-    }, 15000);
     const focus = () => {
-      void refresh();
+      if (document.visibilityState === 'visible' && Date.now() - lastUpdatedAt.current >= AUTO_REFRESH_MS) void refresh();
     };
+    const timer = setInterval(focus, AUTO_REFRESH_MS);
     window.addEventListener("focus", focus);
     return () => {
       clearInterval(timer);

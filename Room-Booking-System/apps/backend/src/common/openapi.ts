@@ -37,7 +37,7 @@ export function openApi(cookie: string) {
   return {
     openapi: "3.1.0",
     info: {
-      title: "KKU Space API",
+      title: "CP SPACE API",
       version: "0.3.0",
       description:
         "API ของระบบปัจจุบัน ใช้ session cookie, CSRF และ transaction พร้อม idempotency สำหรับคำสั่ง",

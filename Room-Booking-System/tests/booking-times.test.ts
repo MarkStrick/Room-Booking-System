@@ -25,6 +25,8 @@ test('offers only open times, including exact opening/closing boundaries and val
   const early = bookingTimeOptions(state, room, '2026-10-14', false, '08:15');
   assert.ok(!early.ends.includes('08:30'));
   assert.ok(!early.ends.includes('12:30'));
+  assert.ok(early.ends.includes('08:45'));
+  assert.ok(bookingTimeOptions(state, room, '2026-10-14', false).starts.includes('16:45'));
 });
 
 test('blocks pending bookings and closures across whole interval; adjacent endpoints are allowed', () => {

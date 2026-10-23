@@ -1,10 +1,10 @@
 ---
-name: "KKU Room Booking — Mobile Reference"
+name: "CP SPACE — Mobile Reference"
 description: "The adopted mobile visual system from Ui News/booking_room_kku."
 colors:
-  kku-red: "#A4233B"
-  kku-red-dark: "#8B1E32"
-  kku-gold: "#F5B82E"
+  cp-blue: "#0776BC"
+  cp-blue-dark: "#055A91"
+  cp-sky: "#6CC7EF"
   white: "#ffffff"
   gray-50: "#f9fafb"
   gray-100: "#f3f4f6"
@@ -86,16 +86,16 @@ spacing:
   "8": "32px"
 components:
   button-primary:
-    backgroundColor: "{colors.kku-red}"
+    backgroundColor: "{colors.cp-blue}"
     textColor: "{colors.white}"
     typography: "{typography.label}"
     rounded: "{rounded.xl}"
     padding: "10px 16px"
   button-primary-hover:
-    backgroundColor: "{colors.kku-red-dark}"
+    backgroundColor: "{colors.cp-blue-dark}"
   button-secondary:
     backgroundColor: "{colors.white}"
-    textColor: "{colors.kku-red}"
+    textColor: "{colors.cp-blue}"
     typography: "{typography.label}"
     rounded: "{rounded.xl}"
     padding: "10px 16px"
@@ -124,7 +124,7 @@ components:
     height: "64px"
   amenity-chip:
     backgroundColor: "{colors.red-50}"
-    textColor: "{colors.kku-red}"
+    textColor: "{colors.cp-blue}"
     rounded: "{rounded.full}"
     padding: "2px 8px"
   google-button:
@@ -137,7 +137,7 @@ components:
     padding: "28px 24px 32px"
 ---
 
-# Design System: KKU Room Booking — Mobile Reference
+# Design System: CP SPACE — Mobile Reference
 
 ## Overview
 

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5ef">
+  <meta name="description" content="เพิ่มเพื่อน ใส่ราคา เลือกคนหาร แล้วดูยอดต่อคนได้ทันที">
+  <title>ชนแก้ว — หารบิลคืนนี้</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="split.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="ชนแก้ว หน้าหลัก"><span class="brand-mark" aria-hidden="true">ช.</span>ชนแก้ว</a>
+    <span class="local-badge"><span class="tiny-dot"></span> เก็บบิลในเครื่องนี้</span>
+  </header>
+  <main>
+    <section class="intro"><div><h1>หารบิลคืนนี้</h1><p class="intro-copy">เพิ่มเพื่อน → ใส่รายการ → เลือกคนหาร</p></div><button id="reset" class="text-button">เริ่มบิลใหม่</button></section>
+    <section class="people-panel panel" aria-labelledby="people-heading">
+      <div class="section-heading"><h2 id="people-heading">เพื่อนร่วมโต๊ะ <span id="people-count" class="count"></span></h2></div>
+      <div class="people-content"><div id="people-list" class="people-list"></div><form id="person-form"><label for="person-name" class="sr-only">ชื่อเพื่อน</label><div class="person-input"><input id="person-name" placeholder="พิมพ์ชื่อเพื่อน" maxlength="30" required autocomplete="off"><button class="square-button" type="submit">+ เพิ่มเพื่อน</button></div></form></div>
+    </section>
+    <div class="workspace">
+      <section class="items-panel panel" aria-labelledby="items-heading">
+        <div class="section-heading"><h2 id="items-heading">รายการในบิล <span id="item-count" class="count"></span></h2><button id="add-item" class="primary-button">+ เพิ่มรายการ</button></div>
+        <div class="quick-add"><span>เพิ่มด่วน</span><button data-quick="spirits" data-name="เหล้า">+ เหล้า</button><button data-quick="soju" data-name="โซจู">+ โซจู</button><button data-quick="mixer" data-name="น้ำแข็ง">+ น้ำแข็ง</button><button data-quick="mixer" data-name="โซดา">+ โซดา</button><button data-quick="food" data-name="กับแกล้ม">+ กับแกล้ม</button></div>
+        <p class="split-help">✓ ชื่อที่เลือก = คนร่วมจ่าย · แตะชื่อเพื่อเลือกหรือเอาออก</p>
+        <div id="item-list"></div><button id="add-item-bottom" class="add-row">+ เพิ่มรายการอื่น</button>
+      </section>
+      <aside class="summary-panel" id="summary" aria-labelledby="summary-heading" tabindex="-1">
+        <div class="receipt-top"><h2 id="summary-heading">ยอดที่แต่ละคนต้องจ่าย</h2><div class="total-label">รวมทั้งโต๊ะ</div><div class="grand-total"><span>฿</span><strong id="grand-total">0</strong></div><p id="summary-meta" class="summary-meta"></p></div>
+        <div class="receipt-body"><div id="summary-list" aria-live="polite"></div><div class="receipt-total"><span>รวมทั้งหมด</span><strong id="receipt-total"></strong></div><p class="rounding-note">แบ่งเศษสตางค์ให้แล้ว ยอดตรงบิล</p><button id="copy-summary" class="copy-button">คัดลอกยอดส่งให้เพื่อน</button></div><div class="receipt-edge"></div>
+      </aside>
+    </div>
+    <footer class="page-footer">แต่ละรายการหารเท่ากัน เฉพาะคนที่เลือกไว้</footer>
+  </main>
+  <div class="mobile-summary"><div><span>รวมทั้งโต๊ะ</span><strong id="mobile-total">฿0</strong></div><button id="show-summary" class="primary-button">ดูยอดแต่ละคน ↓</button></div>
+  <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+  <dialog id="item-dialog" aria-labelledby="dialog-title">
+    <form id="item-form"><div class="dialog-heading"><h2 id="dialog-title">เพิ่มรายการ</h2><button type="button" class="close-button" id="close-dialog" aria-label="ปิด">×</button></div>
+      <label for="item-name">รายการอะไร</label><input id="item-name" maxlength="80" placeholder="เช่น โซจูพีช 2 ขวด" required>
+      <input id="item-category" type="hidden" value="food">
+      <label for="item-price">ราคารวม (บาท)</label><input id="item-price" type="number" inputmode="decimal" min="0.01" max="9999999" step="0.01" placeholder="0.00" required>
+      <fieldset><legend>ใครหารรายการนี้</legend><button id="select-all-members" type="button" class="all-members">เลือกทุกคน</button><div id="member-options" class="member-options"></div><p class="field-help">เลือกไว้ทุกคนแล้ว แตะเอาคนที่ไม่ได้กินออกได้</p></fieldset>
+      <p id="form-error" class="form-error" role="alert"></p><button class="primary-button dialog-save" type="submit">บันทึกรายการ</button>
+    </form>
+  </dialog>
+  <dialog id="copy-dialog" aria-labelledby="copy-heading"><div class="dialog-heading"><h2 id="copy-heading">สรุปบิลส่งให้เพื่อน</h2><button id="close-copy" class="close-button" aria-label="ปิด">×</button></div><p class="muted">เลือกข้อความด้านล่างเพื่อคัดลอก</p><textarea id="copy-text" readonly rows="10" aria-label="ข้อความสรุปบิล"></textarea></dialog>
+</body>
+</html>

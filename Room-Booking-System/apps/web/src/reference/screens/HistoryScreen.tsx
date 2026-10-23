@@ -41,7 +41,7 @@ export function HistoryScreen() {
             aria-pressed={filter === tab.key}
             onClick={() => setFilter(tab.key)}
             className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-              filter === tab.key ? 'bg-kku-red text-white' : 'bg-gray-100 text-gray-500'
+              filter === tab.key ? 'bg-cp-blue text-white' : 'bg-gray-100 text-gray-500'
             }`}
           >
             {tab.label}
@@ -76,15 +76,15 @@ export function HistoryScreen() {
 
                   <div className="grid grid-cols-3 gap-2 mt-3 text-xs">
                     <div className="flex items-center gap-1.5 text-gray-600">
-                      <Calendar size={14} className="text-kku-red" />
+                      <Calendar size={14} className="text-cp-blue" />
                       <span>{booking.date}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-gray-600">
-                      <Clock size={14} className="text-kku-red" />
+                      <Clock size={14} className="text-cp-blue" />
                       <span>{booking.startTime}–{booking.endDate&&booking.endDate!==booking.date?booking.endDate+' ':''}{booking.endTime}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-gray-600">
-                      <Users size={14} className="text-kku-red" />
+                      <Users size={14} className="text-cp-blue" />
                       <span>{booking.participants} ท่าน</span>
                     </div>
                   </div>
@@ -106,7 +106,7 @@ export function HistoryScreen() {
                     </div>
                   )}
 
-<button className="mt-3 text-sm font-semibold text-kku-red" onClick={()=>setDetail(booking)}>ดูรายละเอียด · {booking.ref}</button>
+<button className="mt-3 text-sm font-semibold text-cp-blue" onClick={()=>setDetail(booking)}>ดูรายละเอียด · {booking.ref}</button>
                   {booking.archivedAt && <p className="text-xs text-gray-500 mt-2">ประวัติที่จัดเก็บแล้ว</p>}
                   {booking.status === 'approved' && (booking.date===today||booking.endDate===today) && <Button disabled={busy} className="mt-3 w-full" onClick={()=>perform(()=>checkIn(booking.id))}>เช็คอินเข้าห้อง</Button>}
                   {['approved','pending'].includes(booking.status) && booking.date >= today && (

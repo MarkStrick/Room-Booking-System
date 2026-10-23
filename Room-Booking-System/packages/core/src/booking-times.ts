@@ -19,13 +19,16 @@ export function bookingTimeOptions(
     .filter(b => b.roomId === room.id && activeStatuses.includes(b.status))
     .flatMap(b => [b.start, b.end]);
   boundaries.push(...state.closures.filter(c => c.roomId === room.id).flatMap(c => [c.start, c.end]));
-  const candidates = [...new Set([
+  const minutes = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3));
+  const clock = (value: number) => `${String(Math.floor(value / 60)).padStart(2, '0')}:${String(value % 60).padStart(2, '0')}`;
+  const endpoints = [
     ...clockTimes, ...extraTimes, selectedStart,
     ...(room.hours ? [room.hours.start, room.hours.end] : []),
     ...boundaries.filter(b => [date, endDate].includes(dateOf(b))).map(time),
-  ])].filter(t => /^([01]\d|2[0-3]):[0-5]\d$/.test(t)).sort();
+  ].filter(t => /^([01]\d|2[0-3]):[0-5]\d$/.test(t));
+  const candidates = [...new Set(endpoints.flatMap(t => [t, ...[-30, 30]
+    .map(offset => minutes(t) + offset).filter(value => value >= 0 && value < 1440).map(clock)]))].sort();
   const starts: string[] = [], ends = new Set<string>();
-  const minutes = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3));
   for (const start of candidates) {
     let hasEnd = false;
     for (const end of candidates) {

@@ -5,11 +5,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        'kku-red': '#A4233B',
-        'kku-red-dark': '#8B1E32',
-        'kku-red-light': '#C75B73',
-        'kku-gold': '#F5B82E',
-        'kku-teal': '#0d3530',
+        'cp-blue': '#0776bc',
+        'cp-blue-dark': '#055a91',
+        'cp-blue-light': '#499dd3',
+        'cp-sky': '#6CC7EF',
+        'cp-navy': '#103b64',
       },
       fontFamily: { sans: ['Sarabun', 'Noto Sans Thai', 'Inter', 'system-ui', 'sans-serif'] },
     },

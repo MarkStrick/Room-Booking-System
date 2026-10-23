@@ -43,8 +43,8 @@ export function Button({
   type?: "button" | "submit";
 }) {
   const variants = {
-    primary: 'bg-kku-red text-white hover:bg-kku-red-dark shadow-sm shadow-red-900/20',
-    secondary: 'bg-white text-kku-red border border-kku-red/20 hover:bg-red-50',
+    primary: 'bg-cp-blue text-white hover:bg-cp-blue-dark shadow-sm shadow-cp-blue/20',
+    secondary: 'bg-white text-cp-blue border border-cp-blue/20 hover:bg-cp-blue/10',
     ghost: 'bg-transparent text-gray-600 hover:bg-gray-100',
     danger: 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100',
     success: 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100',

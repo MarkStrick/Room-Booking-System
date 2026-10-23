@@ -529,9 +529,13 @@ export function executeCommand(
       const r = c.room;
       const building = s.buildings.find((b) => b.id === r.buildingId);
       const previous = s.rooms.find((x) => x.id === r.id);
+      const hoursUnchanged = previous?.hours?.start === r.hours?.start &&
+        previous?.hours?.end === r.hours?.end &&
+        previous?.hours?.leadMinutes === r.hours?.leadMinutes &&
+        [0, 1, 2, 3, 4, 5, 6].every(day => Boolean(previous?.hours?.weekdays.includes(day)) === Boolean(r.hours?.weekdays.includes(day)));
       requireRule(
         !previous ||
-          JSON.stringify(previous.hours) === JSON.stringify(r.hours) ||
+          hoursUnchanged ||
           !s.bookings.some(
             (b) => b.roomId === r.id && activeStatuses.includes(b.status),
           ),

@@ -1,3 +1,4 @@
+import { computingCatalog } from './space-scope';
 import type { AppState } from '../../contracts/src/index';
 import type { AssistantIntent, AssistantRequest, AssistantResponse, AssistantSearch } from '../../contracts/src/assistant';
 import { addDays, availability, dateOf, faqs, stamp, thaiDate, statusLabels } from './domain';
@@ -90,7 +91,7 @@ export function answerAssistant(state: AppState, intent: AssistantIntent, mode: 
   if (!Number.isInteger(search.capacity) || search.capacity < 1 || search.capacity > 10000) return { ...reply, needsDetails: true, text: 'กรุณาระบุจำนวนคนตั้งแต่ 1 ถึง 10,000 คนครับ' };
   const slotError = searchSlotError(state, search.date, search.start, search.end, search.endDate);
   if (slotError) return { ...reply, needsDetails: true, text: `${slotError}ครับ เลือกวันที่และเวลาใหม่ด้านล่างได้เลย` };
-  const matched = state.rooms.filter(r => {
+  const matched = computingCatalog(state).rooms.filter(r => {
     const b = state.buildings.find(b => b.id === r.buildingId);
     return r.active !== false && b && b.active !== false && r.capacity >= search.capacity
       && (!search.building || normalize(b.name).includes(normalize(search.building)))

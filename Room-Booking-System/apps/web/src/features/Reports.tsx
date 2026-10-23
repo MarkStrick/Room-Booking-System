@@ -72,7 +72,7 @@ export function Reports() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `kku-bookings-${from}-${to}.csv`;
+    a.download = `cp-bookings-${from}-${to}.csv`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     showToast("ส่งออกข้อมูลตามช่วงและอาคารที่เลือกแล้ว");
@@ -321,7 +321,7 @@ export function Reports() {
               );
               const link = document.createElement("a");
               link.href = url;
-              link.download = `kku-assets-${from}-${to}.csv`;
+              link.download = `cp-assets-${from}-${to}.csv`;
               link.click();
               setTimeout(() => URL.revokeObjectURL(url), 1000);
             }}

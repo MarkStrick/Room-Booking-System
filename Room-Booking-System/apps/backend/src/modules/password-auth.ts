@@ -84,7 +84,7 @@ export class PasswordAuth {
    // Each request owns its token; failure of an older send cannot delete a newer request.
    d.passwordTokens.push({tokenHash,kind:'register',email:address,name,passwordHash,expiresAt:new Date(Date.parse(now)+30*60000).toISOString()});return true;
   });
-  if(accepted)await this.send(tokenHash,address,'ยืนยันอีเมลสำหรับ KKU SPACE',`${this.c.origin}/#/verify-email?token=${value}`);
+  if(accepted)await this.send(tokenHash,address,'ยืนยันอีเมลสำหรับ CP SPACE',`${this.c.origin}/#/verify-email?token=${value}`);
   return {message:'หากอีเมลนี้สมัครสมาชิกได้ ระบบส่งลิงก์ยืนยันให้แล้ว กรุณาตรวจกล่องจดหมายและอีเมลขยะ'};
  }
  private async send(tokenHash:string,address:string,subject:string,link:string) {
@@ -113,7 +113,7 @@ export class PasswordAuth {
   if(user&&this.allowed(address)&&data.credentials.some(c=>c.userId===user.id)) {
    const value=secret(),tokenHash=digest(value),now=new Date().toISOString();
    await this.store.transaction(d=>{d.passwordTokens=d.passwordTokens.filter(t=>t.expiresAt>now);d.passwordTokens.push({tokenHash,kind:'reset',email:address,userId:user.id,expiresAt:new Date(Date.parse(now)+30*60000).toISOString()});});
-   await this.send(tokenHash,address,'ตั้งรหัสผ่านใหม่สำหรับ KKU SPACE',`${this.c.origin}/#/reset-password?token=${value}`);
+   await this.send(tokenHash,address,'ตั้งรหัสผ่านใหม่สำหรับ CP SPACE',`${this.c.origin}/#/reset-password?token=${value}`);
   }
   return {message:'หากอีเมลนี้มีบัญชีรหัสผ่านที่ใช้งานได้ ระบบจะส่งลิงก์ให้ กรุณาตรวจกล่องจดหมายและอีเมลขยะ'};
  }

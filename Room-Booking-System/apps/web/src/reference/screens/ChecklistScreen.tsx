@@ -129,7 +129,7 @@ export function ChecklistScreen() {
             onChange={(e) => setNote(e.target.value)}
             placeholder="ระบุปัญหาหรือข้อสังเกตเพิ่มเติม..."
             rows={3}
-            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-kku-red resize-none"
+            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-cp-blue resize-none"
           />
           <label className="text-sm font-semibold text-gray-700 mt-3 mb-1.5 block">สภาพห้อง<select aria-label="สภาพห้อง" value={condition} onChange={e=>setCondition(e.target.value)} className="mt-1.5 w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm">{['พร้อมใช้งาน','พบอุปกรณ์ชำรุด','ต้องทำความสะอาด','ต้องซ่อมบำรุง'].map(value=><option key={value}>{value}</option>)}</select></label>
         </div>

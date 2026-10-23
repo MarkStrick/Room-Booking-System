@@ -8,9 +8,9 @@
   font-size: 16px;
   line-height: 1.5;
   color: #111827;
-  --primary: #A4233B;
-  --primary-dark: #8B1E32;
-  --primary-soft: #fef2f2;
+  --primary: #0776bc;
+  --primary-dark: #055a91;
+  --primary-soft: #e8f4fc;
   --ink: #111827;
   --line: #f3f4f6;
 }
@@ -48,9 +48,9 @@
 .reference-ui :where(input,textarea)::placeholder { opacity: 1; color: #9ca3af; }
 .reference-ui :is(input,select,textarea):not(:where(.legacy-page *)) { min-height: 0; font-weight: inherit; }
 .reference-ui label:not(:where(.legacy-page *)) { display: block; flex-direction: row; align-items: normal; gap: 0; text-align: start; font-weight: inherit; }
-.reference-ui :where(button,a,input,textarea,select):focus-visible { outline: 2px solid #A4233B; outline-offset: 2px; }
-.reference-ui ::selection { background: #A4233B; color: white; }
-.reference-ui input, .reference-ui textarea { caret-color: #A4233B; }
+.reference-ui :where(button,a,input,textarea,select):focus-visible { outline: 2px solid #0776bc; outline-offset: 2px; }
+.reference-ui ::selection { background: #0776bc; color: white; }
+.reference-ui input, .reference-ui textarea { caret-color: #0776bc; }
 .reference-ui .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 .reference-ui .scrollbar-hide::-webkit-scrollbar { display: none; }
 .reference-ui .animate-slide-up { animation: referenceSlideUp .3s ease-out; }

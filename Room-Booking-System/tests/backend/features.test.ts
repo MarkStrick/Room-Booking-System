@@ -44,10 +44,10 @@ test('HTTP floor changes persist, reject user access, and manual email requires 
  try {
   const admin=await testSession(store,c,3),user=await testSession(store,c,1);
   const call=(body:unknown,session:typeof user)=>fetch(base+'/api/commands',{method:'POST',headers:{origin:c.origin,'content-type':'application/json',cookie:session.cookie,'x-csrf-token':session.body.csrfToken,'idempotency-key':randomUUID()},body:JSON.stringify(body)});
-  const floor={type:'FLOOR_SAVE',buildingId:1,number:6,name:'พื้นที่ประชุมใหม่'};
+  const floor={type:'FLOOR_SAVE',buildingId:data.state.buildings[0].id,number:data.state.buildings[0].floors+1,name:'พื้นที่ประชุมใหม่'};
   assert.equal((await call(floor,user)).status,403);
   assert.equal((await call(floor,admin)).status,201);
-  assert.equal((await store.read()).state.buildings.find(b=>b.id===1)?.levels?.find(f=>f.number===6)?.name,floor.name);
+  assert.equal((await store.read()).state.buildings.find(b=>b.id===floor.buildingId)?.levels?.find(f=>f.number===floor.number)?.name,floor.name);
   const config=await(await fetch(base+'/api/config')).json();assert.equal(config.emailReady,false);
   const queuedBefore=(await store.read()).outbox.length;
   const email={type:'SEND_NOTICE',recipientEmail:data.state.users.find(u=>u.id===1)!.email,notificationType:'GENERAL',message:'ทดสอบ'};

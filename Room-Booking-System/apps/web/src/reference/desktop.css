@@ -10,20 +10,20 @@
 .reference-ui .search-room-photo img { height: 100%; }
 .reference-ui button { cursor: pointer; }
 .reference-ui button:disabled { cursor: not-allowed; }
-.reference-ui .reference-university-emblem { width: 32px; height: 56px; object-fit: contain; flex-shrink: 0; }
+.reference-ui .reference-university-emblem { width: 104px; height: auto; padding: 8px; border-radius: 8px; background: #103b64; object-fit: contain; flex-shrink: 0; }
 .reference-ui .search-content { overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #c9bdc0 #f6f7f9; }
 .reference-ui .search-overview { padding: 24px 16px 20px; background: white; }
 .reference-ui .search-overview > h2 { font-size: clamp(22px, 3vw, 30px); font-weight: 700; line-height: 1.4; color: #18212f; }
 .reference-ui .search-overview-date { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: #626c7a; }
-.search-overview-date > svg { color: #a4233b; flex-shrink: 0; }
-.reference-ui .search-welcome { display: flex; align-items: center; gap: 12px; margin-top: 20px; padding: 16px; border: 1px solid #ecd9de; border-radius: 16px; background: #fcf5f6; color: #8b1e32; }
-.search-welcome-icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #a4233b; color: white; }
+.search-overview-date > svg { color: #0776bc; flex-shrink: 0; }
+.reference-ui .search-welcome { display: flex; align-items: center; gap: 12px; margin-top: 20px; padding: 16px; border: 1px solid #c9e4f5; border-radius: 16px; background: #f0f8fd; color: #055a91; }
+.search-welcome-icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #0776bc; color: white; }
 .search-welcome-copy { flex: 1; min-width: 0; }
 .reference-ui .search-welcome-copy > p:first-child { font-size: 14px; font-weight: 700; }
-.reference-ui .search-welcome-copy > p:last-child { margin-top: 4px; font-size: 13px; line-height: 1.6; color: #71424d; }
-.search-availability { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; padding-left: 16px; border-left: 1px solid #ecd9de; }
+.reference-ui .search-welcome-copy > p:last-child { margin-top: 4px; font-size: 13px; line-height: 1.6; color: #425d74; }
+.search-availability { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; padding-left: 16px; border-left: 1px solid #c9e4f5; }
 .reference-ui .search-availability > strong { font-size: 28px; font-weight: 700; line-height: 1.2; font-variant-numeric: tabular-nums; }
-.reference-ui .search-availability > span { margin-top: 4px; font-size: 12px; color: #71424d; }
+.reference-ui .search-availability > span { margin-top: 4px; font-size: 12px; color: #425d74; }
 .reference-ui .search-controls input::placeholder { color: #687180; }
 .reference-ui .search-results { padding-bottom: 24px; }
 .reference-ui .search-room-grid { display: grid; gap: 12px; }
@@ -37,9 +37,9 @@
   .reference-workspace { display: grid; grid-template-columns: 248px minmax(0, 1fr); }
   .reference-main { background: #f6f7f9; }
   .desktop-navigation { display: flex; flex-direction: column; min-height: 0; background: white; border-right: 1px solid #e5e7eb; }
-  .reference-ui .desktop-brand { display: flex; align-items: center; gap: 12px; padding: 32px 24px; text-decoration: none; color: #18212f; }
+  .reference-ui .desktop-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 32px 24px; text-decoration: none; color: #18212f; }
   .reference-ui .desktop-brand strong { display: block; font-size: 24px; font-weight: 800; letter-spacing: -.03em; }
-  .desktop-brand strong > span { color: #a4233b; }
+  .desktop-brand strong > span { color: #0776bc; }
   .desktop-brand small { display: block; font-size: 11px; color: #626c7a; margin-top: 3px; }
   .desktop-navigation nav { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 20px; }
   .desktop-nav-group + .desktop-nav-group { margin-top: 28px; }
@@ -48,8 +48,8 @@
   .desktop-nav-group button > svg { flex-shrink: 0; }
   .desktop-nav-group button > span { flex: 1; }
   .reference-ui .desktop-nav-group button:hover { background: #f7f8fa; color: #18212f; }
-  .reference-ui .desktop-nav-group button[aria-current=page] { background: #fcf0f2; color: #a4233b; font-weight: 700; }
-  .desktop-nav-group b { font-size: 11px; background: #a4233b; color: #fff; padding: 1px 6px; border-radius: 6px; }
+  .reference-ui .desktop-nav-group button[aria-current=page] { background: #e8f4fc; color: #0776bc; font-weight: 700; }
+  .desktop-nav-group b { font-size: 11px; background: #0776bc; color: #fff; padding: 1px 6px; border-radius: 6px; }
   .desktop-campus { display: flex; align-items: center; gap: 10px; margin: 0 24px; padding: 24px 0; border-top: 1px solid #e5e7eb; color: #687180; font-size: 11px; }
   .desktop-campus small { display: block; font-size: 10px; margin-top: 4px; }
   .reference-ui .reference-bottom-nav { display: none; }
@@ -87,13 +87,13 @@
   .reference-ui .search-room-grid > * { margin: 0; }
   .reference-ui .search-room-grid > :not([hidden]) ~ :not([hidden]) { margin-top: 0; }
   .reference-ui .search-room-card { border-color: #e1e5eb; border-radius: 12px; }
-  .reference-ui .search-room-card:hover { box-shadow: none; border-color: #a4233b; }
+  .reference-ui .search-room-card:hover { box-shadow: none; border-color: #0776bc; }
   .reference-ui .search-room-photo { height: 190px; }
   .reference-ui .search-room-photo h3 { font-size: 19px; }
   .reference-ui .search-room-photo > div:last-child { left: 20px; right: 20px; bottom: 16px; }
   .reference-ui .search-room-card > div:last-child { padding: 18px 20px; }
   .reference-ui .search-room-card > div:last-child > div:first-child { color: #626c7a; font-size: 12px; margin-bottom: 12px; }
-  .reference-ui .desktop-room-action { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 1px solid #eceef2; color: #a4233b; font-size: 13px; font-weight: 600; }
+  .reference-ui .desktop-room-action { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 1px solid #eceef2; color: #0776bc; font-size: 13px; font-weight: 600; }
   .reference-ui .booking-content { display: grid; grid-template-columns: minmax(260px,.85fr) minmax(0,1.15fr); gap: 36px; align-items: start; }
   .reference-ui .booking-room-summary { position: sticky; top: 0; display: block; padding: 0; }
   .reference-ui .booking-room-summary > :first-child { height: 260px; width: 100%; border-radius: 0; padding: 0; }
@@ -118,7 +118,7 @@
   .reference-ui input::placeholder { color: #657080; }
   .reference-ui .animate-slide-up { animation: none; }
   /* The signed-out entry uses the same brand, with a focused two-column layout. */
-  .reference-frame > .flex.flex-col { flex-direction: row; background: #a4233b; }
+  .reference-frame > .flex.flex-col { flex-direction: row; background: #0776bc; }
   .reference-frame > .flex.flex-col > div:first-child { flex: 1.15; align-items: flex-start; padding: 80px; }
   .reference-frame > .flex.flex-col > div:first-child h1 { font-size: 40px; text-align: left; }
   .reference-frame > .flex.flex-col > div:last-child { flex: .85; display: flex; flex-direction: column; justify-content: center; border-radius: 0; padding: clamp(40px,6vw,100px); box-shadow: none; }

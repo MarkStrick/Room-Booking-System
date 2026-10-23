@@ -6,7 +6,7 @@ export class AppErrorBoundary extends Component<{ children: ReactNode }, { faile
   static getDerivedStateFromError() { return { failed: true }; }
   componentDidCatch(_error: Error, _info: ErrorInfo) {
     // Do not log user data, reset links, or server responses into the browser console.
-    console.error('KKU Space: page rendering failed');
+    console.error('CP SPACE: page rendering failed');
   }
   render() {
     if (this.state.failed) return <main className="session-page">

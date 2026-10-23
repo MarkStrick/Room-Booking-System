@@ -34,9 +34,9 @@ export function DesktopNav() {
     { label: 'บัญชีของคุณ', items: support },
   ];
   return <aside className="desktop-navigation">
-    <a className="desktop-brand" href="#/rooms" aria-label="KKU Space หน้าค้นหาห้อง">
-      <img className="reference-university-emblem" src="/brand/kku-emblem-th.png" width={32} height={56} alt="ตราสัญลักษณ์มหาวิทยาลัยขอนแก่น" />
-      <span><strong>kku<span>.</span> space</strong><small>มหาวิทยาลัยขอนแก่น</small></span>
+    <a className="desktop-brand" href="#/rooms" aria-label="CP SPACE หน้าค้นหาห้อง">
+      <img className="reference-university-emblem" src="/brand/cp-logo.png" width={305} height={89} alt="โลโก้วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น" />
+      <span><strong>cp<span>.</span> space</strong><small>วิทยาลัยการคอมพิวเตอร์ · มข.</small></span>
     </a>
     <nav aria-label="เมนูหลักสำหรับเดสก์ท็อป">
       {groups.map(group => <div className="desktop-nav-group" key={group.label}>
@@ -50,6 +50,6 @@ export function DesktopNav() {
         })}
       </div>)}
     </nav>
-    <div className="desktop-campus"><GraduationCap size={20}/><span>พื้นที่สำหรับทุกความเป็นไปได้<small>Khon Kaen University</small></span></div>
+    <div className="desktop-campus"><GraduationCap size={20}/><span>พื้นที่สำหรับทุกความเป็นไปได้<small>College of Computing · KKU</small></span></div>
   </aside>;
 }

@@ -378,11 +378,11 @@ export function App() {
               <GraduationCap size={22} />
               <span>
                 <small>มหาวิทยาลัยขอนแก่น</small>
-                <strong>{current?.label ?? "พื้นที่มหาวิทยาลัย"}</strong>
+                <strong>{current?.label ?? "พื้นที่วิทยาลัยการคอมพิวเตอร์"}</strong>
               </span>
             </div>
             <span className="workspace-brand-description">
-              ระบบจองห้อง มหาวิทยาลัยขอนแก่น
+              ระบบจองห้อง วิทยาลัยการคอมพิวเตอร์
             </span>
           </div>
           <div className="topbar-actions">
@@ -475,7 +475,7 @@ export function App() {
               <Menu size={21} />
             </button>
             <Grid2X2 size={16} />
-            <span>พื้นที่มหาวิทยาลัย</span>
+            <span>พื้นที่วิทยาลัยการคอมพิวเตอร์</span>
             <ChevronRight size={14} />
             <strong>{current?.label ?? "ไม่พบหน้า"}</strong>
           </div>
@@ -490,7 +490,7 @@ export function App() {
           {page}
           <footer className="footer">
             <span>
-              KKU SPACE <i>·</i> พื้นที่สำหรับทุกความเป็นไปได้
+              CP SPACE <i>·</i> พื้นที่สำหรับทุกความเป็นไปได้
             </span>
             <span>มหาวิทยาลัยขอนแก่น</span>
           </footer>{" "}

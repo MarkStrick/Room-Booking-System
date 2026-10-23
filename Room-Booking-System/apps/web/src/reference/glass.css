@@ -14,9 +14,9 @@
 }
 .reference-ui .reference-stage {
   background: #eef0f6;
-  background-image: radial-gradient(ellipse at 6% 12%, #e1ddec 0, transparent 55%),
-    radial-gradient(ellipse at 94% 85%, #d8e8ed 0, transparent 60%),
-    linear-gradient(135deg, #f5f3f7, #ecf0f6);
+  background-image: radial-gradient(ellipse at 6% 12%, #dceefa 0, transparent 55%),
+    radial-gradient(ellipse at 94% 85%, #e4f3fc 0, transparent 60%),
+    linear-gradient(135deg, #f3f8fc, #edf5fb);
 }
 .reference-ui .reference-frame,
 .reference-ui .reference-main,
@@ -55,12 +55,12 @@
   background: rgb(255 255 255 / 52%);
   border-color: var(--glass-edge);
   box-shadow: inset 0 1px 0 white;
-  color: #8b1e32;
+  color: #055a91;
 }
 .reference-ui .search-welcome-icon {
-  background: #a4233b;
+  background: #0776bc;
   border-radius: 14px;
-  box-shadow: 0 4px 12px rgb(164 35 59 / 16%);
+  box-shadow: 0 4px 12px rgb(7 118 188 / 16%);
 }
 .reference-ui .search-overview > h2 {
   color: var(--glass-text);
@@ -81,10 +81,10 @@
 .reference-ui input::placeholder, .reference-ui textarea::placeholder { color: var(--glass-secondary); }
 .reference-ui input[type='checkbox'] { accent-color: var(--primary); }
 .reference-ui :is(button, a, input, select, textarea, summary):focus-visible {
-  outline: 3px solid #a4233b;
+  outline: 3px solid #0776bc;
   outline-offset: 3px;
 }
-.reference-ui ::selection { background: #a4233b; color: white; }
+.reference-ui ::selection { background: #0776bc; color: white; }
 .reference-ui .desktop-nav-group button {
   min-height: 48px;
   border: 1px solid transparent;
@@ -94,7 +94,7 @@
 .reference-ui .desktop-nav-group button[aria-current='page'] {
   background: rgb(255 255 255 / 88%);
   border-color: var(--glass-edge);
-  color: #981f35;
+  color: #055a91;
   box-shadow: 0 3px 12px rgb(42 48 66 / 7%), inset 0 1px 0 white;
   font-weight: 600;
 }
@@ -103,7 +103,7 @@
   transition: box-shadow 180ms ease-out, border-color 180ms ease-out;
 }
 .reference-ui .search-room-card:hover:not(:disabled) {
-  border-color: rgb(164 35 59 / 30%);
+  border-color: rgb(7 118 188 / 30%);
   box-shadow: 0 12px 32px rgb(37 48 75 / 12%), inset 0 1px 0 white;
 }
 .reference-ui .search-room-card:disabled { opacity: .72; }
@@ -126,7 +126,7 @@
 }
 .reference-ui .reference-bottom-nav button { min-height: 44px; }
 .reference-ui .reference-bottom-nav button[aria-current='page'] {
-  background: rgb(164 35 59 / 7%);
+  background: rgb(7 118 188 / 7%);
   border-radius: 18px;
 }
 .reference-ui .reference-toast {
@@ -145,7 +145,7 @@
 .reference-ui .glass-login > div:first-child > div {
   background: var(--glass-surface);
   border-color: var(--glass-edge);
-  color: #a4233b;
+  color: #0776bc;
   box-shadow: var(--glass-shadow);
 }
 .reference-ui .glass-login > div:first-child > p { color: var(--glass-secondary); }
@@ -207,8 +207,8 @@
 }
 
 .reference-ui .reference-refresh-button { min-width: 36px; min-height: 36px; }
-.reference-ui .reference-refresh-button:disabled { color: #a4233b; background: #a4233b0d; cursor: wait; }
-.reference-ui .reference-refresh-status { color: #85233b; font-size: 12px; white-space: nowrap; }
+.reference-ui .reference-refresh-button:disabled { color: #0776bc; background: #0776bc0d; cursor: wait; }
+.reference-ui .reference-refresh-status { color: #055a91; font-size: 12px; white-space: nowrap; }
 .reference-ui .reference-refresh-spin { animation: referenceRefreshSpin .8s linear infinite; }
 @keyframes referenceRefreshSpin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .reference-ui .reference-refresh-spin { animation: none; } }

@@ -55,7 +55,7 @@ export function NotificationsScreen() {
           <button
             disabled={busy}
             onClick={()=>void perform(markAllNotificationsRead)}
-            className="text-xs font-semibold text-kku-red flex items-center gap-1 hover:opacity-70 transition-opacity"
+            className="text-xs font-semibold text-cp-blue flex items-center gap-1 hover:opacity-70 transition-opacity"
           >
             <CheckCheck size={14} /> อ่านทั้งหมด
           </button>
@@ -140,7 +140,7 @@ function NotificationCard({
         )}
       </div>
 <p className="text-xs text-gray-600 mb-2">ผู้รับ: {notif.userEmail}</p>
-      {retry&&<button disabled={busy} className="text-sm text-kku-red mb-2" onClick={retry}>ลองส่งอีกครั้ง</button>}
+      {retry&&<button disabled={busy} className="text-sm text-cp-blue mb-2" onClick={retry}>ลองส่งอีกครั้ง</button>}
       <p className="text-sm text-gray-600 mb-3">{notif.content}</p>
       <p className="text-xs text-gray-600 mb-3">สถานะอีเมล: {notif.status==='SENT'?'บริการอีเมลรับแล้ว':notif.status==='FAILED'?'ส่งไม่สำเร็จ':'รอส่ง'} · พยายาม {notif.attempts??0} ครั้ง{notif.sentAt&&` · ${formatDateTime(notif.sentAt)}`}</p>
       {notif.deliveryError&&<p className="text-xs text-red-600 mb-3">{notif.deliveryError}</p>}

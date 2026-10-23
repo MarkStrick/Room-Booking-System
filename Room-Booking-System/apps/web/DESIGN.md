@@ -1,16 +1,16 @@
 ---
-name: "KKU Room Booking — Shared Glass UI"
-description: "Thai room booking with burgundy actions and translucent, cool neutral chrome."
+name: "CP SPACE — Shared Glass UI"
+description: "Thai room booking with CP blue actions and translucent, cool neutral chrome."
 colors:
-  kku-red: "#A4233B"
-  kku-red-dark: "#8B1E32"
+  cp-blue: "#0776BC"
+  cp-blue-dark: "#055A91"
   glass-text: "#222735"
   glass-secondary: "#596173"
   stage: "#eef0f6"
-  stage-lavender: "#e1ddec"
-  stage-blue: "#d8e8ed"
-  stage-light: "#f5f3f7"
-  stage-cool: "#ecf0f6"
+  stage-lavender: "#dceefa"
+  stage-blue: "#e4f3fc"
+  stage-light: "#f3f8fc"
+  stage-cool: "#edf5fb"
   glass-surface: "rgb(255 255 255 / 65%)"
   glass-chrome: "rgb(255 255 255 / 62%)"
   glass-edge: "rgb(255 255 255 / 85%)"
@@ -40,12 +40,12 @@ spacing:
   desktop-content: "36px"
 components:
   button-primary:
-    backgroundColor: "{colors.kku-red}"
+    backgroundColor: "{colors.cp-blue}"
     textColor: "{colors.surface-opaque}"
     rounded: "{rounded.field}"
     padding: "10px 16px"
   button-primary-hover:
-    backgroundColor: "{colors.kku-red-dark}"
+    backgroundColor: "{colors.cp-blue-dark}"
   field:
     backgroundColor: "{colors.field}"
     textColor: "{colors.glass-text}"
@@ -59,7 +59,7 @@ components:
     rounded: "{rounded.frame}"
 ---
 
-# Design System: KKU Room Booking — Shared Glass UI
+# Design System: CP SPACE — Shared Glass UI
 
 ## Overview
 

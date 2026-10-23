@@ -19,7 +19,7 @@ export function RoomCover({
       {room.imageUrl && !failed ? (
         <img
           src={room.imageUrl}
-          alt={room.imageUrl.includes('illustrative')?`ภาพประกอบสำหรับ ${room.name} ไม่ใช่ภาพสถานที่จริง`:room.name}
+          alt={room.imageUrl.startsWith('/room-images/building-')?`ภาพอาคารที่ตั้งของ ${room.name} ไม่ใช่ภาพภายในห้อง`:room.imageUrl.includes('illustrative')?`ภาพประกอบสำหรับ ${room.name} ไม่ใช่ภาพสถานที่จริง`:room.name}
           loading="lazy"
           referrerPolicy="no-referrer"
           onError={() => setFailed(true)}
@@ -30,7 +30,7 @@ export function RoomCover({
           <span>ยังไม่มีรูปห้อง</span>
         </div>
       )}
-      <span className="room-cover-code">{room.code}{room.imageUrl?.includes('illustrative')?' · ภาพประกอบ':''}</span>
+      <span className="room-cover-code">{room.code}{room.imageUrl?.startsWith('/room-images/building-')?' · ภาพอาคาร':room.imageUrl?.includes('illustrative')?' · ภาพประกอบ':''}</span>
       <span className="room-cover-capacity">{room.capacity} คน</span>
       {children ? <div className="room-cover-title">{children}</div> : null}
     </div>

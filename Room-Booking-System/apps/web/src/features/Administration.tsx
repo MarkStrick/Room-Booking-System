@@ -8,6 +8,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { FloorManager } from "./FloorManager";
+import { computingCatalog } from "../../../../packages/core/src/space-scope";
 import { useDemo } from "../app/DemoProvider";
 import { RoomCover } from "../components/RoomCover";
 import { EquipmentHandovers } from "./OperationsControls";
@@ -221,20 +222,31 @@ export function ManageRooms({ open }: { open: OpenDialog }) {
 }
 export function Locations({ open }: { open: OpenDialog }) {
   const { state } = useDemo();
+  const [showAllBuildings, setShowAllBuildings] = useState(false);
+  const catalog = computingCatalog(state);
+  const buildings = showAllBuildings ? state.buildings : catalog.buildings;
   return (
     <>
       <PageHeading
         eyebrow="CAMPUS LOCATIONS"
         title="อาคารและชั้น"
-        description="โครงสร้างพื้นที่สำหรับเชื่อมต่อห้องทั่วมหาวิทยาลัย"
+        description="โครงสร้างพื้นที่สำหรับเชื่อมต่อห้องภายในวิทยาลัยการคอมพิวเตอร์"
       >
         <button className="btn" onClick={() => open({ kind: "building" })}>
           <Plus size={17} />
           เพิ่มอาคาร
         </button>
       </PageHeading>
+      <label className="subtle" style={{ flexDirection: "row", alignItems: "center", marginBottom: 16 }}>
+        <input
+          type="checkbox"
+          checked={showAllBuildings}
+          onChange={(event) => setShowAllBuildings(event.target.checked)}
+        />
+        <span>แสดงทุกอาคาร รวมข้อมูลเดิมและอาคารที่เลิกใช้งาน</span>
+      </label>
       <div className="location-grid">
-        {state.buildings.map((b) => (
+        {buildings.map((b) => (
           <article className="panel location-card" key={b.id}>
             <span className="large-icon">
               <Building2 size={30} />
@@ -242,7 +254,7 @@ export function Locations({ open }: { open: OpenDialog }) {
             <h2>{b.name}</h2>
             <p>
               {b.floors} ชั้น •{" "}
-              {state.rooms.filter((r) => r.buildingId === b.id).length} ห้อง
+              {state.rooms.filter((r) => r.buildingId === b.id && r.active !== false).length} ห้องที่เปิดใช้งาน
             </p>
             <FloorManager building={b}/>
             <button
@@ -271,6 +283,9 @@ export function Locations({ open }: { open: OpenDialog }) {
           </article>
         ))}
       </div>
+      {buildings.length === 0 ? (
+        <Empty title="ยังไม่มีอาคารของวิทยาลัยการคอมพิวเตอร์" />
+      ) : null}
       <section className="panel spaced holiday-panel">
         <div className="section-heading">
           <h2>วันหยุดมหาวิทยาลัย</h2>
