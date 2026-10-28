@@ -137,6 +137,9 @@ components:
     padding: "28px 24px 32px"
 ---
 
+> Historical reference only. The current visual system is documented in [apps/web/DESIGN.md](../../DESIGN.md), with its sidecar at `../../.impeccable/design.json`. The tokens and descriptions below record the earlier mobile reference and must not override the current system.
+
+
 # Design System: CP SPACE — Mobile Reference
 
 ## Overview

@@ -122,3 +122,20 @@
   .login-page-shell .login-emblem { grid-row: auto; width: 172px; height: 62px; margin-bottom: 10px; padding: 10px; border-radius: 10px; }
   .login-page-shell .login-emblem img { width: 152px; height: auto; }
 }
+
+/* Public entry uses the same quiet, solid surfaces as the booking workspace. */
+.reference-ui.login-page-shell { padding: 0; background: #f6f8fa; }
+.login-page-shell .login-scene { min-height: 100dvh; background: #f6f8fa; color: #182431; border: 0; border-radius: 0; box-shadow: none; }
+.login-page-shell .login-scene::before, .login-page-shell .login-scene::after { content: none; }
+.login-page-shell .login-brand h1 { color: #182431; font-size: clamp(28px,3vw,42px); }
+.login-page-shell .login-brand h1 span { color: #055a91; }
+.login-page-shell .login-brand-description, .login-page-shell .login-footer { color: #5d6b79; }
+.login-page-shell .login-brand .login-eyebrow, .login-page-shell .login-card-eyebrow { display: none; }
+.login-page-shell .login-emblem { box-shadow: none; border: 0; border-radius: 8px; }
+.login-page-shell .login-glass-card { background: white; border: 1px solid #dce2e8; border-radius: 12px; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.login-page-shell .login-browse { background: white; color: #055a91; border: 1px solid #dce2e8; border-radius: 8px; backdrop-filter: none; }
+.login-page-shell .login-google-button { border: 1px solid #bcc7d1; border-radius: 8px; box-shadow: none; transition: background-color 160ms; }
+.login-page-shell .login-google-button:hover:not(:disabled) { transform: none; box-shadow: none; background: #f6f8fa; }
+.login-page-shell .login-topbar a { color: #055a91; }
+.login-page-shell .login-topbar a:focus-visible { outline-color: #0776bc; }
+@media (max-width: 800px) { .login-page-shell .login-brand h1 { font-size: 26px; } }

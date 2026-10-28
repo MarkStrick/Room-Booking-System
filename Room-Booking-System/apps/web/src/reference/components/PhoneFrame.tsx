@@ -1,43 +1,97 @@
-import { useRef, useState } from 'react';
-import { Bell, ChevronDown, ChevronLeft, ChevronRight, Grid2X2, LogOut, RefreshCw } from 'lucide-react';
-import { useApp } from '../context/AppContext';
-import type { Screen } from '../types';
+import { useEffect, useRef, useState } from "react";
+import {
+  Bell,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Grid2X2,
+  LogOut,
+  RefreshCw,
+} from "lucide-react";
+import { useApp } from "../context/AppContext";
+import type { Screen } from "../types";
 
 export const screenLabels: Record<Screen, string> = {
-  login: 'เข้าสู่ระบบ',
-  search: 'ค้นหาห้องว่าง',
-  booking: 'จองห้องประชุม',
-  chatbot: 'ผู้ช่วย',
-  history: 'ประวัติการจอง',
-  admin: 'อนุมัติการจอง',
-  checklist: 'ตรวจสภาพห้อง',
-  notifications: 'การแจ้งเตือน',
-  accessDenied: 'การเข้าถึงถูกปฏิเสธ',
-  profile: 'ข้อมูลส่วนตัว', 'manage-rooms': 'จัดการห้อง', locations: 'อาคารและวันหยุด', equipment: 'อุปกรณ์ส่วนกลาง', penalties: 'พิจารณาบทลงโทษ', reports: 'รายงานการใช้งาน', access: 'บัญชีและสิทธิ์', operations: 'การตั้งค่าและการดำเนินงาน',
+  login: "เข้าสู่ระบบ",
+  search: "ค้นหาห้องว่าง",
+  booking: "รายละเอียดและจองห้อง",
+  chatbot: "ผู้ช่วย",
+  history: "การจองของฉัน",
+  admin: "อนุมัติการจอง",
+  checklist: "ตรวจสภาพห้อง",
+  notifications: "การแจ้งเตือน",
+  accessDenied: "การเข้าถึงถูกปฏิเสธ",
+  profile: "ข้อมูลส่วนตัว",
+  "manage-rooms": "จัดการห้อง",
+  locations: "อาคารและวันหยุด",
+  equipment: "อุปกรณ์ส่วนกลาง",
+  penalties: "พิจารณาบทลงโทษ",
+  reports: "รายงานการใช้งาน",
+  access: "บัญชีและสิทธิ์",
+  operations: "การตั้งค่าและการดำเนินงาน",
 };
 
 export function PhoneFrame({ children }: { children: React.ReactNode }) {
   return (
     <div className="reference-stage">
-      <div className="reference-frame">
-        {children}
-      </div>
+      <div className="reference-frame">{children}</div>
     </div>
   );
 }
 
-export function AppHeader({ title, showBack = true }: { title?: string; showBack?: boolean }) {
-  const { goBack, screen, currentUser, logout, navigate, unreadNotificationCount, refresh, role } = useApp();
+export function AppHeader({
+  title,
+  showBack = true,
+}: {
+  title?: string;
+  showBack?: boolean;
+}) {
+  const {
+    goBack,
+    screen,
+    currentUser,
+    logout,
+    navigate,
+    unreadNotificationCount,
+    refresh,
+    role,
+  } = useApp();
   const [profileOpen, setProfileOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const accountMenu = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!profileOpen) return;
+    const dismiss = (event: PointerEvent) => {
+      if (!accountMenu.current?.contains(event.target as Node))
+        setProfileOpen(false);
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setProfileOpen(false);
+        accountMenu.current?.querySelector("button")?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", escape);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", escape);
+    };
+  }, [profileOpen]);
   const logoutPending = useRef(false);
   async function signOut() {
     if (logoutPending.current) return;
     logoutPending.current = true;
     setLoggingOut(true);
-    try { await logout(); setProfileOpen(false); }
-    catch { /* The shared logout handler displays the error. */ }
-    finally { logoutPending.current = false; setLoggingOut(false); }
+    try {
+      await logout();
+      setProfileOpen(false);
+    } catch {
+      /* The shared logout handler displays the error. */
+    } finally {
+      logoutPending.current = false;
+      setLoggingOut(false);
+    }
   }
   const [refreshing, setRefreshing] = useState(false);
   const refreshPending = useRef(false);
@@ -45,14 +99,22 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
     if (refreshPending.current) return;
     refreshPending.current = true;
     setRefreshing(true);
-    try { await refresh(true); }
-    finally { refreshPending.current = false; setRefreshing(false); }
+    try {
+      await refresh(true);
+    } finally {
+      refreshPending.current = false;
+      setRefreshing(false);
+    }
   }
 
   if (showBack) {
     return (
       <div className="reference-page-header flex items-center gap-3 px-4 h-14 bg-white border-b border-gray-100 shrink-0 z-10">
-        <button onClick={goBack} aria-label="กลับหน้าก่อนหน้า" className="p-1 -ml-1 text-gray-700 hover:text-cp-blue transition-colors">
+        <button
+          onClick={goBack}
+          aria-label="กลับหน้าก่อนหน้า"
+          className="p-1 -ml-1 text-gray-700 hover:text-cp-blue transition-colors"
+        >
           <ChevronLeft size={24} />
         </button>
         <h1 className="text-lg font-bold text-gray-900 flex-1 truncate">
@@ -66,50 +128,123 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
     <div className="reference-app-header relative bg-white border-b border-gray-100 shrink-0 z-20">
       <div className="h-[72px] px-4 flex items-center gap-3">
         <div className="reference-header-brand flex items-center gap-2.5 min-w-0">
-          <img className="reference-university-emblem" src="/brand/cp-logo.png" width={305} height={89} alt="โลโก้วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น" />
-          <span className="text-[25px] leading-none font-black tracking-tight text-gray-900">cp<span className="text-cp-blue">.</span></span>
+          <img
+            className="reference-university-emblem"
+            src="/brand/cp-logo.png"
+            width={305}
+            height={89}
+            alt="โลโก้วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น"
+          />
+          <span className="text-[25px] leading-none font-black tracking-tight text-gray-900">
+            cp<span className="text-cp-blue">.</span>
+          </span>
         </div>
         <div className="reference-header-divider h-9 w-px bg-gray-200" />
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-bold">CP SPACE</p>
-          <p className="text-sm font-bold text-gray-800 truncate">ระบบจองห้องประชุม</p>
+          <p className="text-[10px] uppercase tracking-[0.12em] text-gray-400 font-bold">
+            CP SPACE
+          </p>
+          <p className="text-sm font-bold text-gray-800 truncate">
+            ระบบจองห้องประชุม
+          </p>
         </div>
-<button hidden={currentUser.id!=='0'} onClick={()=>navigate('login')} className="text-sm font-semibold text-cp-blue">เข้าสู่ระบบ</button>
-        {currentUser.id!=='0' && (
-          <div className="relative">
+        <button
+          hidden={currentUser.id !== "0"}
+          onClick={() => navigate("login")}
+          className="text-sm font-semibold text-cp-blue"
+        >
+          เข้าสู่ระบบ
+        </button>
+        {currentUser.id !== "0" && (
+          <div className="relative" ref={accountMenu}>
             <button
               onClick={() => setProfileOpen((open) => !open)}
               className="flex items-center gap-1.5 rounded-full hover:bg-gray-50 p-1 transition-colors"
               aria-label="เปิดเมนูบัญชี"
               aria-expanded={profileOpen}
             >
-              <span className="w-9 h-9 rounded-full bg-cp-blue/10 text-cp-blue flex items-center justify-center font-bold ring-2 ring-cp-blue/10">{currentUser.name.charAt(0)}</span>
+              <span className="w-9 h-9 rounded-full bg-cp-blue/10 text-cp-blue flex items-center justify-center font-bold ring-2 ring-cp-blue/10">
+                {currentUser.name.charAt(0)}
+              </span>
               <span className="reference-account-name">{currentUser.name}</span>
-              <ChevronDown size={16} className={`text-gray-500 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                size={16}
+                className={`text-gray-500 transition-transform ${profileOpen ? "rotate-180" : ""}`}
+              />
             </button>
             {profileOpen && (
               <div className="reference-account-menu absolute right-0 top-12 w-64 max-h-[70dvh] overflow-y-auto scrollbar-hide rounded-2xl bg-white border border-gray-100 shadow-xl shadow-gray-900/10 p-2">
                 <div className="px-3 py-2.5">
-                  <p className="text-sm font-bold text-gray-900 truncate">{currentUser.name}</p>
-                  <p className="text-xs text-gray-400 truncate">{currentUser.email}</p>
+                  <p className="text-sm font-bold text-gray-900 truncate">
+                    {currentUser.name}
+                  </p>
+                  <p className="text-xs text-gray-400 truncate">
+                    {currentUser.email}
+                  </p>
                 </div>
-                <button onClick={()=>navigate('profile')} className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50">ข้อมูลส่วนตัว</button>
-                <button onClick={()=>navigate('notifications')} className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50">การแจ้งเตือน</button>
-                {role!=='USER' && <>
-                  <button onClick={()=>navigate('manage-rooms')} className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50">จัดการห้อง</button>
-                  <button onClick={()=>navigate('reports')} className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50">รายงานการใช้งาน</button>
-                  <button onClick={()=>navigate('history')} className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50">ประวัติการจองของฉัน</button>
-                </>}
-                {role==='ADMIN' && <>
-                  {(['access','locations','equipment','penalties','operations'] as const).map(s=><button key={s} onClick={()=>navigate(s)} className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50">{screenLabels[s]}</button>)}
-                </>}
+                <button
+                  onClick={() => navigate("profile")}
+                  className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50"
+                >
+                  ข้อมูลส่วนตัว
+                </button>
+                <button
+                  onClick={() => navigate("notifications")}
+                  className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50"
+                >
+                  การแจ้งเตือน
+                </button>
+                {role !== "USER" && (
+                  <>
+                    <button
+                      onClick={() => navigate("manage-rooms")}
+                      className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50"
+                    >
+                      จัดการห้อง
+                    </button>
+                    <button
+                      onClick={() => navigate("reports")}
+                      className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50"
+                    >
+                      รายงานการใช้งาน
+                    </button>
+                    <button
+                      onClick={() => navigate("history")}
+                      className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50"
+                    >
+                      ประวัติการจองของฉัน
+                    </button>
+                  </>
+                )}
+                {role === "ADMIN" && (
+                  <>
+                    {(
+                      [
+                        "access",
+                        "locations",
+                        "equipment",
+                        "penalties",
+                        "operations",
+                      ] as const
+                    ).map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => navigate(s)}
+                        className="w-full text-left px-3 py-2.5 rounded-xl text-gray-700 text-sm hover:bg-gray-50"
+                      >
+                        {screenLabels[s]}
+                      </button>
+                    ))}
+                  </>
+                )}
                 <button
                   onClick={() => void signOut()}
                   disabled={loggingOut}
                   aria-busy={loggingOut}
                   className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-cp-blue/10 text-cp-blue text-sm font-semibold hover:bg-cp-blue/20 transition-colors"
                 >
-                  <LogOut size={17} /> {loggingOut ? 'กำลังออกจากระบบ…' : 'ออกจากระบบ'}
+                  <LogOut size={17} />{" "}
+                  {loggingOut ? "กำลังออกจากระบบ…" : "ออกจากระบบ"}
                 </button>
               </div>
             )}
@@ -118,19 +253,47 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
       </div>
       <div className="h-11 px-4 flex items-center gap-2 bg-gray-50/80 border-t border-gray-100">
         <Grid2X2 size={17} className="text-gray-400" />
-        <span className="text-sm text-gray-500"><span className="reference-mobile-copy">CP SPACE</span><span className="reference-desktop-copy">พื้นที่วิทยาลัยการคอมพิวเตอร์</span></span>
+        <span className="text-sm text-gray-500">
+          <span className="reference-mobile-copy">CP SPACE</span>
+          <span className="reference-desktop-copy">
+            พื้นที่วิทยาลัยการคอมพิวเตอร์
+          </span>
+        </span>
         <ChevronRight size={15} className="text-gray-300" />
-        <span className="text-sm font-bold text-gray-800 truncate">{title ?? screenLabels[screen]}</span>
+        <span className="text-sm font-bold text-gray-800 truncate">
+          {title ?? screenLabels[screen]}
+        </span>
         <div className="ml-auto flex items-center gap-1">
-          <span className="reference-refresh-status" role="status">{refreshing ? 'กำลังอัปเดต…' : ''}</span>
-          <button onClick={()=>void refreshData()} disabled={refreshing} aria-busy={refreshing} className="reference-refresh-button p-1.5 rounded-lg text-gray-400 hover:text-cp-blue hover:bg-white transition-colors" aria-label={refreshing ? 'กำลังรีเฟรชข้อมูล' : 'รีเฟรช'} title={refreshing ? 'กำลังอัปเดตข้อมูล' : 'อัปเดตข้อมูลล่าสุด'}>
-            <RefreshCw size={18} className={refreshing ? 'reference-refresh-spin' : ''} aria-hidden="true" />
+          <span className="reference-refresh-status" role="status">
+            {refreshing ? "กำลังอัปเดต…" : ""}
+          </span>
+          <button
+            onClick={() => void refreshData()}
+            disabled={refreshing}
+            aria-busy={refreshing}
+            className="reference-refresh-button p-1.5 rounded-lg text-gray-400 hover:text-cp-blue hover:bg-white transition-colors"
+            aria-label={refreshing ? "กำลังรีเฟรชข้อมูล" : "รีเฟรช"}
+            title={refreshing ? "กำลังอัปเดตข้อมูล" : "อัปเดตข้อมูลล่าสุด"}
+          >
+            <RefreshCw
+              size={18}
+              className={refreshing ? "reference-refresh-spin" : ""}
+              aria-hidden="true"
+            />
           </button>
-  
-        {currentUser.id!=='0' && (
-            <button onClick={() => navigate('notifications')} className={`${role==='USER'?'reference-user-notifications':''} relative p-1.5 rounded-lg text-gray-400 hover:text-cp-blue hover:bg-white transition-colors`} aria-label="การแจ้งเตือน">
+
+          {currentUser.id !== "0" && (
+            <button
+              onClick={() => navigate("notifications")}
+              className={`${role === "USER" ? "reference-user-notifications" : ""} relative p-1.5 rounded-lg text-gray-400 hover:text-cp-blue hover:bg-white transition-colors`}
+              aria-label="การแจ้งเตือน"
+            >
               <Bell size={19} />
-              {unreadNotificationCount > 0 && <span className="absolute -top-0.5 -right-0.5 min-w-[15px] h-[15px] px-0.5 bg-cp-blue text-white text-[9px] font-bold rounded-full flex items-center justify-center">{unreadNotificationCount > 9 ? '9+' : unreadNotificationCount}</span>}
+              {unreadNotificationCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[15px] h-[15px] px-0.5 bg-cp-blue text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {unreadNotificationCount > 9 ? "9+" : unreadNotificationCount}
+                </span>
+              )}
             </button>
           )}
         </div>
@@ -140,46 +303,75 @@ export function AppHeader({ title, showBack = true }: { title?: string; showBack
 }
 
 const userNavItems = [
-  { screen: 'search' as const, label: 'ค้นหา', icon: 'search' },
-  { screen: 'history' as const, label: 'ประวัติ', icon: 'history' },
-  { screen: 'chatbot' as const, label: 'แชท', icon: 'chat' },
+  { screen: "search" as const, label: "ค้นหา", icon: "search" },
+  { screen: "history" as const, label: "การจอง", icon: "history" },
+  { screen: "chatbot" as const, label: "แชท", icon: "chat" },
 ];
 
 const adminNavItems = [
-  { screen: 'admin' as const, label: 'อนุมัติ', icon: 'admin' },
-  { screen: 'search' as const, label: 'ค้นหา', icon: 'search' },
-  { screen: 'chatbot' as const, label: 'แชท', icon: 'chat' },
+  { screen: "admin" as const, label: "อนุมัติ", icon: "admin" },
+  { screen: "search" as const, label: "ค้นหา", icon: "search" },
+  { screen: "chatbot" as const, label: "แชท", icon: "chat" },
 ];
 
-import { Search, History, MessageCircle, ShieldCheck } from 'lucide-react';
+import { Search, History, MessageCircle, ShieldCheck } from "lucide-react";
 
 export function BottomNav() {
   const { screen, navigate, currentUser } = useApp();
-  if (currentUser.id==='0') return <div className="reference-bottom-nav p-3 bg-white border-t border-gray-100 text-center text-sm"><button className="text-cp-blue font-semibold" onClick={()=>navigate('login')}>เข้าสู่ระบบเพื่อจองห้อง</button></div>;
-  if (screen === 'login' || screen === 'booking' || screen === 'checklist' || screen === 'notifications' || screen === 'accessDenied') return null;
+  if (currentUser.id === "0")
+    return (
+      <div className="reference-bottom-nav p-3 bg-white border-t border-gray-100 text-center text-sm">
+        <button
+          className="text-cp-blue font-semibold"
+          onClick={() => navigate("login")}
+        >
+          เข้าสู่ระบบเพื่อจองห้อง
+        </button>
+      </div>
+    );
+  if (
+    screen === "login" ||
+    screen === "booking" ||
+    screen === "checklist" ||
+    screen === "notifications" ||
+    screen === "accessDenied"
+  )
+    return null;
 
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = currentUser?.role === "admin";
   const items = isAdmin ? adminNavItems : userNavItems;
 
   return (
-    <div className="reference-bottom-nav h-16 bg-white border-t border-gray-100 flex items-center justify-around shrink-0 pb-1">
+    <nav
+      aria-label="เมนูหลัก"
+      className="reference-bottom-nav h-16 bg-white border-t border-gray-100 flex items-center justify-around shrink-0 pb-1"
+    >
       {items.map((item) => {
-        const Icon = item.icon === 'search' ? Search : item.icon === 'history' ? History : item.icon === 'chat' ? MessageCircle : ShieldCheck;
+        const Icon =
+          item.icon === "search"
+            ? Search
+            : item.icon === "history"
+              ? History
+              : item.icon === "chat"
+                ? MessageCircle
+                : ShieldCheck;
         const active = screen === item.screen;
         return (
           <button
             key={item.screen}
             onClick={() => navigate(item.screen)}
-            aria-current={active ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0.5 px-3 py-1.5 transition-colors ${active ? 'text-cp-blue' : 'text-gray-400'}`}
+            aria-current={active ? "page" : undefined}
+            className={`flex flex-col items-center gap-0.5 px-3 py-1.5 transition-colors ${active ? "text-cp-blue" : "text-gray-400"}`}
           >
             <Icon size={22} strokeWidth={active ? 2.5 : 2} />
-            <span className={`text-[11px] font-semibold ${active ? 'text-cp-blue' : 'text-gray-400'}`}>
+            <span
+              className={`text-[11px] font-semibold ${active ? "text-cp-blue" : "text-gray-400"}`}
+            >
               {item.label}
             </span>
           </button>
         );
       })}
-    </div>
+    </nav>
   );
 }

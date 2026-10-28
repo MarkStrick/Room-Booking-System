@@ -10,7 +10,7 @@ import "./server.css";
 import "./integrated-ui.css";
 import "./reference/reference.css";
 import "./reference/desktop.css";
-import "./reference/glass.css";
+import "./reference/design-system.css";
 import "./scrollbars.css";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

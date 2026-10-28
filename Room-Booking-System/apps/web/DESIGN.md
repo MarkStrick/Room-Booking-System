@@ -1,124 +1,203 @@
 ---
-name: "CP SPACE — Shared Glass UI"
-description: "Thai room booking with CP blue actions and translucent, cool neutral chrome."
+name: "CP SPACE — Clear Booking Workspace"
+description: "Thai university room booking with CP blue actions, solid surfaces, and readable operational layouts."
 colors:
-  cp-blue: "#0776BC"
-  cp-blue-dark: "#055A91"
-  glass-text: "#222735"
-  glass-secondary: "#596173"
-  stage: "#eef0f6"
-  stage-lavender: "#dceefa"
-  stage-blue: "#e4f3fc"
-  stage-light: "#f3f8fc"
-  stage-cool: "#edf5fb"
-  glass-surface: "rgb(255 255 255 / 65%)"
-  glass-chrome: "rgb(255 255 255 / 62%)"
-  glass-edge: "rgb(255 255 255 / 85%)"
-  glass-line: "rgb(58 66 87 / 12%)"
-  field: "rgb(255 255 255 / 76%)"
-  surface-opaque: "#fff"
-  chrome-opaque: "#f7f8fb"
+  cp-blue: "#0776bc"
+  cp-blue-dark: "#055a91"
+  cp-blue-soft: "#eaf4fb"
+  surface: "#fff"
+  surface-muted: "#f6f8fa"
+  ink: "#182431"
+  text-secondary: "#3f4e5d"
+  text-muted: "#5d6b79"
+  border: "#dce2e8"
+  field-border: "#bcc7d1"
+  success: "#166534"
+  warning: "#92400e"
+  danger: "#b42332"
 typography:
-  body:
-    fontFamily: "-apple-system, BlinkMacSystemFont, Sarabun, Noto Sans Thai, sans-serif"
-    fontSize: "16px"
-    lineHeight: 1.5
-  overview:
-    fontSize: "clamp(22px, 3vw, 30px)"
+  display:
+    fontFamily: "Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif"
+    fontSize: "clamp(40px, 4.5vw, 62px)"
     fontWeight: 600
-    letterSpacing: "-.025em"
+    lineHeight: 1.35
+    letterSpacing: "-.035em"
+  headline:
+    fontSize: "28px"
+    fontWeight: 700
+    lineHeight: 1.45
+  title:
+    fontSize: "20px"
+    fontWeight: 600
+  body:
+    fontFamily: "Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif"
+    fontSize: "16px"
+    lineHeight: 1.6
+  supporting:
+    fontSize: "14px"
+    lineHeight: 1.8
+  label:
+    fontSize: "14px"
+    fontWeight: 600
+  status:
+    fontSize: "12px"
+    fontWeight: 600
 rounded:
-  field: "12px"
-  navigation-item: "14px"
-  panel: "16px"
-  dock-selection: "18px"
-  frame: "24px"
+  control: "8px"
+  panel: "12px"
 spacing:
-  compact: "12px"
+  compact: "8px"
+  small: "12px"
   standard: "16px"
-  relaxed: "24px"
-  desktop-content: "36px"
+  panel: "20px"
+  section: "24px"
+  desktop: "32px"
 components:
   button-primary:
     backgroundColor: "{colors.cp-blue}"
-    textColor: "{colors.surface-opaque}"
-    rounded: "{rounded.field}"
+    textColor: "{colors.surface}"
+    rounded: "{rounded.control}"
     padding: "10px 16px"
   button-primary-hover:
     backgroundColor: "{colors.cp-blue-dark}"
+  button-secondary:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text-secondary}"
+    rounded: "{rounded.control}"
+    padding: "10px 16px"
   field:
-    backgroundColor: "{colors.field}"
-    textColor: "{colors.glass-text}"
-    rounded: "{rounded.field}"
-  glass-panel:
-    backgroundColor: "{colors.glass-surface}"
-    textColor: "{colors.glass-text}"
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    padding: "10px 12px"
+  panel:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.panel}"
-  mobile-dock:
-    backgroundColor: "{colors.glass-chrome}"
-    rounded: "{rounded.frame}"
+  navigation-active:
+    backgroundColor: "{colors.cp-blue-soft}"
+    textColor: "{colors.cp-blue-dark}"
+    rounded: "{rounded.control}"
 ---
 
-# Design System: CP SPACE — Shared Glass UI
+# Design System: CP SPACE — Clear Booking Workspace
 
 ## Overview
 
-**Creative North Star: "Quiet Glass Workspace"**
+**Creative North Star: "Clear Booking Workspace"**
 
-Apple-inspired translucent chrome sits over a soft lavender and blue neutral surface. Burgundy remains the action and selection accent, with Thai text and existing room-booking content preserved. This document records the shared material shipped in `src/reference/glass.css`, imported after `reference.css` and `desktop.css` by `src/main.tsx`.
+A calm, practical university workspace uses CP blue to make actions and selections easy to find. Solid white panels, cool neutral backgrounds, fine borders, and Thai-first typography support repeated booking and staff tasks without decorative chrome competing with the content.
 
-This is an additive material guide. The older `src/reference/DESIGN.md` remains a record of the adopted mobile reference; where shared colors, typography, depth, and corners differ, the shipped glass stylesheet and this document describe the current treatment. Existing screen composition and behavior remain governed by their implementation. No PRODUCT.md is available; this guide makes no additional product claims.
+The application favors compact operational layouts; the public landing page uses larger headings, room photography, and more generous spacing. Both share CP identity and restrained surfaces. This document records the implemented source, not a claim of completed visual or accessibility verification. `src/reference/design-system.css` is the shared material authority, imported after the base and desktop styles by `src/main.tsx`; `src/reference/screens/search.css`, shared UI components, and landing/login styles supply surface-specific details. The older `src/reference/DESIGN.md` is historical.
 
 **Key Characteristics:**
 
-- Cool neutral surfaces with restrained burgundy emphasis.
-- Translucent chrome, readable controls, and softly rounded containers.
-- Responsive desktop frame and mobile dock.
-- Opaque material fallback and reduced transparency support.
+- CP blue actions and selection, with neutral operational surfaces.
+- Sarabun-first Thai typography with clear headings and supporting text.
+- Bordered panels, compact records, and readable form controls.
+- Responsive sidebar, mobile navigation, and stacked booking forms.
 
 ## Colors
 
-The frontmatter records reused material values. Primary burgundy identifies actions, focus, and active navigation. Dark burgundy supplies primary-button hover. Neutral ink and secondary text keep labels legible over pale lavender and blue surroundings.
+### Primary
 
-**The Accent Rule.** Preserve burgundy for action and selection; keep shared chrome neutral.
+CP blue identifies the primary action and focus. Deep CP blue provides hover and selected text; the soft blue surface marks active navigation and approval guidance. The frontmatter is the normative palette.
 
-The supported glass values apply only when backdrop filtering is available. Otherwise surface and chrome use their opaque tokens. The stage combines lavender and blue radial gradients with a light-to-cool diagonal gradient.
+### Neutral
+
+White surfaces sit on a cool, muted page background. Ink is the main reading color; secondary and muted text distinguish supporting detail. Fine borders separate panels; the stronger field border makes inputs identifiable.
+
+Success green, warning amber, and danger red retain their semantic roles. Status badges additionally preserve their existing Tailwind semantic fills and text pairs; their labels state the meaning. The public landing retains its local ink (`#222735`) and muted (`#596173`) values; these are a surface-specific variation, not replacements for workspace text tokens.
+
+**The Action Accent Rule.** Use CP blue for primary actions, focus, and selection; preserve semantic status colors for their existing meanings.
 
 ## Typography
 
-Use the system-first font stack with Sarabun and Noto Sans Thai fallbacks. Preserve existing screen text sizes and Thai labels. The overview title uses a medium weight and modest negative tracking; desktop overrides its size to 30px, or 24px at narrower desktop widths.
+**Display Font / Body Font:** Sarabun, with Noto Sans Thai and platform sans-serif fallbacks. The display role belongs to the public landing; ordinary workspace text inherits the body stack.
+
+### Hierarchy
+
+- **Display:** the responsive public hero uses the display token. Its narrow layout overrides the scale, including a 39px heading at 480px and below.
+- **Headline:** search uses the headline token, reducing to 24px below 768px. Operational list titles use 26px, also reducing to 24px on mobile.
+- **Title:** page headers and form section headings use the title token; room-card and dialog headings commonly use 18px at weight 600.
+- **Body:** the application base uses the body token. Forms and operational copy commonly use 14px; supporting paragraphs have generous line height for Thai reading.
+- **Label / Status:** action labels use the label token; compact status text uses the status token. Small metadata commonly uses 12–13px. Mobile form controls use 16px text.
+
+**The Thai First Rule.** Keep Sarabun first in the shared font stack and preserve readable Thai labels as layouts narrow.
 
 ## Layout
 
-Mobile occupies the viewport height. Desktop starts at 1024px, with 16px outer space and a frame height of `calc(100dvh - 32px)`. The existing sidebar and screen grids remain intact. Desktop content commonly uses 36px horizontal spacing; mobile search controls use 12px margins and 16px padding. Date controls wrap below 451px.
+The workspace fills the viewport height without an outer decorative frame. At 1024px and wider, a 224px sidebar accompanies the main content. Below that breakpoint, mobile navigation replaces the sidebar. The bottom navigation is flat, respects the safe area, and has a 64px minimum shell height with 48px minimum button heights.
 
-The mobile dock has a 64px minimum height, 8px top space, 12px side margins, and a bottom margin respecting the safe area. Form fields and dock buttons have a 44px minimum height; desktop navigation items have a 48px minimum height.
+Desktop search uses 32px side spacing and a three-column room grid. Below 1280px the grid has two columns and the search controls stack; below 768px it becomes one column with 16px side spacing. Date spans the full first row on mobile, with start and end time beneath. Additional filters collapse behind an explicit control. The booking form has room summary and form columns at desktop, and stacks on smaller screens. Review details change from label/value columns to stacked rows on mobile.
+
+Operational records use compact vertical rows; tables retain horizontal scrolling within their own container. The schedule initializes in agenda mode below 768px. Public landing and login switch their main composition at 800px; the landing uses a centered 1240px outer content limit.
+
+Shared action buttons, fields, and most operational controls have a 44px minimum target; search fields use 46px. This is the intended recurring pattern, not a claim that every inherited control meets it. Verify the shipped interface at 375px, 768px, 1024px, and 1440px before sign-off.
 
 ## Elevation & Depth
 
-Shared panels use a diffuse ambient shadow and a white inset edge. The desktop frame has a broader shadow. Room-card hover increases depth and adds a subtle burgundy border; disabled cards reduce opacity.
+Workspace panels, search results, navigation, and login are flat, solid surfaces separated by borders and tone. Account menus, dialogs, and toasts retain purposeful elevation. Room photography may retain a dark gradient to support overlaid text; this is not a translucent workspace surface.
 
-**The Bounded Blur Rule.** Apply blur to chrome, dialogs, account options, the login control panel, and search controls; leave repeated content cards without individual backdrop blur.
+### Shadow Vocabulary
 
-Chrome uses `blur(20px) saturate(140%)`; search controls use `blur(12px)`. Unsupported filtering uses opaque surface defaults. `prefers-reduced-transparency: reduce` restores opaque surfaces and disables these filters. Existing `prefers-reduced-motion` rules disable animations and transitions.
+- **Account menu:** `0 12px 32px #172b4d1f` distinguishes the menu from navigation.
+- **Dialog:** `0 18px 64px #18243140` and a `#17243180` backdrop establish modal depth.
+- **Toast:** `0 6px 24px #18243126` separates transient feedback from page content.
+
+**The Solid Surface Rule.** Use solid surfaces and fine borders for workspace panels; reserve elevation for overlays and transient feedback.
+
+State transitions use short color changes, usually 160ms ease-out. Decorative entrance animations are disabled in the shared treatment. Reduced-motion CSS disables animation and transitions; the refresh spinner also has an explicit reduced-motion fallback.
 
 ## Shapes
 
-Fields and standard buttons use the field radius. Navigation items use the navigation-item radius; recurring cards use the panel radius. Desktop frames, login panels, and the mobile dock use the frame radius. Dock selections use their dedicated inset radius.
+Controls use the control radius and repeated panels use the panel radius. Borders are usually 1px. Status badges remain pill-shaped; the page frame and bottom navigation stay square to the viewport. Photo cropping and small segmented controls retain local corner values rather than expanding the shared radius scale.
 
 ## Components
 
-- **Buttons:** preserve existing primary, secondary, ghost, danger, and success variants. Primary buttons retain white labels and burgundy hover. Shared keyboard focus uses a 3px burgundy outline with 3px offset.
-- **Fields:** pale white fill, a fine neutral stroke, inset shading, and dark text. Placeholders use the secondary text token.
-- **Cards:** white translucent material, fine white edges, and ambient elevation. Room imagery retains its dark lower gradient for white photo labels.
-- **Desktop navigation:** neutral hover, brighter white active fill, burgundy active text, and a restrained active shadow.
-- **Mobile dock:** rounded translucent shell with a pale burgundy active-item fill. Desktop hides the dock.
-- **Feedback:** preserve semantic status colors and the existing dark toast treatment; the glass palette does not replace status meaning.
+### Buttons
+
+Primary buttons use CP blue and white labels, deepening on hover. Secondary buttons use a white surface, neutral border, and secondary text; ghost buttons are quieter text actions. Danger and success variants keep their semantic pale fills and text colors. The shared medium button uses 10px vertical and 16px horizontal padding. Disabled buttons indicate unavailability; loading buttons set `aria-busy` and disable activation.
+
+Shared keyboard focus is a 3px CP blue outline with 3px offset. Public landing focus uses a 5px offset. Do not remove these states when extending a component.
+
+### Chips and Status
+
+Status badges pair a dot and a Thai label with semantic background and text colors. Filter and view selections expose pressed or expanded state and use soft blue with deep blue text. Text must communicate the status independently of color.
+
+### Cards / Containers
+
+Room cards use a solid surface, fine border, panel radius, and cropped room imagery. Their bodies carry title, availability, location, capacity, equipment, and an explicit detail action. Repeated records use the same material, with separators around action areas. Padding varies with density: room bodies use 18px; records commonly use 20px and 16px on mobile; forms use 24px and 18px on mobile.
+
+### Inputs / Fields
+
+Inputs use solid white, the field border, control radius, and dark text. Focus uses the shared outline; invalid fields use the danger border. Disabled fields have a muted fill and unavailable cursor. Keep visible field labels and connect validation feedback with `aria-describedby` where supplied.
+
+### Navigation
+
+Desktop navigation is a fixed-width column with grouped actions. Active items use soft blue, deep blue text, and `aria-current`. Mobile navigation is a full-width bottom bar, with the current item identified by text color and semantic state. A focusable skip link reaches the main content.
+
+### Dialogs and Booking Review
+
+The shared modal uses native `dialog` with `showModal()`, an accessible title, a labelled close button, and a scrollable bounded panel. Escape closes it unless a busy operation is in progress. Its width is capped at 560px and respects viewport margins. Browser focus behavior still requires live verification.
+
+Booking review is a page state in the form layout, with an ordered progress indicator, a summary list, approval guidance, and explicit submission. It does not use a second nested wizard dialog. Confirmation and history present the resulting status, rather than implying every submission is already approved.
 
 ## Do's and Don'ts
 
-- Do preserve Thai labels, burgundy identity, and existing booking layouts.
-- Do use the shared material tokens for recurring panels and chrome.
-- Do preserve visible keyboard focus, opaque fallback, and reduced transparency behavior.
-- Don't add individual backdrop blur to repeated room cards.
-- Don't use the glass treatment to replace semantic status colors or obscure text.
+### Do:
+
+- Do preserve CP blue identity and Thai labels.
+- Do reuse the shared control and panel tokens for new operational surfaces.
+- Do keep explicit labels, visible keyboard focus, and text accompanying status color.
+- Do keep date, time, room capacity, equipment, review, and booking status readable on narrow screens.
+- Do verify current rendered screens before claiming responsive or accessibility completion.
+
+### Don't:
+
+- Don't restore the obsolete burgundy identity or glass workspace treatment.
+- Don't use color alone to explain availability, errors, or approval state.
+- Don't make the public landing display scale the default for operational screens.
+- Don't treat inherited one-off values or unverified layouts as new shared tokens.
+
+Not canonized: inherited small metadata and 40px refresh/toast/view-switch controls, isolated legacy colors/radii, and residual CSS from prior treatments. These are not new global rules; resolving them requires targeted review rather than documenting every inherited value as intentional. Current screenshot and accessibility verification is pending; see `../../docs/UI_REDESIGN.md`.

@@ -1,9 +1,5 @@
-.reference-ui .room-view-switch { display:flex; gap:4px; width:fit-content; padding:5px; margin-bottom:18px; border:1px solid #fff; border-radius:16px; background:#ffffffa6; box-shadow:0 4px 16px #153d6410; }
-.reference-ui .room-view-switch button { display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:8px 18px; border-radius:12px; color:#425c72; font-weight:600; }
-.reference-ui .room-view-switch button[aria-pressed="true"] { background:#0776bc; color:white; box-shadow:0 4px 12px #0776bc30; }
 .reference-ui .room-schedule { --schedule-blue:#087bbf; padding:28px; border:1px solid #fffffff0; border-radius:28px; background:linear-gradient(130deg,#ffffffdb,#f3faffb8 60%,#e7f3fbad); box-shadow:0 20px 64px #28577712,inset 0 1px 1px #fff; color:#203d52; min-width:0; }
 .reference-ui .schedule-toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; }
-.reference-ui .schedule-eyebrow { font-size:10px; letter-spacing:.2em; font-weight:700; color:#537489; }
 .reference-ui .schedule-toolbar h3 { display:flex; gap:10px; align-items:center; font-size:26px; letter-spacing:-.035em; font-weight:700; margin:7px 0 5px; color:#1d3549; }
 .reference-ui .schedule-toolbar p { color:#587184; font-size:13px; line-height:1.7; }
 .reference-ui .schedule-header-actions,.reference-ui .schedule-secondary-tools { display:flex; align-items:center; gap:10px; }
@@ -79,14 +75,11 @@
 .reference-ui .schedule-month-days button.outside-month { background:#eaf0f65e; color:#71828f; }
 .reference-ui .schedule-month-days button.is-today strong { border-radius:50%; background:#087bbf; color:#fff; box-shadow:0 3px 7px #087bbf25; }
 .reference-ui .schedule-month-days button i { position:absolute; right:12px; top:24px; width:5px; height:5px; border-radius:50%; background:#438cbd; }
-.reference-ui .room-schedule :is(button,select,input,[tabindex]):focus-visible,.reference-ui .room-view-switch button:focus-visible { outline:3px solid #087bbf; outline-offset:3px; }
 .reference-ui .room-schedule button:disabled { opacity:.5; cursor:wait; }
-@supports (backdrop-filter:blur(16px)) { .reference-ui :is(.room-schedule,.room-view-switch) { backdrop-filter:blur(16px) saturate(140%); -webkit-backdrop-filter:blur(16px) saturate(140%); } }
 @media(max-width:767px) {
  .reference-ui .room-schedule { padding:16px; border-radius:22px; }
  .reference-ui .schedule-toolbar { align-items:flex-start; gap:10px; }
  .reference-ui .schedule-toolbar h3 { font-size:22px; }.reference-ui .schedule-toolbar p { font-size:11px; }
- .reference-ui .schedule-eyebrow { font-size:8px; }
  .reference-ui .schedule-header-actions { gap:6px; }.reference-ui .schedule-room-count { display:none; }
  .reference-ui .schedule-filters { padding:12px; gap:12px; margin:18px 0; border-radius:16px; }
  .reference-ui .schedule-filter-row { flex-direction:column; gap:8px; }.reference-ui .schedule-filter-label { padding-top:0; }
@@ -100,6 +93,5 @@
  .reference-ui .schedule-date-heading { margin-top:18px; }.reference-ui .schedule-date-heading h4 { font-size:14px; }
  .reference-ui .schedule-grid { max-height:580px; border-radius:14px; }
  .reference-ui .schedule-month-days button { min-height:72px; padding:6px 4px; gap:5px; }.reference-ui .schedule-month-days button strong { font-size:12px; width:23px; height:23px; }.reference-ui .schedule-month-days button span { font-size:9px; }.reference-ui .schedule-month-days button i { top:9px; right:5px; width:4px; height:4px; }
- .reference-ui .room-view-switch { width:100%; }.reference-ui .room-view-switch button { flex:1; padding-inline:12px; }
 }
 @media(prefers-reduced-motion:reduce) { .reference-ui .schedule-chips button { transition:none; }.reference-ui .room-schedule .animate-spin { animation:none; } }

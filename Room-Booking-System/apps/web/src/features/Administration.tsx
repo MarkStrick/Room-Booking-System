@@ -7,6 +7,8 @@ import {
   Plus,
   ShieldCheck,
 } from "lucide-react";
+import { Button, Modal } from "../reference/components/ui";
+import { matchesRoom } from "../reference/booking-filters";
 import { FloorManager } from "./FloorManager";
 import { computingCatalog } from "../../../../packages/core/src/space-scope";
 import { useDemo } from "../app/DemoProvider";
@@ -30,7 +32,21 @@ import {
 
 export function ManageRooms({ open }: { open: OpenDialog }) {
   const { state, user } = useDemo();
+  const [query, setQuery] = useState("");
+  const [roomStatus, setRoomStatus] = useState("");
   const rooms = state.rooms.filter((r) => canManage(state, user, r.id));
+  const filteredRooms = rooms.filter(
+    (r) =>
+      matchesRoom(
+        r,
+        state.buildings.find((b) => b.id === r.buildingId)?.name ?? "",
+        { query, capacity: 0, type: "", amenity: "", buildingId: "" },
+      ) &&
+      (!roomStatus ||
+        (roomStatus === "INACTIVE"
+          ? r.active === false
+          : r.active !== false && r.status === roomStatus)),
+  );
   return (
     <>
       <PageHeading
@@ -58,8 +74,40 @@ export function ManageRooms({ open }: { open: OpenDialog }) {
         }{" "}
         ห้อง
       </p>
+      <div className="management-filters">
+        <label>
+          ค้นหาห้อง
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="ชื่อห้อง รหัสห้อง หรืออาคาร"
+          />
+        </label>
+        <label>
+          สถานะห้อง
+          <select
+            value={roomStatus}
+            onChange={(e) => setRoomStatus(e.target.value)}
+          >
+            <option value="">ทุกสถานะ</option>
+            <option value="AVAILABLE">พร้อมใช้งาน</option>
+            <option value="MAINTENANCE">ปิดปรับปรุง</option>
+            <option value="CLOSED">ปิดให้บริการ</option>
+            <option value="INACTIVE">เลิกใช้งาน</option>
+          </select>
+        </label>
+        <span role="status">
+          {filteredRooms.length} จาก {rooms.length} ห้อง
+        </span>
+      </div>
+      {!filteredRooms.length && (
+        <Empty title="ไม่พบห้องที่ตรงกับการค้นหา">
+          ลองเปลี่ยนคำค้นหรือสถานะห้อง
+        </Empty>
+      )}
       <div className="admin-room-grid">
-        {rooms.map((r) => {
+        {filteredRooms.map((r) => {
           const inspection = state.inspections.find((i) => i.roomId === r.id);
           return (
             <article className="admin-room panel" key={r.id}>
@@ -237,7 +285,10 @@ export function Locations({ open }: { open: OpenDialog }) {
           เพิ่มอาคาร
         </button>
       </PageHeading>
-      <label className="subtle" style={{ flexDirection: "row", alignItems: "center", marginBottom: 16 }}>
+      <label
+        className="subtle"
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 16 }}
+      >
         <input
           type="checkbox"
           checked={showAllBuildings}
@@ -254,9 +305,14 @@ export function Locations({ open }: { open: OpenDialog }) {
             <h2>{b.name}</h2>
             <p>
               {b.floors} ชั้น •{" "}
-              {state.rooms.filter((r) => r.buildingId === b.id && r.active !== false).length} ห้องที่เปิดใช้งาน
+              {
+                state.rooms.filter(
+                  (r) => r.buildingId === b.id && r.active !== false,
+                ).length
+              }{" "}
+              ห้องที่เปิดใช้งาน
             </p>
-            <FloorManager building={b}/>
+            <FloorManager building={b} />
             <button
               className="btn ghost"
               onClick={() => open({ kind: "building", id: b.id })}
@@ -302,7 +358,10 @@ export function Locations({ open }: { open: OpenDialog }) {
         {[...state.holidays].sort().map((d) => (
           <div className="list-row holiday-row" key={d}>
             <strong>{thaiDate(`${d}T12:00:00+07:00`)}</strong>
-            <span className="badge warm">ไม่เปิดรับการจอง{state.settings?.holidayPosters?.[d] ? " · มีโปสเตอร์" : ""}</span>
+            <span className="badge warm">
+              ไม่เปิดรับการจอง
+              {state.settings?.holidayPosters?.[d] ? " · มีโปสเตอร์" : ""}
+            </span>
             <div className="holiday-actions">
               <button
                 className="btn ghost"
@@ -326,8 +385,19 @@ export function Locations({ open }: { open: OpenDialog }) {
   );
 }
 export function Equipment({ open }: { open: OpenDialog }) {
-  const { state,run,showToast } = useDemo();
-  const [changing,setChanging]=useState<number|null>(null);
+  const { state, run } = useDemo();
+  const [changing, setChanging] = useState<number | null>(null);
+  const [query, setQuery] = useState("");
+  const [activationTarget, setActivationTarget] = useState<number | null>(null);
+  const activationItem = state.equipment.find(
+    (item) => item.id === activationTarget,
+  );
+  const [activationError, setActivationError] = useState("");
+  const equipment = state.equipment.filter((e) =>
+    `${e.name} EQ-${String(e.id).padStart(3, "0")}`
+      .toLocaleLowerCase()
+      .includes(query.trim().toLocaleLowerCase()),
+  );
   return (
     <>
       <PageHeading
@@ -360,6 +430,18 @@ export function Equipment({ open }: { open: OpenDialog }) {
           icon={<ClipboardCheck size={21} />}
         />
       </div>
+      <div className="management-filters">
+        <label>
+          ค้นหาอุปกรณ์
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="ชื่อหรือรหัสอุปกรณ์"
+          />
+        </label>
+        <span role="status">{equipment.length} รายการ</span>
+      </div>
       <section className="panel">
         <div className="table-scroll">
           <table>
@@ -370,11 +452,18 @@ export function Equipment({ open }: { open: OpenDialog }) {
                 <th>พร้อมจอง</th>
                 <th>ถูกกันไว้</th>
                 <th>สัดส่วนที่พร้อม</th>
-                <th />
+                <th>
+                  <span className="sr-only">การดำเนินการ</span>
+                </th>
               </tr>
             </thead>
             <tbody>
-              {state.equipment.map((e) => (
+              {!equipment.length && (
+                <tr>
+                  <td colSpan={6}>ไม่พบอุปกรณ์ ลองเปลี่ยนคำค้น</td>
+                </tr>
+              )}
+              {equipment.map((e) => (
                 <tr key={e.id}>
                   <td>
                     <strong>{e.name}</strong>
@@ -401,11 +490,23 @@ export function Equipment({ open }: { open: OpenDialog }) {
                     >
                       แก้ไข
                     </button>
-                    <button className="btn ghost small" disabled={changing!==null||(e.active!==false&&e.total!==e.remaining)} onClick={async()=>{
-                      setChanging(e.id);
-                      try{await run({type:'EQUIPMENT_ACTIVE',equipmentId:e.id,active:e.active===false},e.active===false?'เปิดใช้งานอุปกรณ์แล้ว':'เลิกใช้งานอุปกรณ์แล้ว');}
-                      catch(error){showToast((error as Error).message, 'error');}finally{setChanging(null);}
-                    }}>{changing===e.id?'กำลังบันทึก…':e.active===false?'เปิดใช้งาน':'เลิกใช้งาน'}</button>
+                    <button
+                      className="btn ghost small"
+                      disabled={
+                        changing !== null ||
+                        (e.active !== false && e.total !== e.remaining)
+                      }
+                      onClick={() => {
+                        setActivationError("");
+                        setActivationTarget(e.id);
+                      }}
+                    >
+                      {changing === e.id
+                        ? "กำลังบันทึก…"
+                        : e.active === false
+                          ? "เปิดใช้งาน"
+                          : "เลิกใช้งาน"}
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -417,6 +518,65 @@ export function Equipment({ open }: { open: OpenDialog }) {
         <Package size={18} />
         อุปกรณ์ประจำห้องแสดงในรายละเอียดห้อง และไม่ถูกหักจากกองกลางนี้
       </div>
+      <Modal
+        open={!!activationItem}
+        title="เปลี่ยนการใช้งานอุปกรณ์"
+        busy={changing !== null}
+        onClose={() => setActivationTarget(null)}
+      >
+        {activationItem && (
+          <>
+            <p>
+              {activationItem.active === false
+                ? "เปิดให้ยืม"
+                : "เลิกเปิดให้ยืม"}{" "}
+              <strong>{activationItem.name}</strong>
+            </p>
+            <p className="mt-3 text-sm text-gray-600">
+              ประวัติการยืมเดิมจะยังคงอยู่
+            </p>
+            {activationError && (
+              <p className="form-error" role="alert">
+                {activationError}
+              </p>
+            )}
+            <div className="flex gap-3 mt-6">
+              <Button
+                variant="secondary"
+                disabled={changing !== null}
+                onClick={() => setActivationTarget(null)}
+              >
+                กลับ
+              </Button>
+              <Button
+                loading={changing !== null}
+                onClick={async () => {
+                  setChanging(activationItem.id);
+                  try {
+                    await run(
+                      {
+                        type: "EQUIPMENT_ACTIVE",
+                        equipmentId: activationItem.id,
+                        active: activationItem.active === false,
+                      },
+                      activationItem.active === false
+                        ? "เปิดใช้งานอุปกรณ์แล้ว"
+                        : "เลิกใช้งานอุปกรณ์แล้ว",
+                    );
+                    setActivationTarget(null);
+                  } catch (error) {
+                    setActivationError((error as Error).message);
+                  } finally {
+                    setChanging(null);
+                  }
+                }}
+              >
+                {changing !== null ? "กำลังบันทึก…" : "ยืนยัน"}
+              </Button>
+            </div>
+          </>
+        )}
+      </Modal>
       <EquipmentHandovers />
     </>
   );

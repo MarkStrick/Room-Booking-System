@@ -1,203 +1,360 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-14T14:59:39.984Z",
-  "title": "Design System: KKU Room Booking — Shared Glass UI",
+  "generatedAt": "2026-10-23T00:00:00Z",
+  "title": "Design System: CP SPACE — Clear Booking Workspace",
   "extensions": {
     "colorMeta": {
-      "kku-red": {
+      "cp-blue": {
         "role": "primary",
-        "displayName": "KKU Burgundy",
-        "canonical": "#A4233B",
+        "displayName": "Cp Blue",
         "tonalRamp": [
-          "oklch(15% 0.16 15)",
-          "oklch(25% 0.16 15)",
-          "oklch(35% 0.16 15)",
-          "oklch(45% 0.16 15)",
-          "oklch(55% 0.16 15)",
-          "oklch(70% 0.16 15)",
-          "oklch(85% 0.16 15)",
-          "oklch(95% 0.16 15)"
+          "oklch(15% 0.1385 245.91)",
+          "oklch(25% 0.1385 245.91)",
+          "oklch(35% 0.1385 245.91)",
+          "oklch(45% 0.1385 245.91)",
+          "oklch(55% 0.1385 245.91)",
+          "oklch(70% 0.1385 245.91)",
+          "oklch(85% 0.1385 245.91)",
+          "oklch(95% 0.1385 245.91)"
         ]
       },
-      "glass-text": {
-        "role": "neutral",
-        "displayName": "Cool Ink",
-        "canonical": "#222735",
+      "cp-blue-dark": {
+        "role": "primary",
+        "displayName": "Cp Blue Dark",
         "tonalRamp": [
-          "oklch(15% 0.02 270)",
-          "oklch(25% 0.02 270)",
-          "oklch(35% 0.02 270)",
-          "oklch(45% 0.02 270)",
-          "oklch(55% 0.02 270)",
-          "oklch(70% 0.02 270)",
-          "oklch(85% 0.02 270)",
-          "oklch(95% 0.02 270)"
+          "oklch(15% 0.1141 245.95)",
+          "oklch(25% 0.1141 245.95)",
+          "oklch(35% 0.1141 245.95)",
+          "oklch(45% 0.1141 245.95)",
+          "oklch(55% 0.1141 245.95)",
+          "oklch(70% 0.1141 245.95)",
+          "oklch(85% 0.1141 245.95)",
+          "oklch(95% 0.1141 245.95)"
         ]
       },
-      "stage-lavender": {
-        "role": "neutral",
-        "displayName": "Lavender Atmosphere",
-        "canonical": "#e1ddec",
+      "cp-blue-soft": {
+        "role": "primary",
+        "displayName": "Cp Blue Soft",
         "tonalRamp": [
-          "oklch(15% 0.02 300)",
-          "oklch(25% 0.02 300)",
-          "oklch(35% 0.02 300)",
-          "oklch(45% 0.02 300)",
-          "oklch(55% 0.02 300)",
-          "oklch(70% 0.02 300)",
-          "oklch(85% 0.02 300)",
-          "oklch(95% 0.02 300)"
+          "oklch(15% 0.0142 238.01)",
+          "oklch(25% 0.0142 238.01)",
+          "oklch(35% 0.0142 238.01)",
+          "oklch(45% 0.0142 238.01)",
+          "oklch(55% 0.0142 238.01)",
+          "oklch(70% 0.0142 238.01)",
+          "oklch(85% 0.0142 238.01)",
+          "oklch(95% 0.0142 238.01)"
         ]
       },
-      "stage-blue": {
+      "surface": {
         "role": "neutral",
-        "displayName": "Blue Atmosphere",
-        "canonical": "#d8e8ed",
+        "displayName": "Surface",
         "tonalRamp": [
-          "oklch(15% 0.02 220)",
-          "oklch(25% 0.02 220)",
-          "oklch(35% 0.02 220)",
-          "oklch(45% 0.02 220)",
-          "oklch(55% 0.02 220)",
-          "oklch(70% 0.02 220)",
-          "oklch(85% 0.02 220)",
-          "oklch(95% 0.02 220)"
+          "oklch(15% 0.0000 89.88)",
+          "oklch(25% 0.0000 89.88)",
+          "oklch(35% 0.0000 89.88)",
+          "oklch(45% 0.0000 89.88)",
+          "oklch(55% 0.0000 89.88)",
+          "oklch(70% 0.0000 89.88)",
+          "oklch(85% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
         ]
+      },
+      "surface-muted": {
+        "role": "neutral",
+        "displayName": "Surface Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0034 247.86)",
+          "oklch(25% 0.0034 247.86)",
+          "oklch(35% 0.0034 247.86)",
+          "oklch(45% 0.0034 247.86)",
+          "oklch(55% 0.0034 247.86)",
+          "oklch(70% 0.0034 247.86)",
+          "oklch(85% 0.0034 247.86)",
+          "oklch(95% 0.0034 247.86)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0299 251.01)",
+          "oklch(25% 0.0299 251.01)",
+          "oklch(35% 0.0299 251.01)",
+          "oklch(45% 0.0299 251.01)",
+          "oklch(55% 0.0299 251.01)",
+          "oklch(70% 0.0299 251.01)",
+          "oklch(85% 0.0299 251.01)",
+          "oklch(95% 0.0299 251.01)"
+        ]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Text Secondary",
+        "tonalRamp": [
+          "oklch(15% 0.0315 248.59)",
+          "oklch(25% 0.0315 248.59)",
+          "oklch(35% 0.0315 248.59)",
+          "oklch(45% 0.0315 248.59)",
+          "oklch(55% 0.0315 248.59)",
+          "oklch(70% 0.0315 248.59)",
+          "oklch(85% 0.0315 248.59)",
+          "oklch(95% 0.0315 248.59)"
+        ]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Text Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0279 248.36)",
+          "oklch(25% 0.0279 248.36)",
+          "oklch(35% 0.0279 248.36)",
+          "oklch(45% 0.0279 248.36)",
+          "oklch(55% 0.0279 248.36)",
+          "oklch(70% 0.0279 248.36)",
+          "oklch(85% 0.0279 248.36)",
+          "oklch(95% 0.0279 248.36)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border",
+        "tonalRamp": [
+          "oklch(15% 0.0104 247.94)",
+          "oklch(25% 0.0104 247.94)",
+          "oklch(35% 0.0104 247.94)",
+          "oklch(45% 0.0104 247.94)",
+          "oklch(55% 0.0104 247.94)",
+          "oklch(70% 0.0104 247.94)",
+          "oklch(85% 0.0104 247.94)",
+          "oklch(95% 0.0104 247.94)"
+        ]
+      },
+      "field-border": {
+        "role": "neutral",
+        "displayName": "Field Border",
+        "tonalRamp": [
+          "oklch(15% 0.0185 245.43)",
+          "oklch(25% 0.0185 245.43)",
+          "oklch(35% 0.0185 245.43)",
+          "oklch(45% 0.0185 245.43)",
+          "oklch(55% 0.0185 245.43)",
+          "oklch(70% 0.0185 245.43)",
+          "oklch(85% 0.0185 245.43)",
+          "oklch(95% 0.0185 245.43)"
+        ]
+      },
+      "success": {
+        "role": "semantic",
+        "displayName": "Success",
+        "tonalRamp": [
+          "oklch(15% 0.1083 151.33)",
+          "oklch(25% 0.1083 151.33)",
+          "oklch(35% 0.1083 151.33)",
+          "oklch(45% 0.1083 151.33)",
+          "oklch(55% 0.1083 151.33)",
+          "oklch(70% 0.1083 151.33)",
+          "oklch(85% 0.1083 151.33)",
+          "oklch(95% 0.1083 151.33)"
+        ]
+      },
+      "warning": {
+        "role": "semantic",
+        "displayName": "Warning",
+        "tonalRamp": [
+          "oklch(15% 0.1247 46.20)",
+          "oklch(25% 0.1247 46.20)",
+          "oklch(35% 0.1247 46.20)",
+          "oklch(45% 0.1247 46.20)",
+          "oklch(55% 0.1247 46.20)",
+          "oklch(70% 0.1247 46.20)",
+          "oklch(85% 0.1247 46.20)",
+          "oklch(95% 0.1247 46.20)"
+        ]
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "Danger",
+        "tonalRamp": [
+          "oklch(15% 0.1793 21.80)",
+          "oklch(25% 0.1793 21.80)",
+          "oklch(35% 0.1793 21.80)",
+          "oklch(45% 0.1793 21.80)",
+          "oklch(55% 0.1793 21.80)",
+          "oklch(70% 0.1793 21.80)",
+          "oklch(85% 0.1793 21.80)",
+          "oklch(95% 0.1793 21.80)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Public Hero",
+        "purpose": "Public landing heading only; responsive overrides apply."
+      },
+      "body": {
+        "displayName": "Thai First Body",
+        "purpose": "Shared application base; compact screen text commonly uses 14px."
       }
     },
     "shadows": [
       {
-        "name": "glass-shadow",
-        "value": "0 8px 28px rgb(37 48 75 / 7%)",
-        "purpose": "Shared card and chrome ambient depth."
+        "name": "account-menu",
+        "value": "0 12px 32px #172b4d1f",
+        "purpose": "Navigation account menu."
       },
       {
-        "name": "frame",
-        "value": "0 20px 60px rgb(40 48 71 / 10%)",
-        "purpose": "Desktop outer frame."
+        "name": "dialog",
+        "value": "0 18px 64px #18243140",
+        "purpose": "Modal depth."
       },
       {
-        "name": "room-hover",
-        "value": "0 12px 32px rgb(37 48 75 / 12%), inset 0 1px 0 white",
-        "purpose": "Interactive room card hover."
+        "name": "toast",
+        "value": "0 6px 24px #18243126",
+        "purpose": "Transient feedback."
       }
     ],
     "motion": [
       {
-        "name": "room-card-state",
-        "value": "box-shadow 180ms ease-out, border-color 180ms ease-out",
-        "purpose": "Hover state; disabled under reduced motion."
+        "name": "control-state",
+        "value": "160ms ease-out",
+        "purpose": "Background and border transitions; reduced-motion CSS disables transitions."
       }
     ],
     "breakpoints": [
       {
-        "name": "compact-date-wrap",
-        "value": "450px"
+        "name": "mobile",
+        "value": "767px"
       },
       {
-        "name": "desktop",
+        "name": "public-stack",
+        "value": "800px"
+      },
+      {
+        "name": "desktop-sidebar",
         "value": "1024px"
       },
       {
-        "name": "wide-grid",
-        "value": "1600px"
+        "name": "search-three-columns",
+        "value": "1280px"
       }
-    ],
-    "materials": [
-      {
-        "name": "chrome",
-        "value": "blur(20px) saturate(140%)",
-        "purpose": "Headers, navigation, dialogs, account options, login panel."
-      },
-      {
-        "name": "search-controls",
-        "value": "blur(12px)",
-        "purpose": "Search control panel only."
-      }
-    ],
-    "accessibility": {
-      "focus": "3px solid #a4233b; outline-offset: 3px",
-      "reducedTransparency": "Opaque #fff surfaces and #f7f8fb chrome; shared backdrop filters disabled.",
-      "reducedMotion": "Animations and transitions disabled by reference.css."
-    },
-    "sources": [
-      "src/reference/glass.css",
-      "src/reference/reference.css",
-      "src/reference/desktop.css",
-      "src/reference/components/ui.tsx",
-      "src/main.tsx"
-    ],
-    "tonalRampNote": "Synthesized OKLCH ramps are preview metadata, not shipped CSS tokens."
+    ]
   },
   "components": [
     {
       "name": "Primary Button",
       "kind": "button",
-      "refersTo": "button-primary",
-      "description": "Existing medium primary action.",
-      "html": "<button class=\"ds-button\">จองห้อง</button>",
-      "css": ".ds-button{background:#A4233B;color:white;padding:10px 16px;border:0;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background-color 150ms ease}.ds-button:hover{background:#8B1E32}.ds-button:active{transform:scale(.97)}.ds-button:disabled{opacity:.4;cursor:not-allowed}.ds-button:focus-visible,.ds-field:focus-visible,.ds-nav button:focus-visible,.ds-card:focus-visible{outline:3px solid #a4233b;outline-offset:3px}"
+      "description": "Shared primary action with disabled and keyboard-focus states.",
+      "html": "<button class=\"ds-button-primary\" type=\"button\">ตรวจสอบการจอง</button>",
+      "css": ".ds-button-primary{font-family: Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif; font-size:14px; font-weight:600; min-height:44px; padding:10px 16px; border-radius:var(--radius-control,8px); cursor:pointer; transition:background-color 160ms ease-out,border-color 160ms ease-out;background:var(--brand,#0776bc);color:white;border:0;}.ds-button-primary:hover:not(:disabled){background:var(--brand-dark,#055a91);}.ds-button-primary:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}.ds-button-primary:disabled{opacity:.5;cursor:not-allowed;}",
+      "refersTo": "button-primary"
     },
     {
-      "name": "Search Field",
+      "name": "Secondary Button",
+      "kind": "button",
+      "description": "Shared secondary action with disabled and keyboard-focus states.",
+      "html": "<button class=\"ds-button-secondary\" type=\"button\">ย้อนกลับ</button>",
+      "css": ".ds-button-secondary{font-family: Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif; font-size:14px; font-weight:600; min-height:44px; padding:10px 16px; border-radius:var(--radius-control,8px); cursor:pointer; transition:background-color 160ms ease-out,border-color 160ms ease-out;background:var(--surface,#fff);color:var(--text-secondary,#3f4e5d);border:1px solid var(--border,#dce2e8);}.ds-button-secondary:hover:not(:disabled){background:var(--surface-muted,#f6f8fa);}.ds-button-secondary:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}.ds-button-secondary:disabled{opacity:.5;cursor:not-allowed;}",
+      "refersTo": "button-secondary"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "description": "Shared ghost action with disabled and keyboard-focus states.",
+      "html": "<button class=\"ds-button-ghost\" type=\"button\">ดูรายละเอียด</button>",
+      "css": ".ds-button-ghost{font-family: Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif; font-size:14px; font-weight:600; min-height:44px; padding:10px 16px; border-radius:var(--radius-control,8px); cursor:pointer; transition:background-color 160ms ease-out,border-color 160ms ease-out;background:transparent;color:#4b5563;border:0;}.ds-button-ghost:hover:not(:disabled){background:var(--surface-muted,#f6f8fa);}.ds-button-ghost:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}.ds-button-ghost:disabled{opacity:.5;cursor:not-allowed;}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "description": "Shared danger action with disabled and keyboard-focus states.",
+      "html": "<button class=\"ds-button-danger\" type=\"button\">ยกเลิกการจอง</button>",
+      "css": ".ds-button-danger{font-family: Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif; font-size:14px; font-weight:600; min-height:44px; padding:10px 16px; border-radius:var(--radius-control,8px); cursor:pointer; transition:background-color 160ms ease-out,border-color 160ms ease-out;background:#fff1f2;color:var(--danger,#b42332);border:1px solid #f2c6cc;}.ds-button-danger:hover:not(:disabled){background:#ffe4e6;}.ds-button-danger:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}.ds-button-danger:disabled{opacity:.5;cursor:not-allowed;}"
+    },
+    {
+      "name": "Success Button",
+      "kind": "button",
+      "description": "Shared success action with disabled and keyboard-focus states.",
+      "html": "<button class=\"ds-button-success\" type=\"button\">อนุมัติ</button>",
+      "css": ".ds-button-success{font-family: Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif; font-size:14px; font-weight:600; min-height:44px; padding:10px 16px; border-radius:var(--radius-control,8px); cursor:pointer; transition:background-color 160ms ease-out,border-color 160ms ease-out;background:#ecfdf3;color:var(--success,#166534);border:1px solid #b9dfc8;}.ds-button-success:hover:not(:disabled){background:#d8f5e4;}.ds-button-success:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}.ds-button-success:disabled{opacity:.5;cursor:not-allowed;}"
+    },
+    {
+      "name": "Field",
       "kind": "input",
       "refersTo": "field",
-      "description": "Readable pale field with neutral border.",
-      "html": "<input class=\"ds-field\" aria-label=\"ค้นหาห้อง\" placeholder=\"ค้นหาห้อง\">",
-      "css": ".ds-field{background:rgb(255 255 255 / 76%);border:1px solid rgb(58 66 87 / 12%);border-radius:12px;color:#222735;box-shadow:inset 0 1px 2px rgb(36 43 64 / 3%);min-height:44px;padding:0 12px;font-family:inherit}.ds-field::placeholder{color:#596173}.ds-button:focus-visible,.ds-field:focus-visible,.ds-nav button:focus-visible,.ds-card:focus-visible{outline:3px solid #a4233b;outline-offset:3px}"
+      "description": "Labelled solid field with invalid and disabled states.",
+      "html": "<label class=\"ds-field-label\">วัตถุประสงค์<input class=\"ds-field\" placeholder=\"หัวข้อประชุม\" /></label>",
+      "css": ".ds-field-label{display:grid;gap:6px;font-family:Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif;font-size:14px;color:var(--text,#182431);} .ds-field{min-height:44px;padding:10px 12px;background:var(--surface,#fff);border:1px solid #bcc7d1;border-radius:var(--radius-control,8px);font:inherit;color:var(--text,#182431);} .ds-field:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}.ds-field::placeholder{color:var(--text-muted,#5d6b79);}.ds-field[aria-invalid=true]{border-color:var(--danger,#b42332);}.ds-field:disabled{background:#f1f3f5;color:#687581;cursor:not-allowed;}"
     },
     {
-      "name": "Desktop Navigation",
+      "name": "Active Navigation",
       "kind": "nav",
-      "description": "Bright selected surface and burgundy active text.",
-      "html": "<nav class=\"ds-nav\"><button aria-current=\"page\">ค้นหาห้อง</button><button>ประวัติการจอง</button></nav>",
-      "css": ".ds-nav{background:#f7f8fb;padding:16px;max-width:248px}.ds-nav button{display:block;width:100%;min-height:48px;padding:10px 12px;margin-top:4px;text-align:left;border:1px solid transparent;border-radius:14px;background:transparent;color:#515c6c;font-family:inherit;font-size:14px;cursor:pointer}.ds-nav button:hover{background:rgb(255 255 255 / 62%)}.ds-nav button[aria-current]{background:rgb(255 255 255 / 88%);border-color:rgb(255 255 255 / 85%);color:#981f35;box-shadow:0 3px 12px rgb(42 48 66 / 7%),inset 0 1px 0 white;font-weight:600}.ds-button:focus-visible,.ds-field:focus-visible,.ds-nav button:focus-visible,.ds-card:focus-visible{outline:3px solid #a4233b;outline-offset:3px}"
-    },
-    {
-      "name": "Room Card Material",
-      "kind": "card",
-      "refersTo": "glass-panel",
-      "description": "Repeated content panel without individual backdrop blur.",
-      "html": "<button class=\"ds-card\">ห้องประชุม</button>",
-      "css": ".ds-card{background:#fff;color:#222735;border:1px solid rgb(255 255 255 / 85%);border-radius:16px;box-shadow:0 8px 28px rgb(37 48 75 / 7%),inset 0 1px 0 rgb(255 255 255 / 90%);padding:18px 20px;font-family:inherit;cursor:pointer;transition:box-shadow 180ms ease-out,border-color 180ms ease-out}.ds-card:hover{border-color:rgb(164 35 59 / 30%);box-shadow:0 12px 32px rgb(37 48 75 / 12%),inset 0 1px 0 white}.ds-card:disabled{opacity:.72}@supports(backdrop-filter:blur(1px)){.ds-card{background:rgb(255 255 255 / 65%)}}@media(prefers-reduced-transparency:reduce){.ds-card{background:#fff}}@media(prefers-reduced-motion:reduce){.ds-card{transition:none}}.ds-button:focus-visible,.ds-field:focus-visible,.ds-nav button:focus-visible,.ds-card:focus-visible{outline:3px solid #a4233b;outline-offset:3px}"
+      "refersTo": "navigation-active",
+      "description": "Selected desktop navigation item.",
+      "html": "<nav aria-label=\"เมนูหลัก\"><button class=\"ds-nav\" aria-current=\"page\">ค้นหาห้อง</button></nav>",
+      "css": ".ds-nav{font-family: Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif; font-size:14px; font-weight:600; min-height:44px; padding:10px 16px; border-radius:var(--radius-control,8px); cursor:pointer; transition:background-color 160ms ease-out,border-color 160ms ease-out;width:100%;text-align:left;padding:10px 12px;font-size:13px;background:var(--brand-soft,#eaf4fb);color:var(--brand-dark,#055a91);border:0;} .ds-nav:hover{background:var(--brand-soft,#eaf4fb);} .ds-nav:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}"
     },
     {
       "name": "Pending Status",
       "kind": "chip",
-      "description": "Incumbent semantic status badge.",
-      "html": "<span class=\"ds-chip\"><span></span>รออนุมัติ</span>",
-      "css": ".ds-chip{display:inline-flex;align-items:center;gap:6px;background:#fef3c7;color:#b45309;border-radius:9999px;padding:4px 10px;font-family:inherit;font-size:12px;font-weight:600}.ds-chip span{width:6px;height:6px;background:#f59e0b;border-radius:9999px}"
+      "description": "Text and dot preserve meaning alongside semantic color.",
+      "html": "<span class=\"ds-status\"><span class=\"ds-status-dot\" aria-hidden=\"true\"></span>รออนุมัติ</span>",
+      "css": ".ds-status{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:9999px;background:#fef3c7;color:#b45309;font-family:Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif;font-size:12px;font-weight:600;white-space:nowrap;} .ds-status-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;}"
+    },
+    {
+      "name": "Booking Record",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Compact bordered record for booking status and metadata.",
+      "html": "<article class=\"ds-record\"><h3>ห้องประชุม</h3><p>วันที่และเวลาที่เลือก</p><button class=\"ds-record-action\">ดูรายละเอียด</button></article>",
+      "css": ".ds-record{background:var(--surface,#fff);color:var(--text,#182431);border:1px solid var(--border,#dce2e8);border-radius:var(--radius-panel,12px);padding:20px;font-family:Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif;} .ds-record h3{margin:0;font-size:17px;font-weight:600;} .ds-record p{margin:14px 0;color:var(--text-secondary,#3f4e5d);font-size:13px;} .ds-record-action{min-height:44px;background:transparent;color:var(--brand-dark,#055a91);border:0;font:inherit;font-size:14px;cursor:pointer;} .ds-record-action:hover{text-decoration:underline;} .ds-record-action:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}"
+    },
+    {
+      "name": "Dialog Panel",
+      "kind": "custom",
+      "description": "Static panel specimen; production uses native showModal() and busy-aware dismissal.",
+      "html": "<section class=\"ds-dialog\" role=\"dialog\" aria-labelledby=\"ds-dialog-title\"><header class=\"ds-dialog-header\"><h2 id=\"ds-dialog-title\">ยืนยันรายการ</h2><button aria-label=\"ปิดหน้าต่าง\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"m18 6-12 12M6 6l12 12\"/></svg></button></header><div class=\"ds-dialog-body\">ตรวจสอบรายละเอียดก่อนยืนยัน</div></section>",
+      "css": ".ds-dialog{max-width:560px;background:var(--surface,#fff);color:var(--text,#182431);border-radius:12px;box-shadow:0 18px 64px #18243140;font-family:Sarabun, Noto Sans Thai, -apple-system, BlinkMacSystemFont, sans-serif;} .ds-dialog-header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid var(--border,#dce2e8);} .ds-dialog-header h2{font-size:18px;font-weight:600;margin:0;} .ds-dialog-header button{display:grid;place-items:center;min-width:44px;min-height:44px;background:transparent;border:0;border-radius:8px;cursor:pointer;} .ds-dialog-header button:hover{background:var(--surface-muted,#f6f8fa);} .ds-dialog-header button:focus-visible{outline:3px solid var(--brand,#0776bc);outline-offset:3px;}.ds-dialog-body{padding:24px;overflow-wrap:anywhere;}"
     }
   ],
   "narrative": {
-    "northStar": "Quiet Glass Workspace",
-    "overview": "Apple-inspired translucent chrome sits over a soft lavender and blue neutral surface. Burgundy remains the action and selection accent, with Thai text and existing room-booking content preserved.",
+    "northStar": "Clear Booking Workspace",
+    "overview": "A calm, practical university workspace uses CP blue to make actions and selections easy to find. Solid white panels, cool neutral backgrounds, fine borders, and Thai-first typography support repeated booking and staff tasks without decorative chrome competing with the content.\n\nThe application favors compact operational layouts; the public landing page uses larger headings, room photography, and more generous spacing. Both share CP identity and restrained surfaces. This document records the implemented source, not a claim of completed visual or accessibility verification. `src/reference/design-system.css` is the shared material authority, imported after the base and desktop styles by `src/main.tsx`; `src/reference/screens/search.css`, shared UI components, and landing/login styles supply surface-specific details. The older `src/reference/DESIGN.md` is historical.",
     "keyCharacteristics": [
-      "Cool neutral surfaces with restrained burgundy emphasis.",
-      "Translucent chrome, readable controls, and softly rounded containers.",
-      "Responsive desktop frame and mobile dock.",
-      "Opaque material fallback and reduced transparency support."
+      "CP blue actions and selection, with neutral operational surfaces.",
+      "Sarabun-first Thai typography with clear headings and supporting text.",
+      "Bordered panels, compact records, and readable form controls.",
+      "Responsive sidebar, mobile navigation, and stacked booking forms."
     ],
     "rules": [
       {
-        "name": "The Accent Rule",
-        "body": "Preserve burgundy for action and selection; keep shared chrome neutral.",
+        "name": "The Action Accent Rule",
+        "body": "Use CP blue for primary actions, focus, and selection; preserve semantic status colors for their existing meanings.",
         "section": "colors"
       },
       {
-        "name": "The Bounded Blur Rule",
-        "body": "Apply blur to chrome, dialogs, account options, the login control panel, and search controls; leave repeated content cards without individual backdrop blur.",
+        "name": "The Thai First Rule",
+        "body": "Keep Sarabun first in the shared font stack and preserve readable Thai labels as layouts narrow.",
+        "section": "typography"
+      },
+      {
+        "name": "The Solid Surface Rule",
+        "body": "Use solid surfaces and fine borders for workspace panels; reserve elevation for overlays and transient feedback.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do preserve Thai labels, burgundy identity, and existing booking layouts.",
-      "Do use the shared material tokens for recurring panels and chrome.",
-      "Do preserve visible keyboard focus, opaque fallback, and reduced transparency behavior."
+      "Do preserve CP blue identity and Thai labels.",
+      "Do reuse the shared control and panel tokens for new operational surfaces.",
+      "Do keep explicit labels, visible keyboard focus, and text accompanying status color.",
+      "Do keep date, time, room capacity, equipment, review, and booking status readable on narrow screens.",
+      "Do verify current rendered screens before claiming responsive or accessibility completion."
     ],
     "donts": [
-      "Don't add individual backdrop blur to repeated room cards.",
-      "Don't use the glass treatment to replace semantic status colors or obscure text."
+      "Don't restore the obsolete burgundy identity or glass workspace treatment.",
+      "Don't use color alone to explain availability, errors, or approval state.",
+      "Don't make the public landing display scale the default for operational screens.",
+      "Don't treat inherited one-off values or unverified layouts as new shared tokens."
     ]
   }
 }

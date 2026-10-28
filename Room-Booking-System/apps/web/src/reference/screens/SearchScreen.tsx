@@ -1,233 +1,437 @@
-import { computingCatalog } from '../../../../../packages/core/src/space-scope';
-import { HolidayBookingWarning } from '../../components/HolidayBookingWarning';
-import { TimeSelect } from '../components/TimeSelect';
-import { useDemo } from '../../app/DemoProvider';
-import { searchSlotError } from '../../../../../packages/core/src/search';
-import { availability, stamp } from '../../lib/domain';
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { useApp } from '../context/AppContext';
-import { AppHeader } from '../components/PhoneFrame';
-import { Users, MapPin, Clock, Search as SearchIcon, SlidersHorizontal, CalendarDays, DoorOpen, ChevronRight } from 'lucide-react';
-import { RoomImage } from '../components/RoomImage';
-const RoomSchedule = lazy(() => import('../components/RoomSchedule').then(module => ({ default: module.RoomSchedule })));
-
-const searchTimes = Array.from({ length: 17 }, (_, index) => {
-  const minutes = 8 * 60 + 30 + index * 30;
-  return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
-});
+import { lazy, Suspense, useRef, useState } from "react";
+import {
+  CalendarDays,
+  ChevronRight,
+  Clock,
+  DoorOpen,
+  MapPin,
+  Search,
+  SlidersHorizontal,
+  Users,
+} from "lucide-react";
+import { computingCatalog } from "../../../../../packages/core/src/space-scope";
+import { searchSlotError } from "../../../../../packages/core/src/search";
+import { HolidayBookingWarning } from "../../components/HolidayBookingWarning";
+import { useDemo } from "../../app/DemoProvider";
+import { addDays, availability, dateOf, stamp } from "../../lib/domain";
+import { useApp } from "../context/AppContext";
+import { AppHeader } from "../components/PhoneFrame";
+import { RoomImage } from "../components/RoomImage";
+import { TimeSelect } from "../components/TimeSelect";
+import { EmptyState } from "../components/ui";
+import { matchesRoom } from "../booking-filters";
+import "./search.css";
+const RoomSchedule = lazy(() =>
+  import("../components/RoomSchedule").then((module) => ({
+    default: module.RoomSchedule,
+  })),
+);
 
 export function SearchScreen() {
-  const { rooms, navigate, setSelectedRoom, roomAvailable, searchSlot, setSearchSlot, currentUser } = useApp();
-  const {state}=useDemo();
+  const {
+    rooms,
+    navigate,
+    setSelectedRoom,
+    roomAvailable,
+    searchSlot,
+    setSearchSlot,
+    currentUser,
+  } = useApp();
+  const { state, mode } = useDemo();
   const catalog = computingCatalog(state);
-  const roomIds = new Set(catalog.rooms.map(room => String(room.id)));
-  const [buildingId,setBuildingId]=useState('');
-  const [searchText, setSearchText] = useState('');
-  const [capacityFilter, setCapacityFilter] = useState<number | null>(null);
+  const [buildingId, setBuildingId] = useState("");
+  const [query, setQuery] = useState("");
+  const [capacity, setCapacity] = useState(searchSlot.capacity ?? 0);
+  const [type, setType] = useState("");
+  const [amenity, setAmenity] = useState("");
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [view, setView] = useState<'rooms' | 'schedule'>('schedule');
-  const {date,start:time,end:endT}=searchSlot;
+  const [view, setView] = useState<"rooms" | "schedule">("rooms");
+  const { date, start, end } = searchSlot;
   const dateInput = useRef<HTMLInputElement>(null);
   const isHoliday = state.holidays.includes(date);
-  const chooseDate = () => { dateInput.current?.focus(); try { dateInput.current?.showPicker(); } catch {} };
-  useEffect(() => {
-    if (view === 'schedule') return;
-    const start = searchTimes.includes(time) ? time : '';
-    const end = searchTimes.includes(endT) ? endT : '';
-    if (start !== time || end !== endT || searchSlot.endDate) setSearchSlot({ ...searchSlot, start, end, endDate: undefined });
-  }, [searchSlot, setSearchSlot, time, endT, view]);
-  const setDate=(date:string)=>setSearchSlot({...searchSlot,date,endDate:undefined});
-  const setTime=(start:string)=>setSearchSlot({...searchSlot,start});
-  const setEndT=(end:string)=>setSearchSlot({...searchSlot,end});
-
-  const slotError=searchSlotError(state,date,time,endT,date);
-  const needsTime = !date || !time || !endT;
-  const canSelect = (room: typeof rooms[0]) => !isHoliday && (needsTime
-    ? state.rooms.some(r => String(r.id) === room.id && r.status === 'AVAILABLE')
-    : roomAvailable(room,date,time,endT));
-  const filtered = rooms.filter((room) => {
-    if (!roomIds.has(room.id)) return false;
-    const matchText = !searchText || room.name.includes(searchText) || room.building.includes(searchText);
-    const matchCap = !capacityFilter || room.capacity >= capacityFilter;
-    return matchText && matchCap && (!buildingId || state.rooms.find(r=>String(r.id)===room.id)?.buildingId===Number(buildingId));
+  const slotError = searchSlotError(state, date, start, end);
+  const filtersCount = [
+    buildingId,
+    capacity,
+    type,
+    amenity,
+    onlyAvailable,
+  ].filter(Boolean).length;
+  const matching = rooms.filter((room) => {
+    const source = catalog.rooms.find((r) => String(r.id) === room.id);
+    return (
+      source &&
+      matchesRoom(source, room.building, {
+        query,
+        capacity,
+        type,
+        amenity,
+        buildingId,
+      })
+    );
   });
-
-  const availableCount=filtered.filter(r=>roomAvailable(r,date,time,endT)).length;
-  const statusFor=(id:string)=>{const r=state.rooms.find(r=>String(r.id)===id)!;return isHoliday?{label:'วันหยุด · จองไม่ได้',reason:''}:r.status!=='AVAILABLE'?{label:r.status==='MAINTENANCE'?'ปิดปรับปรุง':'ปิดให้บริการ',reason:r.reason}:slotError?{label:'รอเลือกช่วงเวลา',reason:''}:availability(state,r,stamp(date,time),stamp(date,endT));};
-  const handleSelect = (room: typeof rooms[0]) => {
-    if(currentUser.id==='0')sessionStorage.setItem('kku-booking-intent',JSON.stringify({roomId:room.id,slot:searchSlot}));
-    setSelectedRoom(room);
-    navigate('booking');
+  const availableCount = matching.filter((room) =>
+    roomAvailable(room, date, start, end),
+  ).length;
+  // Availability is meaningful only for a complete, valid interval; calendar owns its own date selection.
+  const filtered =
+    view === "rooms" && onlyAvailable && !slotError
+      ? matching.filter((room) => roomAvailable(room, date, start, end))
+      : matching;
+  const reset = () => {
+    setQuery("");
+    setCapacity(0);
+    setType("");
+    setAmenity("");
+    setBuildingId("");
+    setOnlyAvailable(false);
   };
+  const chooseDate = () => {
+    dateInput.current?.focus();
+    try {
+      dateInput.current?.showPicker();
+    } catch {
+      /* Native date field remains usable. */
+    }
+  };
+  const statusFor = (id: string) => {
+    const room = catalog.rooms.find((r) => String(r.id) === id)!;
+    if (room.status !== "AVAILABLE")
+      return {
+        kind: "closed",
+        label: room.status === "MAINTENANCE" ? "ปิดปรับปรุง" : "ปิดให้บริการ",
+        reason: room.reason,
+      };
+    if (isHoliday)
+      return {
+        kind: "closed",
+        label: "วันหยุดมหาวิทยาลัย",
+        reason: "เลือกวันอื่นเพื่อจอง",
+      };
+    if (slotError)
+      return {
+        kind: "unknown",
+        label: "เลือกเวลาเพื่อเช็คห้องว่าง",
+        reason: "",
+      };
+    return availability(state, room, stamp(date, start), stamp(date, end));
+  };
+  function selectRoom(room: (typeof rooms)[number]) {
+    const slot = {
+      ...searchSlot,
+      capacity: capacity || undefined,
+      endDate: undefined,
+    };
+    setSearchSlot(slot);
+    try {
+      // A new search selection replaces saved times, while keeping purpose and equipment drafts.
+      for (const field of ["date", "start", "end"])
+        sessionStorage.removeItem(
+          `kku-draft:${mode}:${currentUser.id}:booking:${room.id}:${field}`,
+        );
+      if (currentUser.id === "0")
+        sessionStorage.setItem(
+          "kku-booking-intent",
+          JSON.stringify({ roomId: room.id, slot }),
+        );
+    } catch {
+      /* Booking can continue when browser storage is unavailable. */
+    }
+    setSelectedRoom(room);
+    navigate(currentUser.id === "0" ? "login" : "booking");
+  }
 
   return (
     <div className="search-screen flex flex-col h-full bg-gray-50">
       <AppHeader showBack={false} />
-
       <div className="search-content flex-1 min-h-0 overflow-y-auto">
-      <section className="search-overview" aria-labelledby="search-overview-title">
-        <h2 id="search-overview-title">ภาพรวมการจองวันนี้</h2>
-        <p className="search-overview-date"><CalendarDays size={16} aria-hidden="true" />{new Intl.DateTimeFormat('th-TH', { dateStyle: 'full' }).format(new Date())}</p>
-        <div className="search-welcome">
-          <span className="search-welcome-icon"><DoorOpen size={24} strokeWidth={1.75} aria-hidden="true" /></span>
-          <div className="search-welcome-copy">
-            <p>{isHoliday ? 'ปิดให้บริการในวันที่เลือก' : 'พร้อมให้บริการ'}</p>
-            <p>{isHoliday ? 'วันหยุดมหาวิทยาลัย กรุณาเปลี่ยนวันที่จอง' : 'ค้นหาพื้นที่ของวิทยาลัยการคอมพิวเตอร์'}</p>
+        <header className="search-overview">
+          <div>
+            <h1>ค้นหาห้อง</h1>
+            <p>พื้นที่เรียน ประชุม และทำงานร่วมกันของวิทยาลัยการคอมพิวเตอร์</p>
           </div>
-          <span className="search-availability"><strong>{slotError ? '—' : availableCount}</strong><span>{isHoliday ? 'วันหยุด' : slotError ? 'เลือกเวลา' : 'ห้องว่าง'}</span></span>
-        </div>
-      </section>
-
-      {/* Search controls */}
-      <div className="search-controls px-4 py-3 bg-white border-b border-gray-100 shrink-0">
-        <div className="flex gap-2">
-          <div className="flex-1 relative">
-            <SearchIcon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              value={searchText}
-              aria-label="ค้นหาชื่อห้องหรืออาคาร"
-              onChange={(e) => setSearchText(e.target.value)}
-              placeholder="ค้นหาชื่อห้อง / อาคาร..."
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-cp-blue focus:bg-white transition-colors"
-            />
-          </div>
-          <button
-            onClick={() => setShowFilters((v) => !v)}
-            aria-label="ตัวกรองจำนวนผู้เข้าร่วม"
-            aria-expanded={showFilters}
-            className={`px-3 rounded-xl border transition-colors ${showFilters ? 'bg-cp-blue text-white border-cp-blue' : 'bg-gray-50 text-gray-500 border-gray-200'}`}
+          <div
+            className="room-view-switch"
+            role="group"
+            aria-label="รูปแบบการแสดงห้อง"
           >
-            <SlidersHorizontal size={18} />
-          </button>
-        </div>
-
-{view === 'rooms' && <><label className="block text-sm text-gray-700 mt-3">อาคาร<select aria-label="อาคาร" value={buildingId} onChange={e=>setBuildingId(e.target.value)} className="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg"><option value="">ทุกอาคาร</option>{catalog.buildings.filter(b=>b.active!==false).map(b=><option key={b.id} value={b.id}>{b.name}</option>)}</select></label>
-        <div className="search-date-fields flex gap-2 mt-2.5">
-          <label><span className="desktop-field-label">วันที่ต้องการจอง</span>
-          <input
-            ref={dateInput}
-            type="date"
-            aria-invalid={isHoliday}
-            aria-describedby={isHoliday ? "holiday-booking-warning" : undefined}
-            aria-label="วันที่ต้องการจอง"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="reference-date flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-cp-blue"
-          />
-          </label>
-          <label><span className="desktop-field-label">เวลาเริ่ม</span>
-          <TimeSelect
-            aria-label="เวลาเริ่ม"
-            disabled={isHoliday}
-            allowedTimes={searchTimes}
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-24 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-cp-blue"
-          />
-          </label>
-          <label><span className="desktop-field-label">เวลาสิ้นสุด</span>
-          <TimeSelect
-            aria-label="เวลาสิ้นสุด"
-            disabled={isHoliday}
-            allowedTimes={searchTimes}
-            value={endT}
-            onChange={(e) => setEndT(e.target.value)}
-            className="w-24 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:border-cp-blue"
-          />
-          </label>
-        </div>
-
-
-        </>}
-        {isHoliday && <HolidayBookingWarning date={date} onChooseDate={chooseDate} />}
-
-        {showFilters && (
-          <div className="mt-3 animate-slide-up">
-            <p className="text-xs font-semibold text-gray-500 mb-2">จำนวนผู้เข้าร่วมขั้นต่ำ</p>
-            <div className="flex gap-2 flex-wrap">
-              {[null, 10, 20, 30, 50].map((cap) => (
-                <button
-                  key={cap ?? 'all'}
-                  onClick={() => setCapacityFilter(cap)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                    capacityFilter === cap ? 'bg-cp-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {cap === null ? 'ทั้งหมด' : `${cap}+ ท่าน`}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Results */}
-      <div className="search-results px-4 py-3">
-        <div className="room-view-switch" role="group" aria-label="รูปแบบการแสดงห้อง">
-          <button type="button" aria-pressed={view === 'rooms'} onClick={() => setView('rooms')}><DoorOpen size={17} />รายการห้อง</button>
-          <button type="button" aria-pressed={view === 'schedule'} onClick={() => setView('schedule')}><CalendarDays size={17} />ตารางคิว</button>
-        </div>
-        {view === 'schedule' ? <Suspense fallback={<p role="status">กำลังโหลดตารางคิว…</p>}><RoomSchedule rooms={filtered} buildingId={buildingId} setBuildingId={setBuildingId} dateInputRef={dateInput} /></Suspense> : <>
-        {!isHoliday && slotError && <p role="status" className="text-sm text-gray-600 mb-3">{needsTime ? 'กดแบนเนอร์ห้องเพื่อเลือกวันและเวลาจอง หรือเลือกเวลาที่ด้านบนเพื่อเช็คห้องว่าง' : slotError}</p>}
-        <p className="text-sm font-semibold text-gray-700 mb-3">
-          พบ {filtered.length} ห้อง{!slotError && ` · ว่าง ${availableCount} ห้องในช่วงเวลาที่เลือก`}
-        </p>
-
-        <div className="search-room-grid">
-          {filtered.map((room) => (
             <button
-              key={room.id}
-              disabled={!canSelect(room)}
-              aria-label={`เลือกวันและเวลาจอง ${room.name}`}
-              onClick={() => handleSelect(room)}
-              className="search-room-card w-full bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-cp-blue/30 hover:shadow-lg transition-all text-left active:scale-[0.99] group"
+              type="button"
+              aria-pressed={view === "rooms"}
+              onClick={() => setView("rooms")}
             >
-              <div className="search-room-photo relative h-36 overflow-hidden">
-                <RoomImage key={room.imageUrl} src={room.imageUrl} name={room.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <div className="absolute bottom-2 left-3 right-3 flex items-end justify-between">
-                  <div>
-                    <h3 className="text-white font-bold text-base">{room.name}</h3>
-                    <p className="text-white/80 text-xs flex items-center gap-1">
-                      <MapPin size={12} /> {room.building} · {room.floor}
-                    </p>
-                  </div>
-                  <span className="text-white text-xs bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
-                    <Users size={12} /> {room.capacity}
-                  </span>
-                </div>
-              </div>
-              <div className="p-3">
-                <div className="flex items-center gap-1 text-xs text-gray-400 mb-2">
-                  <Clock size={14} /> {room.openTime ? `เปิดให้บริการ ${room.openTime} - ${room.closeTime} น.` : 'กรุณาสอบถามเวลาให้บริการจากผู้ดูแล'}
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {room.amenities.slice(0, 4).map((a) => (
-                    <span key={a} className="text-[11px] px-2 py-0.5 bg-cp-blue/10 text-cp-blue rounded-full font-medium">
-                      {a}
-                    </span>
-                  ))}
-                  {room.amenities.length > 4 && (
-                    <span className="text-[11px] px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full font-medium">
-                      +{room.amenities.length - 4}
-                    </span>
-                  )}
-                </div>
-<p className="text-sm text-gray-700 mt-3">{statusFor(room.id).label}{statusFor(room.id).reason ? ` · ${statusFor(room.id).reason}` : ""}</p>
-                {canSelect(room) && <span className="desktop-room-action">{needsTime ? 'เลือกเวลาจอง' : 'ดูรายละเอียดและจอง'} <ChevronRight size={16}/></span>}
-              </div>
+              <DoorOpen size={17} />
+              รายการห้อง
             </button>
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-            <SearchIcon size={48} strokeWidth={1.5} />
-            <p className="mt-3 text-sm">ไม่พบห้องของ CP ที่ตรงกับเงื่อนไข</p>
+            <button
+              type="button"
+              aria-pressed={view === "schedule"}
+              onClick={() => setView("schedule")}
+            >
+              <CalendarDays size={17} />
+              ตารางคิว
+            </button>
           </div>
-        )}
-        </>}
-      </div>
+        </header>
+        <section className="search-controls" aria-label="ค้นหาและกรองห้อง">
+          <div className="search-query-row">
+            <label className="search-query">
+              <Search size={18} aria-hidden="true" />
+              <input
+                aria-label="ค้นหาชื่อห้อง รหัส หรืออาคาร"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="ค้นหาชื่อห้อง รหัส หรืออาคาร"
+                type="search"
+              />
+            </label>
+            <button
+              type="button"
+              className="search-filter-button"
+              aria-expanded={showFilters}
+              aria-controls="room-filters"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <SlidersHorizontal size={17} />
+              ตัวกรอง{filtersCount > 0 && <span>{filtersCount}</span>}
+            </button>
+          </div>
+          {view === "rooms" && (
+            <div className="search-date-fields">
+              <label>
+                วันที่ใช้งาน
+                <input
+                  ref={dateInput}
+                  type="date"
+                  aria-label="วันที่ใช้งาน"
+                  min={dateOf(state.now)}
+                  max={addDays(dateOf(state.now), 15)}
+                  value={date}
+                  onChange={(e) =>
+                    setSearchSlot({
+                      ...searchSlot,
+                      date: e.target.value,
+                      endDate: undefined,
+                    })
+                  }
+                  aria-describedby="search-time-feedback"
+                />
+              </label>
+              <label>
+                เวลาเริ่ม
+                <TimeSelect
+                  aria-label="เวลาเริ่ม"
+                  value={start}
+                  onChange={(e) =>
+                    setSearchSlot({
+                      ...searchSlot,
+                      start: e.target.value,
+                      endDate: undefined,
+                    })
+                  }
+                  aria-describedby="search-time-feedback"
+                />
+              </label>
+              <label>
+                เวลาสิ้นสุด
+                <TimeSelect
+                  aria-label="เวลาสิ้นสุด"
+                  value={end}
+                  onChange={(e) =>
+                    setSearchSlot({
+                      ...searchSlot,
+                      end: e.target.value,
+                      endDate: undefined,
+                    })
+                  }
+                  aria-describedby="search-time-feedback"
+                />
+              </label>
+            </div>
+          )}
+          <div
+            id="room-filters"
+            className="search-extra-fields"
+            hidden={!showFilters}
+          >
+            <label>
+              อาคาร
+              <select
+                value={buildingId}
+                onChange={(e) => setBuildingId(e.target.value)}
+              >
+                <option value="">ทุกอาคาร</option>
+                {catalog.buildings
+                  .filter((b) => b.active !== false)
+                  .map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.name}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <label>
+              จำนวนคนอย่างน้อย
+              <input
+                type="number"
+                min={1}
+                step={1}
+                value={capacity || ""}
+                placeholder="ไม่ระบุ"
+                onChange={(e) =>
+                  setCapacity(Math.max(0, Number(e.target.value)))
+                }
+              />
+            </label>
+            <label>
+              ประเภทห้อง
+              <select value={type} onChange={(e) => setType(e.target.value)}>
+                <option value="">ทุกประเภท</option>
+                {[...new Set(catalog.rooms.map((r) => r.type))].map((t) => (
+                  <option key={t}>{t}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              อุปกรณ์ประจำห้อง
+              <select
+                value={amenity}
+                onChange={(e) => setAmenity(e.target.value)}
+              >
+                <option value="">ไม่ระบุ</option>
+                {[...new Set(catalog.rooms.flatMap((r) => r.amenities))]
+                  .sort()
+                  .map((a) => (
+                    <option key={a}>{a}</option>
+                  ))}
+              </select>
+            </label>
+          </div>
+          {view === "rooms" && (
+            <div className="search-filter-footer">
+              <p id="search-time-feedback" role="status">
+                {slotError ||
+                  `ห้องว่าง ${availableCount} ห้อง · ${start}–${end} น.`}
+              </p>
+              <label className="search-available-toggle">
+                <input
+                  type="checkbox"
+                  checked={onlyAvailable}
+                  disabled={!!slotError}
+                  onChange={(e) => setOnlyAvailable(e.target.checked)}
+                />
+                เฉพาะห้องว่าง
+              </label>
+            </div>
+          )}
+          {(filtersCount > 0 || query) && (
+            <button type="button" className="search-reset" onClick={reset}>
+              ล้างตัวกรองทั้งหมด
+            </button>
+          )}
+          {isHoliday && (
+            <HolidayBookingWarning date={date} onChooseDate={chooseDate} />
+          )}
+        </section>
+        <section className="search-results" aria-label="ผลการค้นหา">
+          {view === "schedule" ? (
+            <Suspense
+              fallback={
+                <p role="status" className="schedule-loading">
+                  กำลังโหลดตารางคิว…
+                </p>
+              }
+            >
+              <RoomSchedule
+                rooms={matching}
+                buildingId={buildingId}
+                setBuildingId={setBuildingId}
+                dateInputRef={dateInput}
+              />
+            </Suspense>
+          ) : (
+            <>
+              <div className="search-results-heading">
+                <h2 role="status" aria-live="polite">
+                  พบ {filtered.length} ห้อง
+                </h2>
+                <span>เลือกห้องเพื่อดูรายละเอียดและเวลาที่จองได้</span>
+              </div>
+              <div className="search-room-grid">
+                {filtered.map((room) => {
+                  const status = statusFor(room.id);
+                  return (
+                    <article className="search-room-card" key={room.id}>
+                      <div className="search-room-photo">
+                        <RoomImage
+                          src={room.imageUrl}
+                          name={room.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="search-room-body">
+                        <span
+                          className={`room-availability status-${status.kind}`}
+                        >
+                          {status.label}
+                        </span>
+                        <h3>{room.name}</h3>
+                        <p className="room-location">
+                          <MapPin size={15} aria-hidden="true" />
+                          {room.building} · {room.floor}
+                        </p>
+                        <div className="room-facts">
+                          <span>
+                            <Users size={15} />
+                            {room.capacity} คน
+                          </span>
+                          <span>
+                            <Clock size={15} />
+                            {room.openTime
+                              ? `${room.openTime}–${room.closeTime}`
+                              : "ยังไม่ระบุเวลาเปิด"}
+                          </span>
+                        </div>
+                        <p className="room-amenities">
+                          {room.amenities.slice(0, 3).join(" · ") ||
+                            "ดูอุปกรณ์ในรายละเอียดห้อง"}
+                          {room.amenities.length > 3
+                            ? ` · +${room.amenities.length - 3}`
+                            : ""}
+                        </p>
+                        {status.reason && (
+                          <p className="room-status-reason">{status.reason}</p>
+                        )}
+                        <button
+                          className="room-detail-button"
+                          type="button"
+                          onClick={() => selectRoom(room)}
+                          aria-label={`ดูรายละเอียดและจอง ${room.name}`}
+                        >
+                          ดูรายละเอียดและจอง
+                          <ChevronRight size={17} />
+                        </button>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+              {filtered.length === 0 && (
+                <EmptyState
+                  icon={<Search size={28} />}
+                  title="ไม่พบห้องที่ตรงกับเงื่อนไข"
+                  subtitle="ลองเปลี่ยนช่วงเวลา ลดจำนวนคน หรือล้างตัวกรอง"
+                  action={
+                    <button className="search-reset" onClick={reset}>
+                      ล้างตัวกรองและดูห้องทั้งหมด
+                    </button>
+                  }
+                />
+              )}
+            </>
+          )}
+        </section>
       </div>
     </div>
   );

@@ -1,42 +1,135 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-10-12T02:21:37+07:00",
-  "title": "Design System: KKU Room Booking — Mobile Reference",
+  "title": "Historical Mobile Reference — Superseded by apps/web/DESIGN.md",
   "extensions": {
     "colorMeta": {
-      "kku-red": { "role": "primary", "displayName": "KKU red" },
-      "kku-red-dark": { "role": "primary", "displayName": "KKU dark red" },
-      "kku-gold": { "role": "accent", "displayName": "KKU gold" },
-      "gray-50": { "role": "neutral", "displayName": "Page surface", "tonalRamp": ["#111827", "#1f2937", "#374151", "#4b5563", "#6b7280", "#9ca3af", "#e5e7eb", "#f9fafb"] }
+      "kku-red": {
+        "role": "primary",
+        "displayName": "KKU red"
+      },
+      "kku-red-dark": {
+        "role": "primary",
+        "displayName": "KKU dark red"
+      },
+      "kku-gold": {
+        "role": "accent",
+        "displayName": "KKU gold"
+      },
+      "gray-50": {
+        "role": "neutral",
+        "displayName": "Page surface",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#e5e7eb",
+          "#f9fafb"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Daily overview", "purpose": "Mobile overview heading." },
-      "body": { "displayName": "Body and fields", "purpose": "Descriptions and standard form controls." },
-      "supporting": { "displayName": "Supporting", "purpose": "Room metadata and small supporting text." }
+      "display": {
+        "displayName": "Daily overview",
+        "purpose": "Mobile overview heading."
+      },
+      "body": {
+        "displayName": "Body and fields",
+        "purpose": "Descriptions and standard form controls."
+      },
+      "supporting": {
+        "displayName": "Supporting",
+        "purpose": "Room metadata and small supporting text."
+      }
     },
     "shadows": [
-      { "name": "primary-small", "value": "0 1px 2px 0 rgb(127 29 29 / 0.2)", "purpose": "Primary buttons and brand symbol." },
-      { "name": "service-banner", "value": "0 10px 15px -3px rgb(127 29 29 / 0.15), 0 4px 6px -4px rgb(127 29 29 / 0.15)", "purpose": "Red service banner." },
-      { "name": "card-hover", "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", "purpose": "Mobile room-card hover." },
-      { "name": "account-menu", "value": "0 20px 25px -5px rgb(17 24 39 / 0.1), 0 8px 10px -6px rgb(17 24 39 / 0.1)", "purpose": "Account dropdown." },
-      { "name": "login-panel", "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)", "purpose": "White login panel." }
+      {
+        "name": "primary-small",
+        "value": "0 1px 2px 0 rgb(127 29 29 / 0.2)",
+        "purpose": "Primary buttons and brand symbol."
+      },
+      {
+        "name": "service-banner",
+        "value": "0 10px 15px -3px rgb(127 29 29 / 0.15), 0 4px 6px -4px rgb(127 29 29 / 0.15)",
+        "purpose": "Red service banner."
+      },
+      {
+        "name": "card-hover",
+        "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        "purpose": "Mobile room-card hover."
+      },
+      {
+        "name": "account-menu",
+        "value": "0 20px 25px -5px rgb(17 24 39 / 0.1), 0 8px 10px -6px rgb(17 24 39 / 0.1)",
+        "purpose": "Account dropdown."
+      },
+      {
+        "name": "login-panel",
+        "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+        "purpose": "White login panel."
+      }
     ],
     "motion": [
-      { "name": "state-transition", "value": "150ms cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Tailwind default control transitions." },
-      { "name": "slide-up", "value": "referenceSlideUp .3s ease-out; from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); }", "purpose": "Mobile panels and filters." },
-      { "name": "fade-in", "value": "referenceFadeIn .3s ease-out; from { opacity: 0; } to { opacity: 1; }", "purpose": "Overlay and success entry." },
-      { "name": "scale-in", "value": "referenceScaleIn .25s ease-out; from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); }", "purpose": "Account dropdown and wider modal entry." },
-      { "name": "room-photo-hover", "value": "transform 300ms cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.05)", "purpose": "Room image hover." },
-      { "name": "reduced-motion", "value": "@media (prefers-reduced-motion: reduce) { animation: none !important; transition: none !important; scroll-behavior: auto !important; }", "purpose": "Existing scoped reduced-motion override." }
+      {
+        "name": "state-transition",
+        "value": "150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Tailwind default control transitions."
+      },
+      {
+        "name": "slide-up",
+        "value": "referenceSlideUp .3s ease-out; from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); }",
+        "purpose": "Mobile panels and filters."
+      },
+      {
+        "name": "fade-in",
+        "value": "referenceFadeIn .3s ease-out; from { opacity: 0; } to { opacity: 1; }",
+        "purpose": "Overlay and success entry."
+      },
+      {
+        "name": "scale-in",
+        "value": "referenceScaleIn .25s ease-out; from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); }",
+        "purpose": "Account dropdown and wider modal entry."
+      },
+      {
+        "name": "room-photo-hover",
+        "value": "transform 300ms cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.05)",
+        "purpose": "Room image hover."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce) { animation: none !important; transition: none !important; scroll-behavior: auto !important; }",
+        "purpose": "Existing scoped reduced-motion override."
+      }
     ],
     "breakpoints": [
-      { "name": "narrow-mobile", "value": "359px", "purpose": "Search time fields use 80px width / 4px horizontal padding and date fields use 6px horizontal padding." },
-      { "name": "sm", "value": "640px", "purpose": "Existing centered modal variant; not a desktop layout specification." },
-      { "name": "desktop-boundary", "value": "1024px", "purpose": "Mobile copy and composition give way to the separately maintained desktop rules." }
+      {
+        "name": "narrow-mobile",
+        "value": "359px",
+        "purpose": "Search time fields use 80px width / 4px horizontal padding and date fields use 6px horizontal padding."
+      },
+      {
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Existing centered modal variant; not a desktop layout specification."
+      },
+      {
+        "name": "desktop-boundary",
+        "value": "1024px",
+        "purpose": "Mobile copy and composition give way to the separately maintained desktop rules."
+      }
     ],
     "sourceExpressions": {
       "scope": "Mobile only; Operate mode. Values extracted from adopted code and installed Tailwind defaults.",
-      "cssProperties": { "--primary": "#A4233B", "--primary-dark": "#8B1E32", "--primary-soft": "#fef2f2", "--ink": "#111827", "--line": "#f3f4f6" },
+      "cssProperties": {
+        "--primary": "#A4233B",
+        "--primary-dark": "#8B1E32",
+        "--primary-soft": "#fef2f2",
+        "--ink": "#111827",
+        "--line": "#f3f4f6"
+      },
       "focus": "outline: 2px solid #A4233B; outline-offset: 2px",
       "fieldFocus": "outline: none; border-color: #A4233B; search background-color: #ffffff",
       "overviewGradient": "linear-gradient(to bottom right, #fef2f2, #ffffff, #fffbeb)",
@@ -47,7 +140,11 @@
       "loginIconPanel": "background: rgb(255 255 255 / 0.15); border: 1px solid rgb(255 255 255 / 0.2); backdrop-filter: blur(4px)",
       "loginPanelCorners": "border-radius: 24px 24px 0 0",
       "source": "Ui News/booking_room_kku",
-      "screenshots": ["preview/reference-integration-mobile.png", "preview/mobile-booking-form.png", "preview/google-only-login-mobile.png"]
+      "screenshots": [
+        "preview/reference-integration-mobile.png",
+        "preview/mobile-booking-form.png",
+        "preview/google-only-login-mobile.png"
+      ]
     }
   },
   "components": [
@@ -117,10 +214,25 @@
     }
   ],
   "narrative": {
-    "overview": "This records the mobile interface adopted from Ui News/booking_room_kku. That source is the visual authority: preserve its composition, colors, typography, spacing, and component shapes at a 1:1 mobile priority. The default working mode is Operate: apply the existing system to real application behavior.\n\nThe interface uses Sarabun, a red university identity, white controls, pale gray surfaces, and compact supporting text. Search combines a workspace header, daily overview, red service banner, filters, room cards, and three bottom navigation items. This document covers the mobile reference subtree; desktop layout is maintained separately.",
-    "keyCharacteristics": ["Source-led mobile composition and Thai-first typography.", "Red emphasis for actions and active navigation; gold accents in the service banner.", "Rounded cards, clear form labels, and scrollable screen content.", "Real room data and honest unavailable-image states."],
+    "overview": "HISTORICAL ONLY: superseded by apps/web/DESIGN.md and apps/web/.impeccable/design.json. Do not use these earlier tokens as the current visual authority.\n\nThis records the mobile interface adopted from Ui News/booking_room_kku. That source is the visual authority: preserve its composition, colors, typography, spacing, and component shapes at a 1:1 mobile priority. The default working mode is Operate: apply the existing system to real application behavior.\n\nThe interface uses Sarabun, a red university identity, white controls, pale gray surfaces, and compact supporting text. Search combines a workspace header, daily overview, red service banner, filters, room cards, and three bottom navigation items. This document covers the mobile reference subtree; desktop layout is maintained separately.",
+    "keyCharacteristics": [
+      "Source-led mobile composition and Thai-first typography.",
+      "Red emphasis for actions and active navigation; gold accents in the service banner.",
+      "Rounded cards, clear form labels, and scrollable screen content.",
+      "Real room data and honest unavailable-image states."
+    ],
     "rules": [],
-    "dos": ["Do treat the confirmed source mobile interface as the visual authority.", "Do preserve the existing red palette, Sarabun hierarchy, rounded shapes, and mobile spacing.", "Do use real room data, missing-image placeholders, and visible busy/error states.", "Do compare mobile changes against preview/reference-integration-mobile.png, preview/mobile-booking-form.png, and preview/google-only-login-mobile.png in the repository root."],
-    "donts": ["Don't introduce a new visual identity or decorative raster assets for this adopted interface.", "Don't restore demo-role or password sign-in controls.", "Don't present simulated attachments or unsaved operations as successful actions.", "Don't apply these mobile composition rules as a promise to redesign the separately maintained desktop interface."]
+    "dos": [
+      "Do treat the confirmed source mobile interface as the visual authority.",
+      "Do preserve the existing red palette, Sarabun hierarchy, rounded shapes, and mobile spacing.",
+      "Do use real room data, missing-image placeholders, and visible busy/error states.",
+      "Do compare mobile changes against preview/reference-integration-mobile.png, preview/mobile-booking-form.png, and preview/google-only-login-mobile.png in the repository root."
+    ],
+    "donts": [
+      "Don't introduce a new visual identity or decorative raster assets for this adopted interface.",
+      "Don't restore demo-role or password sign-in controls.",
+      "Don't present simulated attachments or unsaved operations as successful actions.",
+      "Don't apply these mobile composition rules as a promise to redesign the separately maintained desktop interface."
+    ]
   }
 }
